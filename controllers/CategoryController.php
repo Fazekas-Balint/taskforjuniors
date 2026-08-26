@@ -4,11 +4,17 @@ namespace app\controllers;
 
 use app\models\Category;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class CategoryController extends Controller
 {
+    public function behaviors()
+    {
+        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
+    }
+
     public function actionIndex()
     {
         return $this->render('index', ['dataProvider' => new \yii\data\ActiveDataProvider([

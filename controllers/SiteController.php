@@ -66,6 +66,8 @@ class SiteController extends Controller
         $service = new EquipmentService();
         $service->initialize();
         $statusFilter = Yii::$app->request->get('status', '');
+        $lenderFilter = Yii::$app->request->get('lender_id', '');
+        $categoryFilter = Yii::$app->request->get('category_id', '');
         if (Yii::$app->request->isPost) {
             if (Yii::$app->user->isGuest || !Yii::$app->user->identity->canEdit()) {
                 throw new \yii\web\ForbiddenHttpException('Ehhez admin jogosultság szükséges.');
@@ -75,13 +77,16 @@ class SiteController extends Controller
             return $this->refresh();
         }
         return $this->render('index', [
-            'equipment' => $service->equipment($statusFilter),
+            'equipment' => $service->equipment($statusFilter, $lenderFilter, $categoryFilter),
             'loans' => $service->activeLoans(),
             'report' => $service->report(),
             'movements' => $service->recentMovements(),
             'lenders' => $service->lenders(),
+            'categories' => $service->categories(),
             'canEdit' => !Yii::$app->user->isGuest && Yii::$app->user->identity->canEdit(),
             'statusFilter' => $statusFilter,
+            'lenderFilter' => $lenderFilter,
+            'categoryFilter' => $categoryFilter,
         ]);
     }
 
