@@ -2,11 +2,14 @@
 
 namespace app\controllers;
 
+use Yii;
+use app\models\Category;
 use app\models\Equipment;
 use app\models\EquipmentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
 /**
  * EquipmentController implements the CRUD actions for Equipment model.
@@ -44,6 +47,33 @@ class EquipmentController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Public catalogue of the items that can be borrowed right now.
+     *
+     * @return string
+     */
+    public function actionCatalog()
+    {
+        $categoryId = Yii::$app->request->get('category');
+
+        $query = Equipment::find()
+            ->with('category')
+            ->where(['status' => Equipment::STATUS_AVAILABLE])
+            ->andFilterWhere(['category_id' => $categoryId])
+            ->orderBy(['name' => SORT_ASC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 12],
+        ]);
+
+        return $this->render('catalog', [
+            'dataProvider' => $dataProvider,
+            'categories' => Category::find()->orderBy('name')->all(),
+            'selectedCategory' => $categoryId,
         ]);
     }
 
