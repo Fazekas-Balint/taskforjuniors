@@ -2,10 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=kolcsonpont',
-    'username' => 'root',
-    'password' => '',
-    'charset' => 'utf8mb4',
+    'dsn' => 'sqlite:' . dirname(__DIR__) . '/runtime/equipment.sqlite',
 
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,

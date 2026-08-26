@@ -1,46 +1,24 @@
 <?php
 
-use app\models\Category;
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var app\models\CategorySearch $searchModel */
-/** @var yii\data\ActiveDataProvider $dataProvider */
-
-$this->title = 'Categories';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Kategóriák';
 ?>
 <div class="category-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <div class="page-header">
+        <h1><?= Html::encode($this->title) ?></h1>
+        <?= Html::a('Új kategória', ['create'], ['class' => 'btn btn-success']) ?>
+    </div>
+    <div class="table-responsive">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'name',
             'slug',
             'created_at',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Category $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
         ],
-    ]); ?>
-
-
+    ]) ?>
+    </div>
 </div>

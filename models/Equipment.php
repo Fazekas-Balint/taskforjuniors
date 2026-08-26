@@ -2,205 +2,78 @@
 
 namespace app\models;
 
-use Yii;
-use yii\behaviors\TimestampBehavior;
-use yii\db\Expression;
+use yii\db\ActiveRecord;
 
-/**
- * This is the model class for table "equipment".
- *
- * @property int $id
- * @property int $category_id
- * @property string $inventory_no
- * @property string $name
- * @property string|null $description
- * @property int $status
- * @property string|null $purchased_at
- * @property int $deposit
- * @property string $created_at
- * @property string|null $updated_at
- *
- * @property Category $category
- * @property Loan[] $loans
- */
-class Equipment extends \yii\db\ActiveRecord
+class Equipment extends ActiveRecord
 {
-    public const STATUS_AVAILABLE = 0;   // available
-    public const STATUS_LOANED = 1;      // loaned
-    public const STATUS_MAINTENANCE = 2; // maintenance
-    public const STATUS_SCRAPPED = 3;    // scrapped
+    const STATUS_AVAILABLE = 0;
+    const STATUS_LOANED = 1;
+    const STATUS_MAINTENANCE = 2;
+    const STATUS_SCRAPPED = 3;
 
-
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
-        return 'equipment';
+        return '{{%equipment}}';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors(): array
-    {
-        return [
-            [
-                'class' => TimestampBehavior::class,
-                'createdAtAttribute' => 'created_at',
-                'updatedAtAttribute' => 'updated_at',
-                'value' => new Expression('NOW()'),
-            ],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
-            [['description', 'purchased_at', 'updated_at'], 'default', 'value' => null],
-            [['deposit'], 'default', 'value' => 0],
-            [['status'], 'default', 'value' => self::STATUS_AVAILABLE],
-
             [['category_id', 'inventory_no', 'name'], 'required'],
-
-            [['category_id'], 'integer'],
+            ['category_id', 'integer'],
             [['description'], 'string'],
-            [['name'], 'string', 'max' => 150],
-            [['inventory_no'], 'string', 'max' => 20],
-
-            [['inventory_no'], 'match',
-                'pattern' => '/^[A-Z]{2}-\d{4}$/',
-                'message' => 'A leltári szám formátuma: két nagybetű, kötőjel, négy számjegy (pl. LP-0007).',
-            ],
-            [['inventory_no'], 'unique',
-                'message' => 'Ez a leltári szám már foglalt.',
-            ],
-
-            [['status'], 'in',
-                'range' => array_keys(self::statusLabels()),
-                'message' => 'Érvénytelen státusz.',
-            ],
-
-            [['deposit'], 'integer',
-                'min' => 0,
-                'tooSmall' => 'A letét nem lehet negatív.',
-            ],
-
-            [['purchased_at'], 'date', 'format' => 'php:Y-m-d'],
-            [['created_at', 'updated_at'], 'safe'],
-
-            [['category_id'], 'exist', 'skipOnError' => true,
-                'targetClass' => Category::class,
-                'targetAttribute' => ['category_id' => 'id'],
-            ],
+            ['inventory_no', 'string', 'max' => 50],
+            ['name', 'string', 'max' => 255],
+            ['status', 'in', 'range' => array_keys(self::statusLabels())],
+            ['purchased_at', 'date', 'format' => 'php:Y-m-d'],
+            ['deposit', 'integer', 'min' => 0],
+            ['inventory_no', 'unique'],
+            ['category_id', 'exist', 'targetClass' => Category::class, 'targetAttribute' => 'id'],
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Azonosító',
             'category_id' => 'Kategória',
             'inventory_no' => 'Leltári szám',
-            'name' => 'Név',
+            'name' => 'Megnevezés',
             'description' => 'Leírás',
-            'status' => 'Státusz',
-            'purchased_at' => 'Beszerzés dátuma',
-            'deposit' => 'Letét',
-            'created_at' => 'Létrehozva',
-            'updated_at' => 'Frissítve',
+            'status' => 'Állapot',
+            'purchased_at' => 'Vásárlás dátuma',
+            'deposit' => 'Kaució (Ft)',
         ];
     }
 
-
-    /**
-     * Gets query for [[Category]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCategory()
-    {
-        return $this->hasOne(Category::class, ['id' => 'category_id']);
-    }
-
-    /**
-     * Human-readable status names for dropdowns and grid columns.
-     *
-     * @return array status code => label
-     */
-    public static function statusLabels(): array
+    public static function statusLabels()
     {
         return [
             self::STATUS_AVAILABLE => 'Elérhető',
             self::STATUS_LOANED => 'Kiadva',
             self::STATUS_MAINTENANCE => 'Karbantartás',
-            self::STATUS_SCRAPPED => 'Selejt',
+            self::STATUS_SCRAPPED => 'Selejtezett',
         ];
     }
 
-    /**
-     * Gets query for [[Loans]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
+    public function getStatusLabel()
+    {
+        $labels = self::statusLabels();
+        return isset($labels[$this->status]) ? $labels[$this->status] : 'Ismeretlen';
+    }
+
+    public function isAvailable()
+    {
+        return (int) $this->status === self::STATUS_AVAILABLE;
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
+    }
+
     public function getLoans()
     {
         return $this->hasMany(Loan::class, ['equipment_id' => 'id']);
     }
-
-    /**
-     * The status label of this particular item.
-     *
-     * @return string
-     */
-    public function getStatusLabel(): string
-    {
-        return self::statusLabels()[$this->status] ?? 'Ismeretlen';
-    }
-
-    /**
-     * Whether the item can be loaned out based on its status (BR-1).
-     *
-     * @return bool
-     */
-    public function isAvailable(): bool
-    {
-        return $this->status === self::STATUS_AVAILABLE;
-    }
-
-    /**
-     * Equipment that has ever been loaned is scrapped instead of deleted (BR-8).
-     *
-     * {@inheritdoc}
-     */
-    public function beforeDelete()
-    {
-        if (!parent::beforeDelete()) {
-            return false;
-        }
-
-        if ($this->getLoans()->exists()) {
-            $this->status = self::STATUS_SCRAPPED;
-            $this->save(false, ['status', 'updated_at']);
-
-            Yii::$app->session->setFlash(
-                'warning',
-                'Az eszközt korábban már kölcsönözték, ezért nem törölhető — selejt státuszba került.'
-            );
-
-            return false;
-        }
-
-        return true;
-    }
 }
-
