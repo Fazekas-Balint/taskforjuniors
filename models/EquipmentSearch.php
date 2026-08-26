@@ -4,7 +4,6 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Equipment;
 
 /**
  * EquipmentSearch represents the model behind the search form of `app\models\Equipment`.
@@ -18,7 +17,7 @@ class EquipmentSearch extends Equipment
     {
         return [
             [['id', 'category_id', 'status', 'deposit'], 'integer'],
-            [['inventory_no', 'name', 'description', 'purchased_at', 'created_at', 'updated_at'], 'safe'],
+            [['inventory_no', 'name', 'purchased_at'], 'safe'],
         ];
     }
 
@@ -32,7 +31,7 @@ class EquipmentSearch extends Equipment
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      * @param string|null $formName Form name to be used into `->load()` method.
@@ -41,13 +40,27 @@ class EquipmentSearch extends Equipment
      */
     public function search($params, $formName = null)
     {
-        // Eager-load the category to avoid an N+1 query in the grid.
-        $query = Equipment::find()->with('category');
+        // joinWith() eager-loads the category (so no N+1 in the grid) and
+        // also exposes category.name to the ORDER BY clause.
+        $query = Equipment::find()->joinWith('category');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 20],
-            'sort' => ['defaultOrder' => ['inventory_no' => SORT_ASC]],
+            'sort' => [
+                'defaultOrder' => ['inventory_no' => SORT_ASC],
+                'attributes' => [
+                    'inventory_no',
+                    'name',
+                    'status',
+                    'deposit',
+                    'purchased_at',
+                    'category_id' => [
+                        'asc' => ['category.name' => SORT_ASC],
+                        'desc' => ['category.name' => SORT_DESC],
+                    ],
+                ],
+            ],
         ]);
 
         $this->load($params, $formName);
@@ -56,16 +69,18 @@ class EquipmentSearch extends Equipment
             return $dataProvider;
         }
 
+        // Column names are qualified: the JOIN brings in a second table
+        // that also has `id` and `name` columns.
         $query->andFilterWhere([
-            'id' => $this->id,
-            'category_id' => $this->category_id,
-            'status' => $this->status,
-            'purchased_at' => $this->purchased_at,
-            'deposit' => $this->deposit,
+            'equipment.id' => $this->id,
+            'equipment.category_id' => $this->category_id,
+            'equipment.status' => $this->status,
+            'equipment.purchased_at' => $this->purchased_at,
+            'equipment.deposit' => $this->deposit,
         ]);
 
-        $query->andFilterWhere(['like', 'inventory_no', $this->inventory_no])
-            ->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'equipment.inventory_no', $this->inventory_no])
+            ->andFilterWhere(['like', 'equipment.name', $this->name]);
 
         return $dataProvider;
     }
