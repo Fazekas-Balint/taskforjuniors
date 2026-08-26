@@ -1,5 +1,6 @@
 main > .container {
-    padding: 70px 15px 20px;
+    padding: 82px 15px 24px;
+    max-width: 1280px;
 }
 
 .footer {
@@ -85,4 +86,76 @@ a.desc:after {
 
 .form-group {
     margin-bottom: 1rem;
+}
+
+.page-header {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    margin: 0;
+}
+
+.dashboard-card {
+    border: 0;
+    border-radius: .85rem;
+    box-shadow: 0 .25rem 1rem rgba(33, 37, 41, .08);
+}
+
+.dashboard-card .display-6 {
+    font-weight: 700;
+}
+
+.table-responsive {
+    border-radius: .5rem;
+}
+
+.grid-view .table {
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.grid-view td:last-child,
+.grid-view th:last-child {
+    white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+    main > .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .page-header {
+        align-items: stretch;
+        flex-direction: column;
+        gap: .75rem;
+    }
+
+    .page-header .btn {
+        width: 100%;
+    }
+
+    .filter-form .btn {
+        width: 100%;
+    }
+
+    .filter-form .btn + .btn {
+        margin-top: .5rem;
+    }
+
+    .grid-view td:last-child {
+        white-space: normal;
+    }
+
+    .grid-view td:last-child a {
+        display: block;
+        margin-bottom: .35rem;
+        width: 100%;
+    }
 }
