@@ -23,7 +23,8 @@ class m260826_075513_create_equipment_table extends Migration
             'deposit' => $this->integer()->notNull()->defaultValue(0),
             'created_at' => $this->dateTime()->notNull(),
             'updated_at' => $this->dateTime()->null(),
-        ]);
+
+        ], 'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
         // egyedi leltári szám
         $this->createIndex(

@@ -17,7 +17,7 @@ class m260826_074940_create_category_table extends Migration
             'name' => $this->string(100)->notNull(),
             'slug' => $this->string(120)->notNull(),
             'created_at' => $this->dateTime()->notNull(),
-        ]);
+        ], 'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci');
 
         $this->createIndex(
             'idx-category-slug',
