@@ -35,7 +35,7 @@ class EquipmentService
 
     public function report()
     {
-        return ['total' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status <> 3')->queryScalar(), 'available' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 0')->queryScalar(), 'borrowed' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL')->queryScalar(), 'maintenance' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 2')->queryScalar(), 'overdue' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at < DATE("now")')->queryScalar()];
+        return ['total' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status <> 3')->queryScalar(), 'available' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 0')->queryScalar(), 'borrowed' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL')->queryScalar(), 'overdue' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at < DATE("now")')->queryScalar(), 'dueToday' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at = DATE("now")')->queryScalar()];
     }
 
     public function borrowers() { return $this->db->createCommand('SELECT id, full_name FROM borrower WHERE is_active = 1 ORDER BY full_name')->queryAll(); }
@@ -52,7 +52,7 @@ class EquipmentService
         if (!empty($filters['category_id'])) { $conditions[] = 'equipment.category_id = :category_id'; $params[':category_id'] = (int) $filters['category_id']; }
         if (!empty($filters['from'])) { $conditions[] = 'loan.due_at >= :from_date'; $params[':from_date'] = $filters['from']; }
         if (!empty($filters['to'])) { $conditions[] = 'loan.due_at <= :to_date'; $params[':to_date'] = $filters['to']; }
-        return $this->db->createCommand('SELECT loan.*, equipment.name AS equipment_name, equipment.inventory_no, category.name AS category_name, borrower.full_name, borrower.email, CAST(julianday("now") - julianday(loan.due_at) AS INTEGER) AS days_late, CAST(julianday("now") - julianday(loan.due_at) AS INTEGER) * 100 AS late_fee FROM loan JOIN equipment ON equipment.id = loan.equipment_id JOIN category ON category.id = equipment.category_id JOIN borrower ON borrower.id = loan.borrower_id WHERE ' . implode(' AND ', $conditions) . ' ORDER BY loan.due_at', $params)->queryAll();
+        return $this->db->createCommand('SELECT loan.*, equipment.name AS equipment_name, equipment.inventory_no, equipment.deposit, category.name AS category_name, borrower.full_name, borrower.email, CAST(julianday("now") - julianday(loan.due_at) AS INTEGER) AS days_late, MIN(CAST(julianday("now") - julianday(loan.due_at) AS INTEGER) * 500, equipment.deposit) AS late_fee FROM loan JOIN equipment ON equipment.id = loan.equipment_id JOIN category ON category.id = equipment.category_id JOIN borrower ON borrower.id = loan.borrower_id WHERE ' . implode(' AND ', $conditions) . ' ORDER BY loan.due_at', $params)->queryAll();
     }
     public function overdueFee($filters = [])
     {

@@ -17,6 +17,10 @@ class ReportController extends Controller
 
     public function actionOverdue()
     {
+        $this->view->params['breadcrumbs'] = [
+            ['label' => 'Áttekintés', 'url' => ['/site/index']],
+            ['label' => 'Késés-riport'],
+        ];
         $service = new EquipmentService();
         $service->initialize();
         $filters = Yii::$app->request->queryParams;
@@ -29,6 +33,7 @@ class ReportController extends Controller
         $service->initialize();
         $rows = $service->overdueLoans(Yii::$app->request->queryParams);
         $stream = fopen('php://temp', 'r+');
+        fwrite($stream, "\xEF\xBB\xBF");
         fputcsv($stream, ['Leltári szám', 'Eszköz', 'Kategória', 'Kölcsönző', 'Email', 'Határidő', 'Késés napjai', 'Késedelmi díj'], ';');
         foreach ($rows as $row) fputcsv($stream, [$row['inventory_no'], $row['equipment_name'], $row['category_name'], $row['full_name'], $row['email'], $row['due_at'], $row['days_late'], $row['late_fee']], ';');
         rewind($stream);

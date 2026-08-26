@@ -62,6 +62,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $this->view->params['breadcrumbs'] = [['label' => 'Áttekintés']];
         $service = new EquipmentService();
         $service->initialize();
         if (Yii::$app->request->isPost) {

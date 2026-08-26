@@ -6,6 +6,22 @@ body { background: #f5f3ed; color: #17231f; font-family: 'DM Sans', sans-serif; 
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #d7d7ce; border-top: 0; background: #fff; } .metrics div { padding: 1.2rem 1.5rem; border-right: 1px solid #d7d7ce; } .metrics div:last-child { border: 0; } .metrics span, .metrics strong { display: block; } .metrics span { color: #718078; font-size: .8rem; } .metrics strong { font: 700 2.1rem 'Space Grotesk'; margin-top: .4rem; } .green { color: #317b57; } .amber { color: #bd741e; } .red { color: #b44d3b; }
 .content-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 3rem; padding-top: 3rem; } .section-heading { display: flex; justify-content: space-between; align-items: end; margin-bottom: 1rem; } .count-pill { color: #668073; font-size: .8rem; } .equipment-list { background: #fff; border-top: 2px solid #17231f; } .equipment-row { display: grid; grid-template-columns: 42px 1fr auto auto; gap: 1rem; align-items: center; padding: 1.1rem 1rem; border-bottom: 1px solid #e5e5dc; } .item-icon { background: #edf2ec; color: #317b57; font: 700 .75rem 'Space Grotesk'; padding: .8rem .4rem; text-align: center; } .item-main strong, .item-main span, .loan-card strong, .loan-card span { display: block; } .item-main span, .loan-card span, .muted { color: #7b8780; font-size: .82rem; margin-top: .25rem; } .status { font-size: .72rem; font-weight: 700; padding: .35rem .55rem; white-space: nowrap; } .status-available { background: #e1f0e4; color: #317b57; } .status-borrowed { background: #fff0d6; color: #a66a20; } .status-maintenance { background: #ecebe6; color: #77766f; } .action-button { background: #e6a23c; border: 0; color: #17231f; font-weight: 700; padding: .55rem .8rem; } .link-button { background: transparent; border: 0; color: #317b57; font-weight: 700; padding: 0; } .loan-card { display: flex; justify-content: space-between; background: #fff; border-bottom: 1px solid #e5e5dc; padding: 1rem; } .loan-card time { color: #668073; font-size: .8rem; } .loan-card time.overdue { color: #b44d3b; font-weight: 700; } .report-note { border-left: 4px solid #e6a23c; margin-top: 2rem; padding: 1rem; background: #fff; } .report-note span { display: block; color: #7b8780; font-size: .8rem; margin-top: .3rem; } .modal-content { border-radius: 0; } .modal h2 { font-size: 1.3rem; } label { display: block; font-size: .85rem; font-weight: 700; margin-bottom: 1rem; } input { display: block; width: 100%; border: 1px solid #ccd4cb; padding: .65rem; margin-top: .35rem; } .date-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; } .selected-equipment { color: #317b57; font: 700 1.1rem 'Space Grotesk'; }
 @media (max-width: 768px) { .inventory-hero { padding: 2.2rem 1.5rem; } .hero-mark { display: none; } .metrics { grid-template-columns: repeat(2, 1fr); } .metrics div:nth-child(2) { border-right: 0; } .content-grid { grid-template-columns: 1fr; gap: 2rem; } .equipment-row { grid-template-columns: 38px 1fr auto; } .row-actions { grid-column: 2 / -1; } }
+.table-wrap table { border-collapse: separate; border-spacing: 0 8px; }
+.table-wrap table { width: 100%; table-layout: fixed; }
+.table-wrap thead th,
+.table-wrap tbody td { box-sizing: border-box; padding: 0.8rem 0.6rem; text-align: left; vertical-align: top; }
+.table-wrap th:nth-child(1), .table-wrap td:nth-child(1) { width: 12%; }
+.table-wrap th:nth-child(2), .table-wrap td:nth-child(2) { width: 18%; }
+.table-wrap th:nth-child(3), .table-wrap td:nth-child(3) { width: 13%; }
+.table-wrap th:nth-child(4), .table-wrap td:nth-child(4) { width: 13%; }
+.table-wrap th:nth-child(5), .table-wrap td:nth-child(5) { width: 18%; }
+.table-wrap th:nth-child(6), .table-wrap td:nth-child(6) { width: 12%; }
+.table-wrap th:nth-child(7), .table-wrap td:nth-child(7) { width: 7%; }
+.table-wrap th:nth-child(8), .table-wrap td:nth-child(8) { width: 7%; }
+.table-wrap tbody tr { background: #fff; }
+.table-wrap tbody td { border-top: 1px solid #e5e5dc; border-bottom: 1px solid #e5e5dc; }
+.table-wrap tbody td:first-child { border-left: 1px solid #e5e5dc; }
+.table-wrap tbody td:last-child { border-right: 1px solid #e5e5dc; }
 main > .container {
     padding: 70px 15px 20px;
 }
