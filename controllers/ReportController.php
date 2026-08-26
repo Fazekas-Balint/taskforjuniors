@@ -24,7 +24,7 @@ class ReportController extends Controller
         $service = new EquipmentService();
         $service->initialize();
         $filters = Yii::$app->request->queryParams;
-        return $this->render('overdue', ['rows' => $service->overdueLoans($filters), 'borrowers' => $service->borrowers(), 'categories' => $service->categories(), 'filters' => $filters, 'totalFee' => $service->overdueFee($filters)]);
+        return $this->render('overdue', ['rows' => $service->overdueLoans($filters), 'lenders' => $service->lenders(), 'categories' => $service->categories(), 'filters' => $filters, 'totalFee' => $service->overdueFee($filters)]);
     }
 
     public function actionExport()

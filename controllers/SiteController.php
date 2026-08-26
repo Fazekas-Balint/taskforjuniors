@@ -65,6 +65,7 @@ class SiteController extends Controller
         $this->view->params['breadcrumbs'] = [['label' => 'Áttekintés']];
         $service = new EquipmentService();
         $service->initialize();
+        $statusFilter = Yii::$app->request->get('status', '');
         if (Yii::$app->request->isPost) {
             if (Yii::$app->user->isGuest || !Yii::$app->user->identity->canEdit()) {
                 throw new \yii\web\ForbiddenHttpException('Ehhez admin jogosultság szükséges.');
@@ -74,12 +75,13 @@ class SiteController extends Controller
             return $this->refresh();
         }
         return $this->render('index', [
-            'equipment' => $service->equipment(),
+            'equipment' => $service->equipment($statusFilter),
             'loans' => $service->activeLoans(),
             'report' => $service->report(),
             'movements' => $service->recentMovements(),
-            'borrowers' => $service->borrowers(),
+            'lenders' => $service->lenders(),
             'canEdit' => !Yii::$app->user->isGuest && Yii::$app->user->identity->canEdit(),
+            'statusFilter' => $statusFilter,
         ]);
     }
 

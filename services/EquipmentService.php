@@ -23,9 +23,15 @@ class EquipmentService
         }
     }
 
-    public function equipment()
+    public function equipment($status = '')
     {
-        return $this->db->createCommand('SELECT equipment.*, category.name AS category_name FROM equipment JOIN category ON category.id = equipment.category_id ORDER BY category.name, equipment.name')->queryAll();
+        $conditions = [];
+        $params = [];
+        if ($status === 'out') { $conditions[] = 'equipment.status = 1'; }
+        if ($status === 'in') { $conditions[] = 'equipment.status = 0'; }
+        if ($status === 'maintenance') { $conditions[] = 'equipment.status = 2'; }
+        $where = $conditions ? ' WHERE ' . implode(' AND ', $conditions) : '';
+        return $this->db->createCommand('SELECT equipment.*, category.name AS category_name FROM equipment JOIN category ON category.id = equipment.category_id' . $where . ' ORDER BY category.name, equipment.name', $params)->queryAll();
     }
 
     public function activeLoans()
@@ -35,10 +41,10 @@ class EquipmentService
 
     public function report()
     {
-        return ['total' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status <> 3')->queryScalar(), 'available' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 0')->queryScalar(), 'borrowed' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL')->queryScalar(), 'overdue' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at < DATE("now")')->queryScalar(), 'dueToday' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at = DATE("now")')->queryScalar()];
+            return ['total' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status <> 3')->queryScalar(), 'available' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 0')->queryScalar(), 'lended' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL')->queryScalar(), 'maintenance' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 2')->queryScalar(), 'overdue' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at < DATE("now")')->queryScalar(), 'dueToday' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at = DATE("now")')->queryScalar()];
     }
 
-    public function borrowers() { return $this->db->createCommand('SELECT id, full_name FROM borrower WHERE is_active = 1 ORDER BY full_name')->queryAll(); }
+    public function lenders() { return $this->db->createCommand('SELECT id, full_name FROM borrower WHERE is_active = 1 ORDER BY full_name')->queryAll(); }
     public function categories() { return $this->db->createCommand('SELECT id, name FROM category ORDER BY name')->queryAll(); }
     public function recentMovements()
     {
@@ -48,7 +54,7 @@ class EquipmentService
     {
         $conditions = ['loan.returned_at IS NULL', 'loan.due_at < DATE("now")'];
         $params = [];
-        if (!empty($filters['borrower_id'])) { $conditions[] = 'loan.borrower_id = :borrower_id'; $params[':borrower_id'] = (int) $filters['borrower_id']; }
+        if (!empty($filters['lender_id'])) { $conditions[] = 'loan.borrower_id = :lender_id'; $params[':lender_id'] = (int) $filters['lender_id']; }
         if (!empty($filters['category_id'])) { $conditions[] = 'equipment.category_id = :category_id'; $params[':category_id'] = (int) $filters['category_id']; }
         if (!empty($filters['from'])) { $conditions[] = 'loan.due_at >= :from_date'; $params[':from_date'] = $filters['from']; }
         if (!empty($filters['to'])) { $conditions[] = 'loan.due_at <= :to_date'; $params[':to_date'] = $filters['to']; }
@@ -79,15 +85,15 @@ class EquipmentService
             return ['success' => true, 'message' => 'Az eszköz szerviz státuszba került.'];
         }
         if ($action === 'lend') {
-            $borrowerId = (int) ($post['borrower_id'] ?? 0);
+            $lenderId = (int) ($post['lender_id'] ?? 0);
             $starts = $post['starts_on'] ?? '';
             $due = $post['due_on'] ?? '';
-            if (!$borrowerId || !$starts || !$due || $starts > $due) return ['success' => false, 'message' => 'Adj meg kölcsönzőt és érvényes időszakot.'];
+            if (!$lenderId || !$starts || !$due || $starts > $due) return ['success' => false, 'message' => 'Adj meg lendert és érvényes időszakot.'];
             $conflict = $this->db->createCommand('SELECT borrower.full_name, loan.loaned_at, loan.due_at FROM loan JOIN borrower ON borrower.id = loan.borrower_id WHERE loan.equipment_id = :id AND loan.returned_at IS NULL AND loan.loaned_at <= :due AND loan.due_at >= :starts', [':id' => $equipmentId, ':starts' => $starts, ':due' => $due])->queryOne();
             if ($conflict) return ['success' => false, 'message' => 'Ütközés: már ' . $conflict['full_name'] . ' használja ' . $conflict['loaned_at'] . ' és ' . $conflict['due_at'] . ' között.'];
             if ((int) $equipment['status'] !== 0) return ['success' => false, 'message' => 'Az eszköz jelenleg nem elérhető.'];
-            $this->db->transaction(function () use ($equipmentId, $borrowerId, $starts, $due) {
-                $this->db->createCommand()->insert('loan', ['equipment_id' => $equipmentId, 'borrower_id' => $borrowerId, 'loaned_at' => $starts, 'due_at' => $due])->execute();
+            $this->db->transaction(function () use ($equipmentId, $lenderId, $starts, $due) {
+                $this->db->createCommand()->insert('loan', ['equipment_id' => $equipmentId, 'borrower_id' => $lenderId, 'loaned_at' => $starts, 'due_at' => $due, 'created_at' => date('Y-m-d H:i:s')])->execute();
                 $this->db->createCommand()->update('equipment', ['status' => 1], 'id = :id', [':id' => $equipmentId])->execute();
             });
             return ['success' => true, 'message' => 'Kölcsönzés rögzítve.'];
