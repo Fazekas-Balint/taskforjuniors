@@ -25,6 +25,13 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
             'authKey' => 'test101key',
             'accessToken' => '101-token',
         ],
+        '102' => [
+            'id' => '102',
+            'username' => 'kollega',
+            'password' => 'kollega',
+            'authKey' => 'test102key',
+            'accessToken' => '102-token',
+        ],
     ];
 
 
@@ -100,5 +107,10 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === $password;
+    }
+
+    public function canEdit()
+    {
+        return $this->username === 'admin';
     }
 }

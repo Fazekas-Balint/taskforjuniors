@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\services\EquipmentService;
 
 class SiteController extends Controller
 {
@@ -61,7 +62,24 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $service = new EquipmentService();
+        $service->initialize();
+        if (Yii::$app->request->isPost) {
+            if (Yii::$app->user->isGuest || !Yii::$app->user->identity->canEdit()) {
+                throw new \yii\web\ForbiddenHttpException('Ehhez admin jogosultság szükséges.');
+            }
+            $result = $service->handleAction(Yii::$app->request->post());
+            Yii::$app->session->setFlash($result['success'] ? 'success' : 'error', $result['message']);
+            return $this->refresh();
+        }
+        return $this->render('index', [
+            'equipment' => $service->equipment(),
+            'loans' => $service->activeLoans(),
+            'report' => $service->report(),
+            'movements' => $service->recentMovements(),
+            'borrowers' => $service->borrowers(),
+            'canEdit' => !Yii::$app->user->isGuest && Yii::$app->user->identity->canEdit(),
+        ]);
     }
 
     /**
