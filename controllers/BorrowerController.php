@@ -6,11 +6,17 @@ use app\models\Borrower;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\IntegrityException;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class BorrowerController extends Controller
 {
+    public function behaviors()
+    {
+        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
+    }
+
     public function actionIndex()
     {
         return $this->render('index', ['dataProvider' => new ActiveDataProvider([

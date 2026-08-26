@@ -62,6 +62,11 @@ class Equipment extends ActiveRecord
         return isset($labels[$this->status]) ? $labels[$this->status] : 'Ismeretlen';
     }
 
+    public function isAvailable()
+    {
+        return (int) $this->status === self::STATUS_AVAILABLE;
+    }
+
     public function getCategory()
     {
         return $this->hasOne(Category::class, ['id' => 'category_id']);

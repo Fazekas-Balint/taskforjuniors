@@ -7,11 +7,26 @@ use app\models\Equipment;
 use app\models\Loan;
 use app\models\LoanForm;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class LoanController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    ['allow' => true, 'roles' => ['@'], 'matchCallback' => function () {
+                        return Yii::$app->user->identity->canEdit();
+                    }],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         return $this->actionCreate();
@@ -19,17 +34,15 @@ class LoanController extends Controller
 
     public function actionCreate()
     {
-        $model = new LoanForm(['loaned_at' => date('Y-m-d'), 'due_at' => date('Y-m-d', strtotime('+7 days'))]);
+        $model = new LoanForm(['equipment_id' => Yii::$app->request->get('equipment_id'), 'loaned_at' => date('Y-m-d'), 'due_at' => date('Y-m-d', strtotime('+7 days'))]);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 $equipment = Equipment::find()
                     ->where(['id' => $model->equipment_id])
-                    ->forUpdate()
                     ->one();
                 $borrower = Borrower::find()
                     ->where(['id' => $model->borrower_id])
-                    ->forUpdate()
                     ->one();
                 if (!$equipment || $equipment->status !== Equipment::STATUS_AVAILABLE ||
                     !$borrower || !$borrower->is_active ||
@@ -38,13 +51,13 @@ class LoanController extends Controller
                         ->count() >= Loan::MAX_OPEN_LOANS_PER_BORROWER ||
                     Loan::find()
                         ->where(['equipment_id' => $model->equipment_id, 'returned_at' => null])
-                        ->forUpdate()
                         ->exists()) {
                     throw new \DomainException('Az eszköz vagy a kölcsönvevő állapota közben megváltozott.');
                 }
 
                 $loan = new Loan();
                 $loan->setAttributes($model->attributes);
+                $loan->created_at = date('Y-m-d H:i:s');
                 if (!$loan->save()) {
                     throw new \DomainException(implode(' ', $loan->getFirstErrors()));
                 }
@@ -77,7 +90,6 @@ class LoanController extends Controller
         try {
             $loan = Loan::find()
                 ->where(['id' => $id])
-                ->forUpdate()
                 ->one();
             if (!$loan || !$loan->isOpen()) {
                 throw new \DomainException('A kölcsönzés már le van zárva vagy nem található.');
@@ -85,7 +97,6 @@ class LoanController extends Controller
 
             $equipment = Equipment::find()
                 ->where(['id' => $loan->equipment_id])
-                ->forUpdate()
                 ->one();
             if (!$equipment) {
                 throw new \DomainException('A kölcsönzéshez tartozó eszköz nem található.');
@@ -105,7 +116,7 @@ class LoanController extends Controller
             $transaction->rollBack();
             Yii::$app->session->setFlash('error', $e->getMessage());
         }
-        return $this->redirect(['index']);
+        return $this->redirect(['/site/index']);
     }
 
     protected function findModel($id)

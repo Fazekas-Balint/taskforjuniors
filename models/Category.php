@@ -3,7 +3,6 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use Yii;
 
 class Category extends ActiveRecord
 {
@@ -22,9 +21,6 @@ class Category extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
@@ -35,14 +31,8 @@ class Category extends ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Equipments]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getEquipments()
     {
         return $this->hasMany(Equipment::class, ['category_id' => 'id']);
     }
-
 }
