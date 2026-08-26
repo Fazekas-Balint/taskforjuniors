@@ -1,0 +1,102 @@
+<?php
+
+namespace app\services;
+
+use Yii;
+
+class EquipmentService
+{
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = Yii::$app->db;
+    }
+
+    public function initialize()
+    {
+        $this->db->createCommand('PRAGMA foreign_keys = ON')->execute();
+        if (!$this->db->getSchema()->getTableSchema('category', true)) {
+            foreach (['m250101_000001_create_category_table', 'm250101_000002_create_equipment_table', 'm250101_000003_create_borrower_table', 'm250101_000004_create_loan_table', 'm250101_000005_seed_demo_data'] as $name) {
+                (new $name())->up();
+            }
+        }
+    }
+
+    public function equipment()
+    {
+        return $this->db->createCommand('SELECT equipment.*, category.name AS category_name FROM equipment JOIN category ON category.id = equipment.category_id ORDER BY category.name, equipment.name')->queryAll();
+    }
+
+    public function activeLoans()
+    {
+        return $this->db->createCommand('SELECT loan.*, equipment.name AS equipment_name, equipment.inventory_no, borrower.full_name, borrower.email FROM loan JOIN equipment ON equipment.id = loan.equipment_id JOIN borrower ON borrower.id = loan.borrower_id WHERE loan.returned_at IS NULL ORDER BY loan.due_at')->queryAll();
+    }
+
+    public function report()
+    {
+        return ['total' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status <> 3')->queryScalar(), 'available' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 0')->queryScalar(), 'borrowed' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL')->queryScalar(), 'maintenance' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 2')->queryScalar(), 'overdue' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at < DATE("now")')->queryScalar()];
+    }
+
+    public function borrowers() { return $this->db->createCommand('SELECT id, full_name FROM borrower WHERE is_active = 1 ORDER BY full_name')->queryAll(); }
+    public function categories() { return $this->db->createCommand('SELECT id, name FROM category ORDER BY name')->queryAll(); }
+    public function recentMovements()
+    {
+        return $this->db->createCommand('SELECT loan.created_at, loan.loaned_at, loan.returned_at, equipment.name AS equipment_name, borrower.full_name FROM loan JOIN equipment ON equipment.id = loan.equipment_id JOIN borrower ON borrower.id = loan.borrower_id ORDER BY loan.created_at DESC LIMIT 5')->queryAll();
+    }
+    public function overdueLoans($filters = [])
+    {
+        $conditions = ['loan.returned_at IS NULL', 'loan.due_at < DATE("now")'];
+        $params = [];
+        if (!empty($filters['borrower_id'])) { $conditions[] = 'loan.borrower_id = :borrower_id'; $params[':borrower_id'] = (int) $filters['borrower_id']; }
+        if (!empty($filters['category_id'])) { $conditions[] = 'equipment.category_id = :category_id'; $params[':category_id'] = (int) $filters['category_id']; }
+        if (!empty($filters['from'])) { $conditions[] = 'loan.due_at >= :from_date'; $params[':from_date'] = $filters['from']; }
+        if (!empty($filters['to'])) { $conditions[] = 'loan.due_at <= :to_date'; $params[':to_date'] = $filters['to']; }
+        return $this->db->createCommand('SELECT loan.*, equipment.name AS equipment_name, equipment.inventory_no, category.name AS category_name, borrower.full_name, borrower.email, CAST(julianday("now") - julianday(loan.due_at) AS INTEGER) AS days_late, CAST(julianday("now") - julianday(loan.due_at) AS INTEGER) * 100 AS late_fee FROM loan JOIN equipment ON equipment.id = loan.equipment_id JOIN category ON category.id = equipment.category_id JOIN borrower ON borrower.id = loan.borrower_id WHERE ' . implode(' AND ', $conditions) . ' ORDER BY loan.due_at', $params)->queryAll();
+    }
+    public function overdueFee($filters = [])
+    {
+        $rows = $this->overdueLoans($filters);
+        return array_sum(array_column($rows, 'late_fee'));
+    }
+
+    public function handleAction($post)
+    {
+        $action = $post['action'] ?? '';
+        $equipmentId = (int) ($post['equipment_id'] ?? 0);
+        $equipment = $this->db->createCommand('SELECT * FROM equipment WHERE id = :id', [':id' => $equipmentId])->queryOne();
+        if (!$equipment) return ['success' => false, 'message' => 'Az eszköz nem található.'];
+        if ($action === 'return') {
+            $this->db->transaction(function () use ($equipmentId) {
+                $this->db->createCommand('UPDATE loan SET returned_at = DATE("now") WHERE equipment_id = :id AND returned_at IS NULL', [':id' => $equipmentId])->execute();
+                $this->db->createCommand()->update('equipment', ['status' => 0], 'id = :id', [':id' => $equipmentId])->execute();
+            });
+            return ['success' => true, 'message' => 'Az eszköz visszavétele rögzítve.'];
+        }
+        if ($action === 'maintenance') {
+            if ($this->isOut($equipmentId)) return ['success' => false, 'message' => 'Kölcsönzés alatt álló eszköz nem küldhető szervizbe.'];
+            $this->db->createCommand()->update('equipment', ['status' => 2], 'id = :id', [':id' => $equipmentId])->execute();
+            return ['success' => true, 'message' => 'Az eszköz szerviz státuszba került.'];
+        }
+        if ($action === 'lend') {
+            $borrowerId = (int) ($post['borrower_id'] ?? 0);
+            $starts = $post['starts_on'] ?? '';
+            $due = $post['due_on'] ?? '';
+            if (!$borrowerId || !$starts || !$due || $starts > $due) return ['success' => false, 'message' => 'Adj meg kölcsönzőt és érvényes időszakot.'];
+            $conflict = $this->db->createCommand('SELECT borrower.full_name, loan.loaned_at, loan.due_at FROM loan JOIN borrower ON borrower.id = loan.borrower_id WHERE loan.equipment_id = :id AND loan.returned_at IS NULL AND loan.loaned_at <= :due AND loan.due_at >= :starts', [':id' => $equipmentId, ':starts' => $starts, ':due' => $due])->queryOne();
+            if ($conflict) return ['success' => false, 'message' => 'Ütközés: már ' . $conflict['full_name'] . ' használja ' . $conflict['loaned_at'] . ' és ' . $conflict['due_at'] . ' között.'];
+            if ((int) $equipment['status'] !== 0) return ['success' => false, 'message' => 'Az eszköz jelenleg nem elérhető.'];
+            $this->db->transaction(function () use ($equipmentId, $borrowerId, $starts, $due) {
+                $this->db->createCommand()->insert('loan', ['equipment_id' => $equipmentId, 'borrower_id' => $borrowerId, 'loaned_at' => $starts, 'due_at' => $due])->execute();
+                $this->db->createCommand()->update('equipment', ['status' => 1], 'id = :id', [':id' => $equipmentId])->execute();
+            });
+            return ['success' => true, 'message' => 'Kölcsönzés rögzítve.'];
+        }
+        return ['success' => false, 'message' => 'Ismeretlen művelet.'];
+    }
+
+    private function isOut($equipmentId)
+    {
+        return (bool) $this->db->createCommand('SELECT 1 FROM loan WHERE equipment_id = :id AND returned_at IS NULL', [':id' => $equipmentId])->queryScalar();
+    }
+}
