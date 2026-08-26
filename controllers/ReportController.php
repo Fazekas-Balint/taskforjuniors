@@ -2,50 +2,41 @@
 
 namespace app\controllers;
 
-use app\models\Loan;
 use Yii;
+use app\services\EquipmentService;
+use yii\filters\AccessControl;
+use yii\web\Controller;
+use yii\web\Response;
 
-class ReportController extends \yii\web\Controller
+class ReportController extends Controller
 {
-    public function actionOverdue()
+    public function behaviors()
     {
-        $loans = Loan::find()
-            ->where(['returned_at' => null])
-            ->andWhere(['<', 'due_at', date('Y-m-d')])
-            ->with(['equipment', 'borrower'])
-            ->orderBy(['due_at' => SORT_ASC])
-            ->all();
-        return $this->render('overdue', ['loans' => $loans]);
+        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@']]]]];
     }
 
-    public function actionOverdueCsv()
+    public function actionOverdue()
     {
-        $loans = Loan::find()
-            ->where(['returned_at' => null])
-            ->andWhere(['<', 'due_at', date('Y-m-d')])
-            ->with(['equipment', 'borrower'])
-            ->orderBy(['due_at' => SORT_ASC])
-            ->all();
-        $rows = [["Leltári szám", "Eszköz", "Kölcsönvevő", "Határidő", "Késés (nap)", "Késedelmi díj (Ft)"]];
-        foreach ($loans as $loan) {
-            $rows[] = [
-                $loan->equipment ? $loan->equipment->inventory_no : '',
-                $loan->equipment ? $loan->equipment->name : '',
-                $loan->borrower ? $loan->borrower->full_name : '',
-                $loan->due_at,
-                $loan->getOverdueDays(),
-                $loan->getLateFee(),
-            ];
-        }
-        $content = "\xEF\xBB\xBF";
-        foreach ($rows as $row) {
-            $content .= implode(';', array_map(function ($value) {
-                return '"' . str_replace('"', '""', (string) $value) . '"';
-            }, $row)) . "\r\n";
-        }
-        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
-        Yii::$app->response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
-        Yii::$app->response->headers->set('Content-Disposition', 'attachment; filename="kesedelmek.csv"');
-        return $content;
+        $this->view->params['breadcrumbs'] = [
+            ['label' => 'Áttekintés', 'url' => ['/site/index']],
+            ['label' => 'Késés-riport'],
+        ];
+        $service = new EquipmentService();
+        $service->initialize();
+        $filters = Yii::$app->request->queryParams;
+        return $this->render('overdue', ['rows' => $service->overdueLoans($filters), 'lenders' => $service->lenders(), 'categories' => $service->categories(), 'filters' => $filters, 'totalFee' => $service->overdueFee($filters)]);
+    }
+
+    public function actionExport()
+    {
+        $service = new EquipmentService();
+        $service->initialize();
+        $rows = $service->overdueLoans(Yii::$app->request->queryParams);
+        $stream = fopen('php://temp', 'r+');
+        fwrite($stream, "\xEF\xBB\xBF");
+        fputcsv($stream, ['Leltári szám', 'Eszköz', 'Kategória', 'Kölcsönző', 'Email', 'Határidő', 'Késés napjai', 'Késedelmi díj'], ';');
+        foreach ($rows as $row) fputcsv($stream, [$row['inventory_no'], $row['equipment_name'], $row['category_name'], $row['full_name'], $row['email'], $row['due_at'], $row['days_late'], $row['late_fee']], ';');
+        rewind($stream);
+        return Yii::$app->response->sendContentAsFile(stream_get_contents($stream), 'kesesi-riport-' . date('Y-m-d') . '.csv', ['mimeType' => 'text/csv; charset=UTF-8']);
     }
 }

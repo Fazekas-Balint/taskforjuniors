@@ -5,6 +5,9 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Eszköztár',
+    'language' => 'hu-HU',
+    'timeZone' => 'Europe/Budapest',
     'basePath' => dirname(__DIR__),
     'defaultRoute' => 'loan/create',
     'bootstrap' => ['log'],
@@ -13,6 +16,13 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'locale' => 'hu-HU',
+            'defaultTimeZone' => 'Europe/Budapest',
+            'dateFormat' => 'php:Y. m. d.',
+            'datetimeFormat' => 'php:Y. m. d. H:i',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'mKEiftTUijaBwmfIcczQOyBMfDAG9-K-',
