@@ -13,7 +13,7 @@ class m260826_083000_create_borrower_table extends Migration
         $this->createTable('{{%borrower}}', [
             'id' => $this->primaryKey(),
             'full_name' => $this->string(255)->notNull(),
-            'email' => $this->string(255)->notNull(),
+            'email' => $this->string(100)->notNull(),
             'phone' => $this->string(50),
             'is_active' => $this->boolean()->notNull()->defaultValue(true),
         ]);
