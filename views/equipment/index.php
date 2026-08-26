@@ -1,35 +1,62 @@
 <?php
 
+use app\models\Category;
 use app\models\Equipment;
-use yii\bootstrap5\ActiveForm;
-use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
+
+/** @var yii\web\View $this */
+/** @var app\models\EquipmentSearch $searchModel */
+/** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Eszközök';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="equipment-index">
-    <div class="page-header">
-        <h1><?= Html::encode($this->title) ?></h1>
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <p>
         <?= Html::a('Új eszköz', ['create'], ['class' => 'btn btn-success']) ?>
-    </div>
-    <?php $form = ActiveForm::begin(['method' => 'get', 'action' => ['index'], 'options' => ['class' => 'row g-2 mb-3 filter-form']]); ?>
-    <div class="col-md-4"><?= Html::textInput('q', Yii::$app->request->get('q'), ['class' => 'form-control', 'placeholder' => 'Keresés leltári szám vagy név alapján']) ?></div>
-    <div class="col-md-3"><?= Html::dropDownList('category_id', Yii::$app->request->get('category_id'), ArrayHelper::map($categories, 'id', 'name'), ['class' => 'form-select', 'prompt' => 'Minden kategória']) ?></div>
-    <div class="col-md-3"><?= Html::dropDownList('status', Yii::$app->request->get('status'), Equipment::statusLabels(), ['class' => 'form-select', 'prompt' => 'Minden státusz']) ?></div>
-    <div class="col-md-2"><?= Html::submitButton('Szűrés', ['class' => 'btn btn-outline-primary']) ?> <?= Html::a('Törlés', ['index'], ['class' => 'btn btn-outline-secondary']) ?></div>
-    <?php ActiveForm::end(); ?>
-    <div class="table-responsive">
+    </p>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'emptyText' => 'Nincs a szűrésnek megfelelő eszköz.',
         'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
             'inventory_no',
             'name',
-            ['attribute' => 'category_id', 'value' => function ($model) { return $model->category ? $model->category->name : ''; }],
-            ['attribute' => 'status', 'value' => function ($model) { return $model->statusLabel; }],
-            'deposit',
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
+            [
+                'attribute' => 'category_id',
+                'value' => 'category.name',
+                'filter' => ArrayHelper::map(
+                    Category::find()->orderBy('name')->all(),
+                    'id',
+                    'name'
+                ),
+            ],
+            [
+                'attribute' => 'status',
+                'value' => 'statusLabel',
+                'filter' => Equipment::statusLabels(),
+            ],
+            [
+                'attribute' => 'deposit',
+                'format' => ['decimal', 0],
+            ],
+            [
+                'class' => ActionColumn::className(),
+                'urlCreator' => function ($action, Equipment $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                },
+            ],
         ],
-    ]) ?>
-    </div>
+    ]); ?>
+
 </div>
