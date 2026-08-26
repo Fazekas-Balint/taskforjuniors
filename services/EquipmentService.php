@@ -15,21 +15,18 @@ class EquipmentService
 
     public function initialize()
     {
-        $this->db->createCommand('PRAGMA foreign_keys = ON')->execute();
-        if (!$this->db->getSchema()->getTableSchema('category', true)) {
-            foreach (['m250101_000001_create_category_table', 'm250101_000002_create_equipment_table', 'm250101_000003_create_borrower_table', 'm250101_000004_create_loan_table', 'm250101_000005_seed_demo_data'] as $name) {
-                (new $name())->up();
-            }
-        }
+        // A séma a yii migrate migrációkból jön létre (MySQL), itt nincs teendő.
     }
 
-    public function equipment($status = '')
+    public function equipment($status = '', $lenderId = '', $categoryId = '')
     {
         $conditions = [];
         $params = [];
         if ($status === 'out') { $conditions[] = 'equipment.status = 1'; }
         if ($status === 'in') { $conditions[] = 'equipment.status = 0'; }
         if ($status === 'maintenance') { $conditions[] = 'equipment.status = 2'; }
+        if (!empty($categoryId)) { $conditions[] = 'equipment.category_id = :category_id'; $params[':category_id'] = (int) $categoryId; }
+        if (!empty($lenderId)) { $conditions[] = 'EXISTS (SELECT 1 FROM loan WHERE loan.equipment_id = equipment.id AND loan.returned_at IS NULL AND loan.borrower_id = :lender_id)'; $params[':lender_id'] = (int) $lenderId; }
         $where = $conditions ? ' WHERE ' . implode(' AND ', $conditions) : '';
         return $this->db->createCommand('SELECT equipment.*, category.name AS category_name FROM equipment JOIN category ON category.id = equipment.category_id' . $where . ' ORDER BY category.name, equipment.name', $params)->queryAll();
     }
@@ -41,7 +38,7 @@ class EquipmentService
 
     public function report()
     {
-            return ['total' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status <> 3')->queryScalar(), 'available' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 0')->queryScalar(), 'lended' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL')->queryScalar(), 'maintenance' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 2')->queryScalar(), 'overdue' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at < DATE("now")')->queryScalar(), 'dueToday' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at = DATE("now")')->queryScalar()];
+            return ['total' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status <> 3')->queryScalar(), 'available' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 0')->queryScalar(), 'lended' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL')->queryScalar(), 'maintenance' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 2')->queryScalar(), 'overdue' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at < CURDATE()')->queryScalar(), 'dueToday' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at = CURDATE()')->queryScalar()];
     }
 
     public function lenders() { return $this->db->createCommand('SELECT id, full_name FROM borrower WHERE is_active = 1 ORDER BY full_name')->queryAll(); }
@@ -52,13 +49,13 @@ class EquipmentService
     }
     public function overdueLoans($filters = [])
     {
-        $conditions = ['loan.returned_at IS NULL', 'loan.due_at < DATE("now")'];
+        $conditions = ['loan.returned_at IS NULL', 'loan.due_at < CURDATE()'];
         $params = [];
         if (!empty($filters['lender_id'])) { $conditions[] = 'loan.borrower_id = :lender_id'; $params[':lender_id'] = (int) $filters['lender_id']; }
         if (!empty($filters['category_id'])) { $conditions[] = 'equipment.category_id = :category_id'; $params[':category_id'] = (int) $filters['category_id']; }
         if (!empty($filters['from'])) { $conditions[] = 'loan.due_at >= :from_date'; $params[':from_date'] = $filters['from']; }
         if (!empty($filters['to'])) { $conditions[] = 'loan.due_at <= :to_date'; $params[':to_date'] = $filters['to']; }
-        return $this->db->createCommand('SELECT loan.*, equipment.name AS equipment_name, equipment.inventory_no, equipment.deposit, category.name AS category_name, borrower.full_name, borrower.email, CAST(julianday("now") - julianday(loan.due_at) AS INTEGER) AS days_late, MIN(CAST(julianday("now") - julianday(loan.due_at) AS INTEGER) * 500, equipment.deposit) AS late_fee FROM loan JOIN equipment ON equipment.id = loan.equipment_id JOIN category ON category.id = equipment.category_id JOIN borrower ON borrower.id = loan.borrower_id WHERE ' . implode(' AND ', $conditions) . ' ORDER BY loan.due_at', $params)->queryAll();
+        return $this->db->createCommand('SELECT loan.*, equipment.name AS equipment_name, equipment.inventory_no, equipment.deposit, category.name AS category_name, borrower.full_name, borrower.email, DATEDIFF(CURDATE(), loan.due_at) AS days_late, LEAST(DATEDIFF(CURDATE(), loan.due_at) * 500, equipment.deposit) AS late_fee FROM loan JOIN equipment ON equipment.id = loan.equipment_id JOIN category ON category.id = equipment.category_id JOIN borrower ON borrower.id = loan.borrower_id WHERE ' . implode(' AND ', $conditions) . ' ORDER BY loan.due_at', $params)->queryAll();
     }
     public function overdueFee($filters = [])
     {
@@ -74,7 +71,7 @@ class EquipmentService
         if (!$equipment) return ['success' => false, 'message' => 'Az eszköz nem található.'];
         if ($action === 'return') {
             $this->db->transaction(function () use ($equipmentId) {
-                $this->db->createCommand('UPDATE loan SET returned_at = DATE("now") WHERE equipment_id = :id AND returned_at IS NULL', [':id' => $equipmentId])->execute();
+                $this->db->createCommand('UPDATE loan SET returned_at = CURDATE() WHERE equipment_id = :id AND returned_at IS NULL', [':id' => $equipmentId])->execute();
                 $this->db->createCommand()->update('equipment', ['status' => 0], 'id = :id', [':id' => $equipmentId])->execute();
             });
             return ['success' => true, 'message' => 'Az eszköz visszavétele rögzítve.'];
