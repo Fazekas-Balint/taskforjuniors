@@ -21,6 +21,7 @@ use yii\db\Expression;
  * @property string|null $updated_at
  *
  * @property Category $category
+ * @property Loan[] $loans
  */
 class Equipment extends \yii\db\ActiveRecord
 {
@@ -147,6 +148,16 @@ class Equipment extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Loans]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLoans()
+    {
+        return $this->hasMany(Loan::class, ['equipment_id' => 'id']);
+    }
+
+    /**
      * The status label of this particular item.
      *
      * @return string
@@ -166,5 +177,30 @@ class Equipment extends \yii\db\ActiveRecord
         return $this->status === self::STATUS_AVAILABLE;
     }
 
+    /**
+     * Equipment that has ever been loaned is scrapped instead of deleted (BR-8).
+     *
+     * {@inheritdoc}
+     */
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
 
+        if ($this->getLoans()->exists()) {
+            $this->status = self::STATUS_SCRAPPED;
+            $this->save(false, ['status', 'updated_at']);
+
+            Yii::$app->session->setFlash(
+                'warning',
+                'Az eszközt korábban már kölcsönözték, ezért nem törölhető — selejt státuszba került.'
+            );
+
+            return false;
+        }
+
+        return true;
+    }
 }
+
