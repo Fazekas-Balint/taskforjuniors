@@ -9,6 +9,7 @@ $config = [
     'language' => 'hu-HU',
     'timeZone' => 'Europe/Budapest',
     'basePath' => dirname(__DIR__),
+    'defaultRoute' => 'loan/create',
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -52,14 +53,15 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'loan' => 'loan/create',
+                'extend' => 'extend/index',
+                'pending' => 'pending/index',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
