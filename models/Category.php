@@ -2,41 +2,23 @@
 
 namespace app\models;
 
+use yii\db\ActiveRecord;
 use Yii;
 
-/**
- * This is the model class for table "category".
- *
- * @property int $id
- * @property string $name
- * @property string $slug
- * @property string $created_at
- *
- * @property Equipment[] $equipments
- */
-class Category extends \yii\db\ActiveRecord
+class Category extends ActiveRecord
 {
-
-
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
-        return 'category';
+        return '{{%category}}';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
-            [['name', 'slug', 'created_at'], 'required'],
-            [['created_at'], 'safe'],
-            [['name'], 'string', 'max' => 100],
-            [['slug'], 'string', 'max' => 120],
-            [['slug'], 'unique'],
+            [['name', 'slug'], 'required'],
+            [['name', 'slug'], 'string', 'max' => 255],
+            ['slug', 'match', 'pattern' => '/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'message' => 'A slug csak kisbetűket, számokat és kötőjeleket tartalmazhat.'],
+            ['slug', 'unique'],
         ];
     }
 
@@ -46,10 +28,10 @@ class Category extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
+            'id' => 'Azonosító',
+            'name' => 'Kategória neve',
             'slug' => 'Slug',
-            'created_at' => 'Created At',
+            'created_at' => 'Létrehozva',
         ];
     }
 

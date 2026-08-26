@@ -1,0 +1,74 @@
+<?php
+
+namespace app\controllers;
+
+use app\models\Category;
+use Yii;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+
+class CategoryController extends Controller
+{
+    public function actionIndex()
+    {
+        return $this->render('index', ['dataProvider' => new \yii\data\ActiveDataProvider([
+            'query' => Category::find()->orderBy(['name' => SORT_ASC]),
+        ])]);
+    }
+
+    public function actionCreate()
+    {
+        $model = new Category();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'A kategória létrejött.');
+            return $this->redirect(['index']);
+        }
+        return $this->render('create', ['model' => $model]);
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'A kategória módosítva.');
+            return $this->redirect(['index']);
+        }
+        return $this->render('update', ['model' => $model]);
+    }
+
+    public function actionDelete($id)
+    {
+        if (Yii::$app->request->isPost) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $model = Category::find()
+                    ->where(['id' => $id])
+                    ->forUpdate()
+                    ->one();
+                if (!$model) {
+                    throw new NotFoundHttpException('A kategória nem található.');
+                }
+                if ($model->getEquipments()->exists()) {
+                    throw new \DomainException('A kategória nem törölhető, mert eszköz tartozik hozzá.');
+                }
+                if ($model->delete() === false) {
+                    throw new \DomainException('A kategória törlése sikertelen.');
+                }
+                $transaction->commit();
+                Yii::$app->session->setFlash('success', 'A kategória törölve.');
+            } catch (\Throwable $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
+        return $this->redirect(['index']);
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = Category::findOne($id)) !== null) {
+            return $model;
+        }
+        throw new NotFoundHttpException('A kategória nem található.');
+    }
+}
