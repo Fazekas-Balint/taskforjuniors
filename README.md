@@ -1,233 +1,207 @@
-<p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
-    </a>
-    <h1 align="center">Yii 2 Basic Project Template</h1>
-    <br>
-</p>
+# Kölcsönpont — belső eszközkölcsönző
 
-Yii 2 Basic Project Template is a skeleton [Yii 2](https://www.yiiframework.com/) application best for
-rapidly creating small projects.
+**Csapatfeladat · PHP · Yii2 basic · MySQL · 3 fejlesztő · 1 munkanap**
 
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
+A cég laptopokat, projektorokat, kamerákat és szerszámokat ad kölcsön a kollégáknak.
+Ma ez egy Excelben él, amiben senki nem találja, hogy a 3-as projektor kinél van.
+A feladat: egy működő, demózható Yii2 alkalmazás, ami erre választ ad.
+Nem TODO-lista — valódi állapotgép, valódi ütközések, valódi riport.
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-basic.svg)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-basic.svg)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![build](https://github.com/yiisoft/yii2-app-basic/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-app-basic/actions?query=workflow%3Abuild)
+| | |
+|---|---|
+| Csapat | 3 fejlesztő |
+| Időkeret | 1 munkanap |
+| Migrációk | 5 db, adott sorrendben |
+| Kimenet | Demó + hibátlanul lefutó `migrate` |
 
-DIRECTORY STRUCTURE
--------------------
+---
 
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
+## 1. Mit tud a kész alkalmazás
 
+- Az irodavezető felveszi az eszközöket leltári számmal, kategóriával, státusszal.
+- Kiad egy eszközt egy kollégának határidővel — a rendszer nem engedi kiadni azt, ami már kint van vagy karbantartás alatt áll.
+- Visszavételkor egy kattintás: a kölcsönzés lezárul, az eszköz azonnal újra foglalható.
+- A kollégák egy szűrhető katalógusban látják, mi elérhető most.
+- A nyitóoldal megmutatja, hány eszköz van kint, mennyi a késésben, mit várunk vissza ma.
+- A késés-riport listázza a lejárt kölcsönzéseket napokkal és díjjal, és CSV-be exportálható.
 
+---
 
-REQUIREMENTS
-------------
-
-The minimum requirement by this project template that your Web server supports PHP 7.4.
-
-
-INSTALLATION
-------------
-
-### Install via Composer
-
-If you do not have [Composer](https://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](https://getcomposer.org/doc/00-intro.md#installation-nix).
-
-You can then install this project template using the following command:
-
-~~~
-composer create-project --prefer-dist yiisoft/yii2-app-basic basic
-~~~
-
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
-
-~~~
-http://localhost/basic/web/
-~~~
-
-### Install from an Archive File
-
-Extract the archive file downloaded from [yiiframework.com](https://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
-
-Set cookie validation key in `config/web.php` file to some random secret string:
-
-```php
-'request' => [
-    // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-    'cookieValidationKey' => '<secret random string goes here>',
-],
-```
-
-You can then access the application through the following URL:
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-### Install with Docker
-
-Update your vendor packages
-
-    docker-compose run --rm php composer update --prefer-dist
-    
-Run the installation triggers (creating cookie validation code)
-
-    docker-compose run --rm php composer install    
-    
-Start the container
-
-    docker-compose up -d
-    
-You can then access the application through the following URL:
-
-    http://127.0.0.1:8000
-
-**NOTES:** 
-- Minimum required Docker engine version `17.04` for development (see [Performance tuning for volume mounts](https://docs.docker.com/docker-for-mac/osxfs-caching/))
-- The default configuration uses a host-volume in your home directory `.docker-composer` for composer caches
-
-
-CONFIGURATION
--------------
-
-### Database
-
-Edit the file `config/db.php` with real data, for example:
-
-```php
-return [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '1234',
-    'charset' => 'utf8',
-];
-```
-
-**NOTES:**
-- Yii won't create the database for you, this has to be done manually before you can access it.
-- Check and edit the other files in the `config/` directory to customize your application as required.
-- Refer to the README in the `tests` directory for information specific to basic application tests.
-
-
-TESTING
--------
-
-Tests are located in `tests` directory. They are developed with [Codeception PHP Testing Framework](https://codeception.com/).
-By default, there are 3 test suites:
-
-- `unit`
-- `functional`
-- `acceptance`
-
-Tests can be executed by running
+## 2. Adatmodell — a séma, amit 09:45-kor befagyasztotok
 
 ```
-vendor/bin/codecept run
+category   id · name · slug (UNIQUE) · created_at
+
+equipment  id · category_id → category.id · inventory_no (UNIQUE, pl. "LP-0007")
+           name · description · status (SMALLINT: 0 elérhető, 1 kiadva,
+           2 karbantartás, 3 selejt) · purchased_at (DATE) · deposit (INT)
+           created_at · updated_at            INDEX (category_id, status)
+
+borrower   id · full_name · email (UNIQUE) · phone · is_active (BOOL)
+
+loan       id · equipment_id → equipment.id · borrower_id → borrower.id
+           loaned_at (DATE) · due_at (DATE) · returned_at (DATE, NULL)
+           note · created_at                  INDEX (equipment_id, returned_at)
 ```
 
-The command above will execute unit and functional tests. Unit tests are testing the system components, while functional
-tests are for testing user interaction. Acceptance tests are disabled by default as they require additional setup since
-they perform testing in real browser. 
+**Kulcsszabály:** a „ki van kint most” kérdésre a `loan.returned_at IS NULL` a válasz —
+az `equipment.status` ennek csak a gyorsított tükre. A kettő soha nem mondhat mást,
+ezért megy minden állapotváltás tranzakcióban.
 
+### Migrációk sorrendje és gazdája
 
-### Running  acceptance tests
+| # | Migráció | Gazda | Amit tartalmaz |
+|---|---|---|---|
+| 1 | `create_category_table` | A | unique index a `slug`-on |
+| 2 | `create_equipment_table` | A | FK a kategóriára `RESTRICT`-tel, unique `inventory_no` |
+| 3 | `create_borrower_table` | B | unique e-mail, `is_active` alapértéke 1 |
+| 4 | `create_loan_table` | B | két idegen kulcs, összetett index a nyitott kölcsönzésekre |
+| 5 | `seed_demo_data` | C | 4 kategória, 12 eszköz, 5 kölcsönző, 6 kölcsönzés — ebből 2 késésben |
 
-To execute acceptance tests do the following:  
+A sorrend kötelező, mert az idegen kulcsok erre épülnek. Mindenki a saját gépén generálja
+a fájlt (`php yii migrate/create`), az időbélyeg így nem ütközik — de a fenti sorrendben
+kell keletkezniük. A `down()` metódusokat is meg kell írni, fordított sorrendben bontva.
 
-1. Rename `tests/acceptance.suite.yml.example` to `tests/acceptance.suite.yml` to enable suite configuration
+---
 
-2. Replace `codeception/base` package in `composer.json` with `codeception/codeception` to install full-featured
-   version of Codeception
+## 3. Üzleti szabályok
 
-3. Update dependencies with Composer 
+Ezek a szabályok a feladat lényege: nem a CRUD-tól lesz nehéz, hanem ezektől.
+Az elfogadási lista pontosan ezekre hivatkozik.
 
-    ```
-    composer update  
-    ```
+- **SZ-1** — Kölcsönözni csak `elérhető` státuszú eszközt lehet. A karbantartás és a selejt nem választható a kiadás űrlapon — nem csak elrejtve, hanem validációval is.
+- **SZ-2** — Egy eszközre egyszerre csak **egy** nyitott kölcsönzés létezhet. Az ellenőrzés és a mentés ugyanabban a tranzakcióban fut, különben két egyszerre kattintó felhasználó kiadhatja ugyanazt.
+- **SZ-3** — `due_at > loaned_at`, és a kölcsönzés hossza legfeljebb 30 nap. Múltbeli `loaned_at` nem vehető fel.
+- **SZ-4** — Egy kölcsönzőnek legfeljebb 3 nyitott kölcsönzése lehet. Inaktív kölcsönző nem vehet fel újat, de a meglévőt visszahozhatja.
+- **SZ-5** — Visszavételkor egy tranzakcióban: `returned_at = ma` és `equipment.status = elérhető`. Ha bármelyik mentés elhasal, mindkettő visszagördül.
+- **SZ-6** — Késésben van a kölcsönzés, ha `returned_at IS NULL` és `due_at < ma`. Késedelmi díj: napok × 500 Ft, de legfeljebb az eszköz letétjének összege.
+- **SZ-7** — Hosszabbítani csak nyitott és *nem késésben* lévő kölcsönzést lehet, +7 nappal — de a `loaned_at`-tól számítva összesen sem léphet 30 nap fölé.
+- **SZ-8** — Kategória nem törölhető, amíg eszköz tartozik hozzá. Eszköz nem törölhető, ha bármikor kölcsönözték — helyette `selejt` státuszt kap.
 
-4. Download [Selenium Server](https://www.seleniumhq.org/download/) and launch it:
+---
 
-    ```
-    java -jar ~/selenium-server-standalone-x.xx.x.jar
-    ```
+## 4. Feladatfelosztás
 
-    In case of using Selenium Server 3.0 with Firefox browser since v48 or Google Chrome since v53 you must download [GeckoDriver](https://github.com/mozilla/geckodriver/releases) or [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and launch Selenium with it:
+A három sáv párhuzamos, nem egymásra épülő: mindenki saját migrációt, saját kontrollert
+és saját nézeteket szerkeszt. Csak három közös metódusban találkoztok, azok 12:00-ra kellenek.
 
-    ```
-    # for Firefox
-    java -jar -Dwebdriver.gecko.driver=~/geckodriver ~/selenium-server-standalone-3.xx.x.jar
-    
-    # for Google Chrome
-    java -jar -Dwebdriver.chrome.driver=~/chromedriver ~/selenium-server-standalone-3.xx.x.jar
-    ``` 
-    
-    As an alternative way you can use already configured Docker container with older versions of Selenium and Firefox:
-    
-    ```
-    docker run --net=host selenium/standalone-firefox:2.53.0
-    ```
+### A — Törzsadat és katalógus
+`CategoryController` · `EquipmentController`
 
-5. (Optional) Create `yii2basic_test` database and update it by applying migrations if you have them.
+- 1–2. migráció idegen kulccsal és indexekkel
+- Gii-vel CRUD kategóriára és eszközre, utána kézzel csiszolva
+- `EquipmentSearch`: szűrés névre és leltári számra (LIKE), kategóriára, státuszra, rendezhető oszlopokkal
+- Leltári szám formátum-validáció (`match`: két betű, kötőjel, négy számjegy) és egyediség
+- SZ-8 törlésvédelem `beforeDelete()`-ben, érthető hibaüzenettel
+- Publikus katalógus: `ListView` kártyákkal, csak az elérhető eszközök, kategória-szűrővel
 
-   ```
-   tests/bin/yii migrate
-   ```
+**Kész, ha** a másik kettő tudja hívni: `Equipment::statusLabels()` és `Equipment::isAvailable()`.
 
-   The database configuration can be found at `config/test_db.php`.
+### B — Kölcsönzés-motor
+`LoanController` · `BorrowerController`
 
+- 3–4. migráció, Borrower CRUD az `is_active` kapcsolóval
+- `LoanForm` külön modellként (nem nyers AR-CRUD): eszköz- és kölcsönzőválasztó, dátumok, megjegyzés
+- SZ-1 … SZ-4 validációként, saját validátor-metódusokban
+- `actionReturn($id)` tranzakcióban (SZ-5) és `actionExtend($id)` (SZ-7)
+- Nyitott kölcsönzések listája „késésben” oszloppal, `with(['equipment','borrower'])`-szel
+- `Loan::isOverdue()`, `getOverdueDays()`, `getLateFee()`
 
-6. Start web server:
+**Kész, ha** C tud rá riportot építeni: `Loan::isOverdue()` és `getLateFee()` áll.
 
-    ```
-    tests/bin/yii serve
-    ```
+### C — Áttekintés és keret
+`SiteController` · `ReportController` · layout
 
-7. Now you can run all available tests
+- 5. migráció: seed adat, ami az első perctől demózhatóvá teszi az appot
+- Layout: menü, morzsa, flash üzenetek, magyar formatter (`hu-HU`, időzóna, dátumformátum)
+- Nyitóoldal: négy mérőszám (összes / kint / késésben / ma visszavárt) és az utolsó 5 mozgás
+- Késés-riport: szűrés kölcsönzőre, kategóriára, időszakra, összesített díjjal
+- CSV export ugyanarra a lekérdezésre (`Response::sendContentAsFile`)
+- Belépés az alap User modellel: `admin` mindent szerkeszt, `kollega` csak néz — `AccessControl`-lal
 
-   ```
-   # run all available tests
-   vendor/bin/codecept run
+**Kész, ha** a seed lefuttatása után a nyitóoldal magától mutat 2 késésben lévő tételt.
 
-   # run acceptance tests
-   vendor/bin/codecept run acceptance
+---
 
-   # run only unit and functional tests
-   vendor/bin/codecept run unit,functional
-   ```
+## 5. Megállapodások
 
-### Code coverage support
+### Fix pontok
+- A séma 09:45-kor befagy. Ha mégis változni kell: **új** migráció, a régit soha nem írjuk át.
+- Branch fejenként: `feat/a-torzsadat`, `feat/b-kolcsonzes`, `feat/c-riport`. PR a `main`-re, egy kötelező review.
+- Gii-t csak a nap elején futtatunk, egyszer. Az újragenerálás felülírja a kézi módosítást.
+- Senki nem szerkeszti a másik kontrollerét vagy nézetét. Ha kell valami, szólunk, és a gazda írja meg.
 
-By default, code coverage is disabled in `codeception.yml` configuration file, you should uncomment needed rows to be able
-to collect code coverage. You can run your tests and collect coverage with the following command:
+### Közös felület
+- `Equipment::statusLabels()` — A írja, B és C használja
+- `Equipment::isAvailable()` — A írja, B hívja az SZ-1-hez
+- `Loan::isOverdue()` és `getLateFee()` — B írja, C hívja a riporthoz
 
+Ezek szignatúrái már 10:00-kor legyenek meg üres törzzsel és bepusholva, hogy a másik kettő ne várjon rájuk.
+
+---
+
+## 6. A nap menete
+
+| Idő | Mi történik |
+|---|---|
+| **09:00** | **Közös indítás** — séma átbeszélése és véglegesítése, repo és adatbázis felállítása, a migrációk sorrendjének kiosztása, branch-ek létrehozása. |
+| 09:45 | Migrációk és modellek — A és B tolja a sajátját, C közben a layoutot és a seedet írja, úgy, hogy üres táblákra is lefusson. |
+| **11:15** | **Integráció #1** — minden branch merge-elve, `php yii migrate/fresh` egy üres adatbázison. Ha az idegen kulcsok sorrendje rossz, most derül ki, nem 16:30-kor. |
+| 12:00 | Ebéd. |
+| 12:45 | Üzleti szabályok köre — a nehéz rész: `LoanForm` validációk, tranzakciós visszavétel, riport-lekérdezés, hozzáférés-kezelés. |
+| **15:00** | **Integráció #2 és közös teszt** — egy eszköz teljes útja hármasban, kézzel: felvétel → kiadás → sikertelen második kiadás → hosszabbítás → késés a riportban → visszavétel → újra a katalógusban. |
+| 16:15 | Csiszolás — az elfogadási lista végigpipálása, hibaüzenetek magyarra, üres állapotok kezelése. |
+| **17:00** | **Demó és retró** — fejenként 5 perc a saját sávjából, majd: mi lassított, mit csinálnátok máshogy. |
+
+---
+
+## 7. Elfogadási kritériumok — akkor kész, ha mind a nyolc igaz
+
+- [ ] Üres adatbázison a `php yii migrate` hibátlanul lefut, és a `php yii migrate/down 5` nyom nélkül visszabontja.
+- [ ] A seed után a nyitóoldal valós számokat mutat, köztük 2 késésben lévő kölcsönzést.
+- [ ] Duplikált leltári szám mentése magyar nyelvű mezőhibát ad, nem 500-as oldalt.
+- [ ] Kiadott eszköz nem választható újra a kölcsönzés űrlapon — sem listából, sem kézzel írt `equipment_id`-vel (SZ-1, SZ-2).
+- [ ] Visszavétel után az eszköz azonnal megjelenik a publikus katalógusban (SZ-5).
+- [ ] A késés-riport napokat és díjat számol, és a szűrésnek megfelelő sorokkal tölt le CSV-t (SZ-6).
+- [ ] A `kollega` felhasználó nem lát szerkesztő gombot, és 403-at kap a `/equipment/create` címen.
+- [ ] A nyitott kölcsönzések oldal a debug toolbar szerint 10 lekérdezés alatt marad — nincs N+1.
+
+---
+
+## 8. Ahol el fog hasalni
+
+- A `down()` metódusban **fordított** sorrendben kell bontani: előbb az idegen kulcs, aztán a tábla.
+- MySQL `ENUM` helyett `smallInteger()` és osztálykonstansok — a migráció és a validáció így marad hordozható.
+- Dátumot ne stringként hasonlítsatok össze: `strtotime()` vagy `DateTime`, kiírásra `Yii::$app->formatter->asDate()`.
+- Amit az űrlap küld, annak szerepelnie kell a `rules()`-ban, különben csendben elveszik mentéskor.
+- Tranzakció: `$tx = Yii::$app->db->beginTransaction();` majd `try / commit / catch / rollBack` — `rollBack()`, nagy B-vel.
+- Listákban `with(['equipment','borrower'])`, különben soronként külön lekérdezés megy ki.
+
+---
+
+## 9. Az első tizenöt perc
+
+```bash
+composer create-project --prefer-dist yiisoft/yii2-app-basic kolcsonpont
+cd kolcsonpont
+
+# config/db.php:
+#   'dsn'     => 'mysql:host=localhost;dbname=kolcsonpont',
+#   'charset' => 'utf8mb4'
+
+php yii migrate/create create_category_table     # majd 2., 3., 4., 5.
+php yii migrate
+
+php -S localhost:8080 -t web                     # app:  http://localhost:8080
+                                                 # gii:  /index.php?r=gii
 ```
-#collect coverage for all tests
-vendor/bin/codecept run --coverage --coverage-html --coverage-xml
 
-#collect coverage only for unit tests
-vendor/bin/codecept run unit --coverage --coverage-html --coverage-xml
+**Ha marad idő:** soft delete a kölcsönzéseken, e-mail értesítés a lejárat előtti napon
+(fájlba mentő mailerrel), QR-kód a leltári számhoz, Codeception unit teszt az SZ-6
+díjszámításra, vagy AJAX-os visszavétel oldalfrissítés nélkül.
 
-#collect coverage for unit and functional tests
-vendor/bin/codecept run functional,unit --coverage --coverage-html --coverage-xml
-```
+---
 
-You can see code coverage output under the `tests/_output` directory.
+*Kölcsönpont — egynapos csapatfeladat a Yii2 basic sablonra. Az elfogadási lista az
+SZ-1 … SZ-8 szabályokra hivatkozik; ha egy szabály értelmezése vitás, a séma és az
+elfogadási lista dönt.*
