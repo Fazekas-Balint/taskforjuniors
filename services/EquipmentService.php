@@ -161,3 +161,4 @@ class EquipmentService
         return (bool) $this->db->createCommand('SELECT 1 FROM loan WHERE equipment_id = :id AND returned_at IS NULL', [':id' => $equipmentId])->queryScalar();
     }
 }
+
