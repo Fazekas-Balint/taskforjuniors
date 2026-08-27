@@ -64,7 +64,6 @@ class SiteController extends Controller
     {
         $this->view->params['breadcrumbs'] = [['label' => 'Áttekintés']];
         $service = new EquipmentService();
-        $service->initialize();
         $statusFilter = Yii::$app->request->get('status', '');
         $lenderFilter = Yii::$app->request->get('lender_id', '');
         $categoryFilter = Yii::$app->request->get('category_id', '');
@@ -76,13 +75,14 @@ class SiteController extends Controller
             Yii::$app->session->setFlash($result['success'] ? 'success' : 'error', $result['message']);
             return $this->refresh();
         }
-        return $this->render('index', [
+        return $this->render('home', [
             'equipment' => $service->equipment($statusFilter, $lenderFilter, $categoryFilter),
             'loans' => $service->activeLoans(),
             'report' => $service->report(),
             'movements' => $service->recentMovements(),
             'lenders' => $service->lenders(),
             'categories' => $service->categories(),
+            'categoryStats' => $service->categoriesWithUsage(),
             'canEdit' => !Yii::$app->user->isGuest && Yii::$app->user->identity->canEdit(),
             'statusFilter' => $statusFilter,
             'lenderFilter' => $lenderFilter,

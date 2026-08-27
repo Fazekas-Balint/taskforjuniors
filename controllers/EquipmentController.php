@@ -2,51 +2,89 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\Category;
 use app\models\Equipment;
-use app\models\EquipmentSearch;
+use Yii;
+use yii\filters\AccessControl;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\data\ActiveDataProvider;
 
-/**
- * EquipmentController implements the CRUD actions for Equipment model.
- */
 class EquipmentController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    // The public catalogue is open to everyone, guests included.
+                    [
+                        'allow' => true,
+                        'actions' => ['catalog'],
+                        'roles' => ['?', '@'],
+                    ],
+                    // Everything else requires a logged-in user who may edit.
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            return Yii::$app->user->identity->canEdit();
+                        },
                     ],
                 ],
-            ]
-        );
+            ],
+        ];
     }
 
-    /**
-     * Lists all Equipment models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
-        $searchModel = new EquipmentSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $request = Yii::$app->request;
+
+        // joinWith() eager-loads the category (no N+1) and also exposes
+        // category.name to the ORDER BY clause.
+        $query = Equipment::find()->joinWith('category');
+
+        // Column names are qualified: the JOIN brings in a second table
+        // that also has `id` and `name` columns.
+        if ($request->get('status', '') !== '') {
+            $query->andWhere(['equipment.status' => (int) $request->get('status')]);
+        }
+        if ($request->get('category_id', '') !== '') {
+            $query->andWhere(['equipment.category_id' => (int) $request->get('category_id')]);
+        }
+        if ($request->get('q', '') !== '') {
+            $query->andWhere(['or',
+                ['like', 'equipment.inventory_no', $request->get('q')],
+                ['like', 'equipment.name', $request->get('q')],
+            ]);
+        }
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 20],
+            'sort' => [
+                'defaultOrder' => ['inventory_no' => SORT_ASC],
+                'attributes' => [
+                    'inventory_no',
+                    'status',
+                    'deposit',
+                    'purchased_at',
+                    'name' => [
+                        'asc' => ['equipment.name' => SORT_ASC],
+                        'desc' => ['equipment.name' => SORT_DESC],
+                    ],
+                    'category_id' => [
+                        'asc' => ['category.name' => SORT_ASC],
+                        'desc' => ['category.name' => SORT_DESC],
+                    ],
+                ],
+            ],
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all(),
         ]);
     }
 
@@ -72,93 +110,68 @@ class EquipmentController extends Controller
 
         return $this->render('catalog', [
             'dataProvider' => $dataProvider,
-            'categories' => Category::find()->orderBy('name')->all(),
+            'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all(),
             'selectedCategory' => $categoryId,
         ]);
     }
 
-    /**
-     * Displays a single Equipment model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new Equipment model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
-        $model = new Equipment();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
+        $model = new Equipment(['status' => Equipment::STATUS_AVAILABLE]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Az eszköz létrejött.');
+            return $this->redirect(['index']);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model]);
     }
 
-    /**
-     * Updates an existing Equipment model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Az eszköz módosítva.');
+            return $this->redirect(['index']);
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model]);
     }
 
-    /**
-     * Deletes an existing Equipment model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->request->isPost) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                // A sort a tranzakció végéig zároljuk, hogy közben ne induljon rá kölcsönzés.
+                $model = Equipment::findBySql('SELECT * FROM {{%equipment}} WHERE id = :id FOR UPDATE', [':id' => $id])->one();
+                if (!$model) {
+                    throw new NotFoundHttpException('Az eszköz nem található.');
+                }
 
+                if ($model->getLoans()->exists()) {
+                    $model->status = Equipment::STATUS_SCRAPPED;
+                    if (!$model->save(false, ['status'])) {
+                        throw new \DomainException('Az eszköz selejtezése sikertelen.');
+                    }
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Az eszköz kölcsönzési előzménye miatt selejt státuszba került.');
+                } elseif ($model->delete() === false) {
+                    throw new \DomainException('Az eszköz törlése sikertelen.');
+                } else {
+                    $transaction->commit();
+                    Yii::$app->session->setFlash('success', 'Az eszköz törölve.');
+                }
+            } catch (\Throwable $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Equipment model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Equipment the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
-        if (($model = Equipment::findOne(['id' => $id])) !== null) {
+        if (($model = Equipment::findOne($id)) !== null) {
             return $model;
         }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Az eszköz nem található.');
     }
 }

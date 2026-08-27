@@ -40,6 +40,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Áttekintés', 'url' => ['/site/index']],
+            ['label' => 'Katalógus', 'url' => ['/equipment/catalog']],
+            ['label' => 'Eszközök', 'url' => ['/equipment/index'], 'visible' => !Yii::$app->user->isGuest],
+            ['label' => 'Kategóriák', 'url' => ['/category/index'], 'visible' => !Yii::$app->user->isGuest],
             ['label' => 'Új kölcsönzés', 'url' => ['/loan/create']],
             ['label' => 'Késés-riport', 'url' => ['/report/overdue']],
             Yii::$app->user->isGuest

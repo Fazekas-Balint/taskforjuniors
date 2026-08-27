@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Forrás: milan-deletion branch - migrations/m260826_075513_create_equipment_table.php
+ * Változatlanul átvéve: ez adja a MySQL/InnoDB sémát a törölt sqlite-os
+ * m250101_* create-table migrációk helyett.
+ */
+
 use yii\db\Migration;
 
 /**
