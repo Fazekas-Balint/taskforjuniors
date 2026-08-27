@@ -47,15 +47,13 @@ class CategoryController extends Controller
         if (Yii::$app->request->isPost) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                $model = Category::find()
-                    ->where(['id' => $id])
-                    ->forUpdate()
-                    ->one();
+                // A sort a tranzakció végéig zároljuk, hogy közben ne kerüljön alá eszköz.
+                $model = Category::findBySql('SELECT * FROM {{%category}} WHERE id = :id FOR UPDATE', [':id' => $id])->one();
                 if (!$model) {
                     throw new NotFoundHttpException('A kategória nem található.');
                 }
                 if ($model->getEquipments()->exists()) {
-                    throw new \DomainException('A kategória nem törölhető, mert eszköz tartozik hozzá.');
+                    throw new \DomainException('A kategória nem törölhető, amíg eszköz tartozik hozzá.');
                 }
                 if ($model->delete() === false) {
                     throw new \DomainException('A kategória törlése sikertelen.');

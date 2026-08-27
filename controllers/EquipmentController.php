@@ -63,10 +63,8 @@ class EquipmentController extends Controller
         if (Yii::$app->request->isPost) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                $model = Equipment::find()
-                    ->where(['id' => $id])
-                    ->forUpdate()
-                    ->one();
+                // A sort a tranzakció végéig zároljuk, hogy közben ne induljon rá kölcsönzés.
+                $model = Equipment::findBySql('SELECT * FROM {{%equipment}} WHERE id = :id FOR UPDATE', [':id' => $id])->one();
                 if (!$model) {
                     throw new NotFoundHttpException('Az eszköz nem található.');
                 }
