@@ -57,6 +57,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'home' => 'site/index',
                 'loan' => 'loan/create',
                 'extend' => 'extend/index',
                 'pending' => 'pending/index',

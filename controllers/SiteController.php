@@ -64,7 +64,6 @@ class SiteController extends Controller
     {
         $this->view->params['breadcrumbs'] = [['label' => 'Áttekintés']];
         $service = new EquipmentService();
-        $service->initialize();
         $statusFilter = Yii::$app->request->get('status', '');
         $lenderFilter = Yii::$app->request->get('lender_id', '');
         $categoryFilter = Yii::$app->request->get('category_id', '');

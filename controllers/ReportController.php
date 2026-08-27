@@ -22,7 +22,6 @@ class ReportController extends Controller
             ['label' => 'Késés-riport'],
         ];
         $service = new EquipmentService();
-        $service->initialize();
         $filters = Yii::$app->request->queryParams;
         return $this->render('overdue', ['rows' => $service->overdueLoans($filters), 'lenders' => $service->lenders(), 'categories' => $service->categories(), 'filters' => $filters, 'totalFee' => $service->overdueFee($filters)]);
     }
@@ -30,7 +29,6 @@ class ReportController extends Controller
     public function actionExport()
     {
         $service = new EquipmentService();
-        $service->initialize();
         $rows = $service->overdueLoans(Yii::$app->request->queryParams);
         $stream = fopen('php://temp', 'r+');
         fwrite($stream, "\xEF\xBB\xBF");

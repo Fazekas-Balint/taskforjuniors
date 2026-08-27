@@ -12,20 +12,7 @@ class CategoryController extends Controller
 {
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function () {
-                            return Yii::$app->user->identity->canEdit();
-                        },
-                    ],
-                ],
-            ],
-        ];
+        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
     }
 
     public function actionIndex()
@@ -58,14 +45,26 @@ class CategoryController extends Controller
     public function actionDelete($id)
     {
         if (Yii::$app->request->isPost) {
-            $model = $this->findModel($id);
-
-            // BR-8 lives in Category::beforeDelete(), which sets the error flash.
-            if ($model->delete()) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                // A sort a tranzakció végéig zároljuk, hogy közben ne kerüljön alá eszköz.
+                $model = Category::findBySql('SELECT * FROM {{%category}} WHERE id = :id FOR UPDATE', [':id' => $id])->one();
+                if (!$model) {
+                    throw new NotFoundHttpException('A kategória nem található.');
+                }
+                if ($model->getEquipments()->exists()) {
+                    throw new \DomainException('A kategória nem törölhető, amíg eszköz tartozik hozzá.');
+                }
+                if ($model->delete() === false) {
+                    throw new \DomainException('A kategória törlése sikertelen.');
+                }
+                $transaction->commit();
                 Yii::$app->session->setFlash('success', 'A kategória törölve.');
+            } catch (\Throwable $e) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', $e->getMessage());
             }
         }
-
         return $this->redirect(['index']);
     }
 

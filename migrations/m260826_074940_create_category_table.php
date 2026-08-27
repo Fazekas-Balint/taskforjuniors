@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Forrás: milan-deletion branch - migrations/m260826_074940_create_category_table.php
+ * Változatlanul átvéve: ez adja a MySQL/InnoDB sémát a törölt sqlite-os
+ * m250101_* create-table migrációk helyett.
+ */
+
 use yii\db\Migration;
 
 /**
