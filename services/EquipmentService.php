@@ -15,15 +15,8 @@ class EquipmentService
         $this->db = Yii::$app->db;
     }
 
-    public function initialize()
-    {
-        $this->db->createCommand('PRAGMA foreign_keys = ON')->execute();
-        if (!$this->db->getSchema()->getTableSchema('category', true)) {
-            foreach (['m250101_000001_create_category_table', 'm250101_000002_create_equipment_table', 'm250101_000003_create_borrower_table', 'm250101_000004_create_loan_table', 'm250101_000005_seed_demo_data'] as $name) {
-                (new $name())->up();
-            }
-        }
-    }
+    // A korábbi initialize() (PRAGMA foreign_keys + sqlite séma-bootstrap) megszűnt:
+    // a séma innentől a MySQL migrációkból jön (milan-deletion), lásd `php yii migrate`.
 
     public function equipment($status = '', $lenderId = '', $categoryId = '')
     {
@@ -45,7 +38,9 @@ class EquipmentService
 
     public function report()
     {
-            return ['total' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status <> 3')->queryScalar(), 'available' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 0')->queryScalar(), 'lended' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL')->queryScalar(), 'maintenance' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 2')->queryScalar(), 'overdue' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at < DATE("now")')->queryScalar(), 'dueToday' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at = DATE("now")')->queryScalar()];
+            // MySQL-en nincs sqlite-os DATE("now"), ezért az app időzónája szerinti mai dátumot kötjük be.
+            $today = date('Y-m-d');
+            return ['total' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status <> 3')->queryScalar(), 'available' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 0')->queryScalar(), 'lended' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL')->queryScalar(), 'maintenance' => (int) $this->db->createCommand('SELECT COUNT(*) FROM equipment WHERE status = 2')->queryScalar(), 'overdue' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at < :today', [':today' => $today])->queryScalar(), 'dueToday' => (int) $this->db->createCommand('SELECT COUNT(*) FROM loan WHERE returned_at IS NULL AND due_at = :today', [':today' => $today])->queryScalar()];
     }
 
     public function lenders() { return $this->db->createCommand('SELECT id, full_name FROM borrower WHERE is_active = 1 ORDER BY full_name')->queryAll(); }
@@ -90,7 +85,7 @@ class EquipmentService
         if (!$equipment) return ['success' => false, 'message' => 'Az eszköz nem található.'];
         if ($action === 'return') {
             $this->db->transaction(function () use ($equipmentId) {
-                $this->db->createCommand('UPDATE loan SET returned_at = DATE("now") WHERE equipment_id = :id AND returned_at IS NULL', [':id' => $equipmentId])->execute();
+                $this->db->createCommand('UPDATE loan SET returned_at = :today WHERE equipment_id = :id AND returned_at IS NULL', [':id' => $equipmentId, ':today' => date('Y-m-d')])->execute();
                 $this->db->createCommand()->update('equipment', ['status' => 0], 'id = :id', [':id' => $equipmentId])->execute();
             });
             return ['success' => true, 'message' => 'Az eszköz visszavétele rögzítve.'];
