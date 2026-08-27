@@ -12,14 +12,29 @@ class CategoryController extends Controller
 {
     public function behaviors()
     {
-        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            return Yii::$app->user->identity->canEdit();
+                        },
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function actionIndex()
     {
-        return $this->render('index', ['dataProvider' => new \yii\data\ActiveDataProvider([
-            'query' => Category::find()->orderBy(['name' => SORT_ASC]),
-        ])]);
+        return $this->render('index', [
+            'dataProvider' => new \yii\data\ActiveDataProvider([
+                'query' => Category::find()->orderBy(['name' => SORT_ASC]),
+            ]),
+        ]);
     }
 
     public function actionCreate()
@@ -48,7 +63,10 @@ class CategoryController extends Controller
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 // A sort a tranzakció végéig zároljuk, hogy közben ne kerüljön alá eszköz.
-                $model = Category::findBySql('SELECT * FROM {{%category}} WHERE id = :id FOR UPDATE', [':id' => $id])->one();
+                $model = Category::findBySql(
+                    'SELECT * FROM {{%category}} WHERE id = :id FOR UPDATE',
+                    [':id' => $id]
+                )->one();
                 if (!$model) {
                     throw new NotFoundHttpException('A kategória nem található.');
                 }

@@ -44,9 +44,12 @@ class EquipmentController extends Controller
                 ['like', 'name', $request->get('q')],
             ]);
         }
-        return $this->render('index', ['dataProvider' => new ActiveDataProvider([
-            'query' => $query->orderBy(['name' => SORT_ASC]),
-        ]), 'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all()]);
+        return $this->render('index', [
+            'dataProvider' => new ActiveDataProvider([
+                'query' => $query->orderBy(['name' => SORT_ASC]),
+            ]),
+            'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all(),
+        ]);
     }
 
     // Forrás: milan-deletion branch - EquipmentController::actionCatalog().
@@ -98,7 +101,10 @@ class EquipmentController extends Controller
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 // A sort a tranzakció végéig zároljuk, hogy közben ne induljon rá kölcsönzés.
-                $model = Equipment::findBySql('SELECT * FROM {{%equipment}} WHERE id = :id FOR UPDATE', [':id' => $id])->one();
+                $model = Equipment::findBySql(
+                    'SELECT * FROM {{%equipment}} WHERE id = :id FOR UPDATE',
+                    [':id' => $id]
+                )->one();
                 if (!$model) {
                     throw new NotFoundHttpException('Az eszköz nem található.');
                 }
@@ -109,7 +115,10 @@ class EquipmentController extends Controller
                         throw new \DomainException('Az eszköz selejtezése sikertelen.');
                     }
                     $transaction->commit();
-                    Yii::$app->session->setFlash('success', 'Az eszköz kölcsönzési előzménye miatt selejt státuszba került.');
+                    Yii::$app->session->setFlash(
+                        'success',
+                        'Az eszköz kölcsönzési előzménye miatt selejt státuszba került.'
+                    );
                 } elseif ($model->delete() === false) {
                     throw new \DomainException('Az eszköz törlése sikertelen.');
                 } else {

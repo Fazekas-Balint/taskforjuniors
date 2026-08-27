@@ -14,14 +14,29 @@ class BorrowerController extends Controller
 {
     public function behaviors()
     {
-        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            return Yii::$app->user->identity->canEdit();
+                        },
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function actionIndex()
     {
-        return $this->render('index', ['dataProvider' => new ActiveDataProvider([
-            'query' => Borrower::find()->orderBy(['full_name' => SORT_ASC]),
-        ])]);
+        return $this->render('index', [
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Borrower::find()->orderBy(['full_name' => SORT_ASC]),
+            ]),
+        ]);
     }
 
     public function actionCreate()
@@ -50,7 +65,10 @@ class BorrowerController extends Controller
             try {
                 $this->findModel($id)->delete();
             } catch (IntegrityException $e) {
-                Yii::$app->session->setFlash('error', 'A kölcsönvevő nem törölhető, mert kölcsönzési előzménye van.');
+                Yii::$app->session->setFlash(
+                    'error',
+                    'A kölcsönvevő nem törölhető, mert kölcsönzési előzménye van.'
+                );
             }
         }
         return $this->redirect(['index']);

@@ -74,7 +74,10 @@ class SiteController extends Controller
                 throw new \yii\web\ForbiddenHttpException('Ehhez be kell jelentkezni.');
             }
             // Kölcsönzés/visszavétel bárkinek, törzsadat és karbantartás csak adminnak.
-            if (!$canEdit && !in_array(Yii::$app->request->post('action', ''), ['lend', 'return'], true)) {
+            if (
+                !$canEdit
+                && !in_array(Yii::$app->request->post('action', ''), ['lend', 'return'], true)
+            ) {
                 throw new \yii\web\ForbiddenHttpException('Ehhez admin jogosultság szükséges.');
             }
             $result = $service->handleAction(Yii::$app->request->post());

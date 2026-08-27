@@ -15,7 +15,14 @@ class ExtendController extends Controller
     public function behaviors()
     {
         // Hosszabbítani minden belépett felhasználó tud (SZ-7), nem csak az admin.
-        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@']]]]];
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    ['allow' => true, 'roles' => ['@']],
+                ],
+            ],
+        ];
     }
 
     public function actionIndex($id = null)
