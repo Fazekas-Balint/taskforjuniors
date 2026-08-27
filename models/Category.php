@@ -53,6 +53,9 @@ class Category extends ActiveRecord
 
             // Lengths follow the frozen schema: varchar(100) and varchar(120).
             ['name', 'string', 'max' => 100],
+            ['name', 'unique',
+                'message' => 'Ilyen nevű kategória már létezik.',
+            ],
             ['slug', 'string', 'max' => 120],
 
             ['slug', 'match',
