@@ -45,28 +45,14 @@ class CategoryController extends Controller
     public function actionDelete($id)
     {
         if (Yii::$app->request->isPost) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-                $model = Category::find()
-                    ->where(['id' => $id])
-                    ->forUpdate()
-                    ->one();
-                if (!$model) {
-                    throw new NotFoundHttpException('A kategória nem található.');
-                }
-                if ($model->getEquipments()->exists()) {
-                    throw new \DomainException('A kategória nem törölhető, mert eszköz tartozik hozzá.');
-                }
-                if ($model->delete() === false) {
-                    throw new \DomainException('A kategória törlése sikertelen.');
-                }
-                $transaction->commit();
+            $model = $this->findModel($id);
+
+            // BR-8 lives in Category::beforeDelete(), which sets the error flash.
+            if ($model->delete()) {
                 Yii::$app->session->setFlash('success', 'A kategória törölve.');
-            } catch (\Throwable $e) {
-                $transaction->rollBack();
-                Yii::$app->session->setFlash('error', $e->getMessage());
             }
         }
+
         return $this->redirect(['index']);
     }
 

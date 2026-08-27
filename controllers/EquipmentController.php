@@ -14,7 +14,27 @@ class EquipmentController extends Controller
 {
     public function behaviors()
     {
-        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    // The public catalogue is open to everyone, guests included.
+                    [
+                        'allow' => true,
+                        'actions' => ['catalog'],
+                        'roles' => ['?', '@'],
+                    ],
+                    // Everything else requires a logged-in user who may edit.
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            return Yii::$app->user->identity->canEdit();
+                        },
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function actionIndex()
@@ -36,6 +56,32 @@ class EquipmentController extends Controller
         return $this->render('index', ['dataProvider' => new ActiveDataProvider([
             'query' => $query->orderBy(['name' => SORT_ASC]),
         ]), 'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all()]);
+    }
+    /**
+     * Public catalogue of the items that can be borrowed right now.
+     *
+     * @return string
+     */
+    public function actionCatalog()
+    {
+        $categoryId = Yii::$app->request->get('category');
+
+        $query = Equipment::find()
+            ->with('category')
+            ->where(['status' => Equipment::STATUS_AVAILABLE])
+            ->andFilterWhere(['category_id' => $categoryId])
+            ->orderBy(['name' => SORT_ASC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 12],
+        ]);
+
+        return $this->render('catalog', [
+            'dataProvider' => $dataProvider,
+            'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all(),
+            'selectedCategory' => $categoryId,
+        ]);
     }
 
     public function actionCreate()
@@ -61,34 +107,15 @@ class EquipmentController extends Controller
     public function actionDelete($id)
     {
         if (Yii::$app->request->isPost) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-                $model = Equipment::find()
-                    ->where(['id' => $id])
-                    ->forUpdate()
-                    ->one();
-                if (!$model) {
-                    throw new NotFoundHttpException('Az eszköz nem található.');
-                }
+            $model = $this->findModel($id);
 
-                if ($model->getLoans()->exists()) {
-                    $model->status = Equipment::STATUS_SCRAPPED;
-                    if (!$model->save(false, ['status'])) {
-                        throw new \DomainException('Az eszköz selejtezése sikertelen.');
-                    }
-                    $transaction->commit();
-                    Yii::$app->session->setFlash('success', 'Az eszköz kölcsönzési előzménye miatt selejt státuszba került.');
-                } elseif ($model->delete() === false) {
-                    throw new \DomainException('Az eszköz törlése sikertelen.');
-                } else {
-                    $transaction->commit();
-                    Yii::$app->session->setFlash('success', 'Az eszköz törölve.');
-                }
-            } catch (\Throwable $e) {
-                $transaction->rollBack();
-                Yii::$app->session->setFlash('error', $e->getMessage());
+            // BR-8 lives in Equipment::beforeDelete(): an item with loan
+            // history is scrapped instead of deleted and delete() returns false.
+            if ($model->delete()) {
+                Yii::$app->session->setFlash('success', 'Az eszköz törölve.');
             }
         }
+
         return $this->redirect(['index']);
     }
 
