@@ -3,6 +3,7 @@
 namespace app\models;
 
 use DateTimeImmutable;
+use Yii;
 use yii\db\ActiveRecord;
 
 class Loan extends ActiveRecord
@@ -38,6 +39,21 @@ class Loan extends ActiveRecord
             'returned_at' => 'Visszahozás dátuma',
             'note' => 'Megjegyzés',
         ];
+    }
+
+    /**
+     * A listák magyar dátumformátumban mutatják a határidőt, ezért a betöltés
+     * után egyszer formázzuk, hogy a nézetekben ne kelljen mindenhol átalakítani.
+     *
+     * {@inheritdoc}
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        if ($this->due_at !== null) {
+            $this->due_at = Yii::$app->formatter->asDate($this->due_at, 'php:Y. m. d.');
+        }
     }
 
     public function getEquipment()
