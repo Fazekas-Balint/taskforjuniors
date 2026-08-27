@@ -40,22 +40,52 @@ class EquipmentController extends Controller
     public function actionIndex()
     {
         $request = Yii::$app->request;
-        $query = Equipment::find()->with('category');
+
+        // joinWith() eager-loads the category (no N+1) and also exposes
+        // category.name to the ORDER BY clause.
+        $query = Equipment::find()->joinWith('category');
+
+        // Column names are qualified: the JOIN brings in a second table
+        // that also has `id` and `name` columns.
         if ($request->get('status', '') !== '') {
-            $query->andWhere(['status' => (int) $request->get('status')]);
+            $query->andWhere(['equipment.status' => (int) $request->get('status')]);
         }
         if ($request->get('category_id', '') !== '') {
-            $query->andWhere(['category_id' => (int) $request->get('category_id')]);
+            $query->andWhere(['equipment.category_id' => (int) $request->get('category_id')]);
         }
         if ($request->get('q', '') !== '') {
             $query->andWhere(['or',
-                ['like', 'inventory_no', $request->get('q')],
-                ['like', 'name', $request->get('q')],
+                ['like', 'equipment.inventory_no', $request->get('q')],
+                ['like', 'equipment.name', $request->get('q')],
             ]);
         }
-        return $this->render('index', ['dataProvider' => new ActiveDataProvider([
-            'query' => $query->orderBy(['name' => SORT_ASC]),
-        ]), 'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all()]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 20],
+            'sort' => [
+                'defaultOrder' => ['inventory_no' => SORT_ASC],
+                'attributes' => [
+                    'inventory_no',
+                    'status',
+                    'deposit',
+                    'purchased_at',
+                    'name' => [
+                        'asc' => ['equipment.name' => SORT_ASC],
+                        'desc' => ['equipment.name' => SORT_DESC],
+                    ],
+                    'category_id' => [
+                        'asc' => ['category.name' => SORT_ASC],
+                        'desc' => ['category.name' => SORT_DESC],
+                    ],
+                ],
+            ],
+        ]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all(),
+        ]);
     }
     /**
      * Public catalogue of the items that can be borrowed right now.
