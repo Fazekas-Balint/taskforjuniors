@@ -172,3 +172,6 @@ a.desc:after {
 .link-button.danger { color: #b44d3b; }
 .row-actions form:has(input[name="action"][value="delete_equipment"]) .link-button { background: #f3ded9; color: #b44d3b; padding: .55rem .8rem; }
 @media (max-width: 900px) { .inventory-admin { grid-template-columns: 1fr; gap: 1.5rem; } .admin-fields { grid-template-columns: 1fr; } }
+
+.category-links { display: flex; gap: 12px; }
+.link-button[disabled] { color: #b0a9a7; cursor: not-allowed; }

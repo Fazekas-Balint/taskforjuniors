@@ -43,6 +43,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Új kölcsönzés', 'url' => ['/loan/create']],
             ['label' => 'Késés-riport', 'url' => ['/report/overdue']],
             ['label' => 'Új eszköz', 'url' => ['/equipment/create']],
+            ['label' => 'Eszközök', 'url' => ['/equipment/index']],
+            ['label' => 'Kategóriák', 'url' => ['/category/index']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'

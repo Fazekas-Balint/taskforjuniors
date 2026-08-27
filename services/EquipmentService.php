@@ -63,7 +63,9 @@ class EquipmentService
         foreach ($rows as $index => $row) {
             $daysLate = (int) round((strtotime($today) - strtotime($row['due_at'])) / 86400);
             $rows[$index]['days_late'] = $daysLate;
-            $rows[$index]['late_fee'] = min($daysLate * self::LATE_FEE_PER_DAY, (int) $row['deposit']);
+            $deposit = (int) $row['deposit'];
+            // A letét csak akkor felső határ, ha van rögzítve; 0 letétnél a teljes napi díj jár.
+            $rows[$index]['late_fee'] = $deposit > 0 ? min($daysLate * self::LATE_FEE_PER_DAY, $deposit) : $daysLate * self::LATE_FEE_PER_DAY;
         }
         return $rows;
     }
