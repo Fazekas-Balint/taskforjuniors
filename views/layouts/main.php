@@ -39,11 +39,12 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Áttekintés', 'url' => ['/site/index']],
+            // Az "Áttekintés" menüpont helyett a bal oldali "Eszköztár" márkanév visz a főoldalra.
             ['label' => 'Katalógus', 'url' => ['/equipment/catalog']],
             ['label' => 'Eszközök', 'url' => ['/equipment/index'], 'visible' => !Yii::$app->user->isGuest],
             ['label' => 'Kategóriák', 'url' => ['/category/index'], 'visible' => !Yii::$app->user->isGuest],
             ['label' => 'Új kölcsönzés', 'url' => ['/loan/create']],
+            ['label' => 'Hosszabbítás', 'url' => ['/extend'], 'visible' => !Yii::$app->user->isGuest],
             ['label' => 'Késés-riport', 'url' => ['/report/overdue']],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
@@ -63,9 +64,18 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <main id="main" class="flex-shrink-0" role="main">
     <div class="container">
-        <?php if (!empty($this->params['breadcrumbs'])): ?>
-            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-        <?php endif ?>
+        <?php
+        // A morzsamenü mindig a "Főoldal" hivatkozással kezdődik, az aloldalak ehhez
+        // teszik hozzá a saját nevüket. Az üres címkéjű elemeket kiszűrjük, hogy a
+        // főoldalon ne maradjon üres, "active" morzsa a sor végén.
+        $breadcrumbLinks = array_merge(
+            [['label' => 'Főoldal', 'url' => Yii::$app->homeUrl]],
+            array_filter($this->params['breadcrumbs'] ?? [], function ($link) {
+                return is_array($link) ? ($link['label'] ?? '') !== '' : (string) $link !== '';
+            })
+        );
+        ?>
+        <?= Breadcrumbs::widget(['homeLink' => false, 'links' => $breadcrumbLinks]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>

@@ -12,6 +12,7 @@ use yii\db\Expression;
  * @property int $category_id
  * @property string $inventory_no
  * @property string $name
+ * @property string $storage_location
  * @property string|null $description
  * @property int $status
  * @property string|null $purchased_at
@@ -28,6 +29,12 @@ class Equipment extends ActiveRecord
     public const STATUS_LOANED = 1;      // out on loan
     public const STATUS_MAINTENANCE = 2; // under maintenance
     public const STATUS_SCRAPPED = 3;    // scrapped
+
+    /**
+     * A választható raktárak (HJ-1). Fix lista, hogy az eszközök raktár szerint
+     * szűrhetők és rendezhetők maradjanak, ne gépeljék el a helyszínt.
+     */
+    public const STORAGE_LOCATIONS = ['Központi', 'Raktár 1', 'Raktár 2'];
 
     public static function tableName()
     {
@@ -57,22 +64,28 @@ class Equipment extends ActiveRecord
             [['description', 'purchased_at'], 'default', 'value' => null],
             ['deposit', 'default', 'value' => 0],
             ['status', 'default', 'value' => self::STATUS_AVAILABLE],
+            ['storage_location', 'default', 'value' => self::STORAGE_LOCATIONS[0]],
 
-            [['category_id', 'inventory_no', 'name'], 'required'],
+            [['category_id', 'name'], 'required'],
+            ['inventory_no', 'required', 'message' => 'A leltári szám megadása kötelező.'],
 
             ['category_id', 'integer'],
             ['description', 'string'],
 
-            // Lengths follow the frozen schema: varchar(20) and varchar(150).
-            ['inventory_no', 'string', 'max' => 20],
+            // A leltári szám bármilyen formátumú és hosszú lehet, csak kitöltve kell
+            // lennie és egyedinek maradnia - formátumkényszer az ügyfél kérésére nincs.
+            ['inventory_no', 'trim'],
+            ['inventory_no', 'string', 'max' => 255],
             ['name', 'string', 'max' => 150],
 
-            ['inventory_no', 'match',
-                'pattern' => '/^[A-Z]{2}-\d{4}$/',
-                'message' => 'A leltári szám formátuma: két nagybetű, kötőjel, négy számjegy (pl. LP-0007).',
-            ],
             ['inventory_no', 'unique',
                 'message' => 'Ez a leltári szám már foglalt.',
+            ],
+
+            ['storage_location', 'required'],
+            ['storage_location', 'in',
+                'range' => self::STORAGE_LOCATIONS,
+                'message' => 'Válassz a listából raktárat.',
             ],
 
             ['status', 'in',
@@ -102,6 +115,7 @@ class Equipment extends ActiveRecord
             'category_id' => 'Kategória',
             'inventory_no' => 'Leltári szám',
             'name' => 'Megnevezés',
+            'storage_location' => 'Raktár',
             'description' => 'Leírás',
             'status' => 'Státusz',
             'purchased_at' => 'Beszerzés dátuma',
@@ -124,6 +138,14 @@ class Equipment extends ActiveRecord
             self::STATUS_MAINTENANCE => 'Karbantartás',
             self::STATUS_SCRAPPED => 'Selejt',
         ];
+    }
+
+    /**
+     * A raktár-legördülők érték => felirat listája.
+     */
+    public static function storageLocationOptions()
+    {
+        return array_combine(self::STORAGE_LOCATIONS, self::STORAGE_LOCATIONS);
     }
 
     public function getStatusLabel()

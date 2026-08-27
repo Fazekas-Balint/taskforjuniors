@@ -21,6 +21,7 @@ use yii\helpers\Html;
 
         <ul class="list-unstyled small mb-0">
             <li><strong>Leltári szám:</strong> <?= Html::encode($model->inventory_no) ?></li>
+            <li><strong>Raktár:</strong> <?= Html::encode($model->storage_location) ?></li>
             <li><strong>Letét:</strong> <?= Yii::$app->formatter->asInteger($model->deposit) ?> Ft</li>
         </ul>
     </div>

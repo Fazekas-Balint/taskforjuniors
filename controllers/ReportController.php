@@ -17,10 +17,7 @@ class ReportController extends Controller
 
     public function actionOverdue()
     {
-        $this->view->params['breadcrumbs'] = [
-            ['label' => 'Áttekintés', 'url' => ['/site/index']],
-            ['label' => 'Késés-riport'],
-        ];
+        $this->view->params['breadcrumbs'] = [['label' => 'Késés-riport']];
         $service = new EquipmentService();
         $filters = Yii::$app->request->queryParams;
         return $this->render('overdue', ['rows' => $service->overdueLoans($filters), 'lenders' => $service->lenders(), 'categories' => $service->categories(), 'filters' => $filters, 'totalFee' => $service->overdueFee($filters)]);
@@ -32,8 +29,8 @@ class ReportController extends Controller
         $rows = $service->overdueLoans(Yii::$app->request->queryParams);
         $stream = fopen('php://temp', 'r+');
         fwrite($stream, "\xEF\xBB\xBF");
-        fputcsv($stream, ['Leltári szám', 'Eszköz', 'Kategória', 'Kölcsönző', 'Email', 'Határidő', 'Késés napjai', 'Késedelmi díj'], ';');
-        foreach ($rows as $row) fputcsv($stream, [$row['inventory_no'], $row['equipment_name'], $row['category_name'], $row['full_name'], $row['email'], $row['due_at'], $row['days_late'], $row['late_fee']], ';');
+        fputcsv($stream, ['Leltári szám', 'Eszköz', 'Kategória', 'Kölcsönző', 'Raktár', 'Email', 'Határidő', 'Késés napjai', 'Késedelmi díj'], ';');
+        foreach ($rows as $row) fputcsv($stream, [$row['inventory_no'], $row['equipment_name'], $row['category_name'], $row['full_name'], $row['storage_location'], $row['email'], $row['due_at'], $row['days_late'], $row['late_fee']], ';');
         rewind($stream);
         return Yii::$app->response->sendContentAsFile(stream_get_contents($stream), 'kesesi-riport-' . date('Y-m-d') . '.csv', ['mimeType' => 'text/csv; charset=UTF-8']);
     }

@@ -9,7 +9,8 @@ use yii\widgets\ListView;
 /** @var string|null $selectedCategory */
 
 $this->title = 'Elérhető eszközök';
-$this->params['breadcrumbs'][] = $this->title;
+// A morzsamenüben a menüpont neve szerepel, hogy a navigációval egyezzen.
+$this->params['breadcrumbs'][] = 'Katalógus';
 ?>
 <div class="equipment-catalog">
 

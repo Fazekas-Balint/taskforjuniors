@@ -35,6 +35,11 @@ class LoanController extends Controller
     public function actionCreate()
     {
         $model = new LoanForm(['equipment_id' => Yii::$app->request->get('equipment_id'), 'loaned_at' => date('Y-m-d'), 'due_at' => date('Y-m-d', strtotime('+7 days'))]);
+        // Alapból abból a raktárból viszik el, ahol az eszköz most van.
+        if ($model->equipment_id) {
+            $preselected = Equipment::findOne($model->equipment_id);
+            $model->storage_location = $preselected ? $preselected->storage_location : null;
+        }
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -62,7 +67,9 @@ class LoanController extends Controller
                     throw new \DomainException(implode(' ', $loan->getFirstErrors()));
                 }
                 $equipment->status = Equipment::STATUS_LOANED;
-                if (!$equipment->save(false, ['status'])) {
+                // Az eszköz abból a raktárból megy ki, amit az űrlapon megadtak.
+                $equipment->storage_location = $model->storage_location;
+                if (!$equipment->save(false, ['status', 'storage_location'])) {
                     throw new \DomainException('Az eszköz állapotának mentése sikertelen.');
                 }
                 $transaction->commit();
@@ -107,7 +114,9 @@ class LoanController extends Controller
                 throw new \DomainException('A visszavétel mentése sikertelen.');
             }
             $equipment->status = Equipment::STATUS_AVAILABLE;
-            if (!$equipment->save(false, ['status'])) {
+            // Oda kerül vissza, ahonnan kiadták.
+            $equipment->storage_location = $loan->storage_location;
+            if (!$equipment->save(false, ['status', 'storage_location'])) {
                 throw new \DomainException('Az eszköz elérhető állapotának mentése sikertelen.');
             }
             $transaction->commit();

@@ -36,8 +36,21 @@ class ExtendController extends Controller
         if (!$loan) {
             throw new NotFoundHttpException('A kölcsönzés nem található.');
         }
-        if (!$loan->isOpen() || $loan->isOverdue()) {
-            throw new NotFoundHttpException('A lezárt vagy késésben lévő kölcsönzés nem hosszabbítható.');
+        // Létező, de nem hosszabbítható kölcsönzésnél a 404-es "Hiba" oldal helyett
+        // érthető üzenettel küldjük vissza a listára (HJ-2).
+        if (!$loan->isOpen()) {
+            Yii::$app->session->setFlash('error', 'Ez a kölcsönzés már le van zárva, ezért nem hosszabbítható.');
+
+            return $this->redirect(['/extend']);
+        }
+        if ($loan->isOverdue()) {
+            Yii::$app->session->setFlash('error', sprintf(
+                'A(z) "%s" kölcsönzése már késésben van (határidő: %s), ezért nem hosszabbítható – előbb vissza kell venni az eszközt.',
+                $loan->equipment ? $loan->equipment->name : ('#' . $loan->id),
+                Yii::$app->formatter->asDate($loan->due_at, 'php:Y. m. d.')
+            ));
+
+            return $this->redirect(['/extend']);
         }
 
         $model = new LoanExtendForm([

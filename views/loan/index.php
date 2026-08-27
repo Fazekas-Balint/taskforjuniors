@@ -16,8 +16,10 @@ $this->title = 'Nyitott kölcsönzések';
         'columns' => [
             ['label' => 'Eszköz', 'value' => function ($model) { return $model->equipment ? $model->equipment->inventory_no . ' - ' . $model->equipment->name : ''; }],
             ['label' => 'Kölcsönvevő', 'value' => function ($model) { return $model->borrower ? $model->borrower->full_name : ''; }],
+            'storage_location',
             'loaned_at',
-            'due_at',
+            // A dátum formázása a nézet dolga; a modellben hagyva elrontotta a dátumszámítást (HJ-2).
+            ['attribute' => 'due_at', 'format' => ['date', 'php:Y. m. d.']],
             ['label' => 'Lejárt', 'value' => function ($model) { return $model->isOverdue() ? 'Igen (' . $model->getOverdueDays() . ' nap)' : 'Nem'; }],
             [
                 'class' => 'yii\grid\ActionColumn',

@@ -62,7 +62,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $this->view->params['breadcrumbs'] = [['label' => 'Áttekintés']];
+        // A főoldalon a morzsamenü csak a "Főoldal" hivatkozásból áll (lásd a layoutot).
         $service = new EquipmentService();
         $statusFilter = Yii::$app->request->get('status', '');
         $lenderFilter = Yii::$app->request->get('lender_id', '');

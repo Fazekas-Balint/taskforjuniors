@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 
 $this->title = 'Kikölcsönzött eszközök';
+$this->params['breadcrumbs'][] = 'Kikölcsönzött eszközök';
 ?>
 <div class="pending-index">
     <div class="page-header">
@@ -14,6 +15,7 @@ $this->title = 'Kikölcsönzött eszközök';
             <tr>
                 <th>Eszköz</th>
                 <th>Kölcsönvevő</th>
+                <th>Raktár</th>
                 <th>Késésben van?</th>
             </tr>
             </thead>
@@ -22,6 +24,7 @@ $this->title = 'Kikölcsönzött eszközök';
                 <tr>
                     <td><?= Html::encode($loan->equipment ? $loan->equipment->name : '') ?></td>
                     <td><?= Html::encode($loan->borrower ? $loan->borrower->full_name : '') ?></td>
+                    <td><?= Html::encode($loan->storage_location) ?></td>
                     <td>
                         <?php if ($loan->isOverdue()): ?>
                             <span class="text-danger fw-semibold">Igen</span>
@@ -33,7 +36,7 @@ $this->title = 'Kikölcsönzött eszközök';
             <?php endforeach; ?>
             <?php if (!$loans): ?>
                 <tr>
-                    <td colspan="3" class="text-center text-muted">Nincs kikölcsönzött eszköz.</td>
+                    <td colspan="4" class="text-center text-muted">Nincs kikölcsönzött eszköz.</td>
                 </tr>
             <?php endif; ?>
             </tbody>

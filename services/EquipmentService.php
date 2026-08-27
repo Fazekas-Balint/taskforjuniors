@@ -229,6 +229,7 @@ class EquipmentService
                 loan.created_at,
                 loan.loaned_at,
                 loan.returned_at,
+                loan.storage_location,
                 equipment.name AS equipment_name,
                 borrower.full_name
             FROM loan
@@ -304,10 +305,9 @@ class EquipmentService
 
             $rows[$index]['days_late'] = $daysLate;
 
-            // BR-6: days x daily fee, capped at the item's deposit.
-            $rows[$index]['late_fee'] = min(
-                $daysLate * self::LATE_FEE_PER_DAY,
-                (int) $row['deposit']
+            // Késedelmi díj: letét + napi díj minden késési napra.
+            $rows[$index]['late_fee'] = (
+                (int) $row['deposit'] + $daysLate * self::LATE_FEE_PER_DAY
             );
         }
 
@@ -371,11 +371,25 @@ class EquipmentService
     private function returnEquipment(int $equipmentId): array
     {
         $this->db->transaction(function () use ($equipmentId) {
+            // Az eszköz abba a raktárba kerül vissza, ahonnan kiadták.
+            $storageLocation = $this->db->createCommand(
+                'SELECT storage_location FROM loan'
+                . ' WHERE equipment_id = :id AND returned_at IS NULL'
+                . ' ORDER BY id DESC LIMIT 1',
+                [':id' => $equipmentId]
+            )->queryScalar();
+
             $this->db->createCommand(
                 'UPDATE loan SET returned_at = CURDATE()'
                 . ' WHERE equipment_id = :id AND returned_at IS NULL',
                 [':id' => $equipmentId]
             )->execute();
+
+            if ($storageLocation) {
+                $this->db->createCommand()
+                    ->update('equipment', ['storage_location' => $storageLocation], ['id' => $equipmentId])
+                    ->execute();
+            }
 
             $this->updateStatus($equipmentId, Equipment::STATUS_AVAILABLE);
         });
@@ -413,9 +427,14 @@ class EquipmentService
         $lenderId = (int) ($post['lender_id'] ?? 0);
         $starts = (string) ($post['starts_on'] ?? '');
         $due = (string) ($post['due_on'] ?? '');
+        $storageLocation = trim((string) ($post['storage_location'] ?? ''));
 
         if ($lenderId === 0 || $starts === '' || $due === '' || $starts > $due) {
             return $this->failure('Adj meg kölcsönzőt és érvényes időszakot.');
+        }
+
+        if (!in_array($storageLocation, Equipment::STORAGE_LOCATIONS, true)) {
+            return $this->failure('Válassz a listából raktárat.');
         }
 
         $conflict = $this->findOverlappingLoan($equipmentId, $starts, $due);
@@ -433,14 +452,20 @@ class EquipmentService
             return $this->failure('Az eszköz jelenleg nem elérhető.');
         }
 
-        $this->db->transaction(function () use ($equipmentId, $lenderId, $starts, $due) {
+        $this->db->transaction(function () use ($equipmentId, $lenderId, $starts, $due, $storageLocation) {
             $this->db->createCommand()->insert('loan', [
                 'equipment_id' => $equipmentId,
                 'borrower_id' => $lenderId,
+                'storage_location' => $storageLocation,
                 'loaned_at' => $starts,
                 'due_at' => $due,
                 'created_at' => date('Y-m-d H:i:s'),
             ])->execute();
+
+            // Az eszköz abból a raktárból megy ki, amit a kiadásnál megadtak.
+            $this->db->createCommand()
+                ->update('equipment', ['storage_location' => $storageLocation], ['id' => $equipmentId])
+                ->execute();
 
             $this->updateStatus($equipmentId, Equipment::STATUS_LOANED);
         });
@@ -477,41 +502,26 @@ class EquipmentService
         $inventoryNo = trim((string) ($post['inventory_no'] ?? ''));
         $name = trim((string) ($post['equipment_name'] ?? ''));
         $categoryId = (int) ($post['category_id'] ?? 0);
-        $deposit = max(0, (int) ($post['deposit'] ?? 0));
 
         if ($inventoryNo === '' || $name === '' || $categoryId === 0) {
             return $this->failure('Add meg a leltári számot, az eszköz nevét és a kategóriát.');
         }
 
-        $categoryExists = $this->db->createCommand(
-            'SELECT 1 FROM category WHERE id = :id',
-            [':id' => $categoryId]
-        )->queryScalar();
-
-        if (!$categoryExists) {
-            return $this->failure('A kiválasztott kategória nem található.');
-        }
-
-        $inventoryNoTaken = $this->db->createCommand(
-            'SELECT 1 FROM equipment WHERE inventory_no = :no',
-            [':no' => $inventoryNo]
-        )->queryScalar();
-
-        if ($inventoryNoTaken) {
-            return $this->failure('Ez a leltári szám már foglalt: ' . $inventoryNo);
-        }
-
-        $now = date('Y-m-d H:i:s');
-
-        $this->db->createCommand()->insert('equipment', [
+        // A felvétel is az Equipment modellen keresztül megy (HJ-2): a korábbi nyers
+        // INSERT megkerülte a modell szabályait, ezért be lehetett vinni olyan leltári
+        // számot, amit a szerkesztő űrlap utána már nem engedett elmenteni.
+        $equipment = new Equipment([
             'category_id' => $categoryId,
             'inventory_no' => $inventoryNo,
             'name' => $name,
+            'storage_location' => (string) ($post['storage_location'] ?? Equipment::STORAGE_LOCATIONS[0]),
             'status' => Equipment::STATUS_AVAILABLE,
-            'deposit' => $deposit,
-            'created_at' => $now,
-            'updated_at' => $now,
-        ])->execute();
+            'deposit' => max(0, (int) ($post['deposit'] ?? 0)),
+        ]);
+
+        if (!$equipment->save()) {
+            return $this->failure(implode(' ', $equipment->getFirstErrors()));
+        }
 
         return $this->success(
             'Az eszköz felvéve a leltárba: ' . $inventoryNo . ' - ' . $name

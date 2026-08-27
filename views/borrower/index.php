@@ -4,6 +4,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 
 $this->title = 'Kölcsönvevők';
+$this->params['breadcrumbs'][] = 'Kölcsönvevők';
 ?>
 <div class="borrower-index">
     <div class="page-header">

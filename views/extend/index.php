@@ -4,6 +4,7 @@ use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
 
 $this->title = 'Kölcsönzés hosszabbítása';
+$this->params['breadcrumbs'][] = 'Hosszabbítás';
 ?>
 <?php if (!isset($loan)): ?>
     <div class="loan-index">
@@ -28,8 +29,15 @@ $this->title = 'Kölcsönzés hosszabbítása';
                         <tr>
                             <td><?= Html::encode($openLoan->equipment->inventory_no . ' - ' . $openLoan->equipment->name) ?></td>
                             <td><?= Html::encode($openLoan->borrower->full_name) ?></td>
-                            <td><?= Html::encode($openLoan->due_at) ?></td>
-                            <td><?= Html::a('Hosszabbítás', ['/extend', 'id' => $openLoan->id], ['class' => 'btn btn-sm btn-outline-primary']) ?></td>
+                            <td><?= Yii::$app->formatter->asDate($openLoan->due_at, 'php:Y. m. d.') ?></td>
+                            <td>
+                                <?php if ($openLoan->isOverdue()): ?>
+                                    <span class="badge bg-danger">Késésben (<?= $openLoan->getOverdueDays() ?> nap)</span>
+                                    <div class="small text-muted">Nem hosszabbítható, előbb vissza kell venni.</div>
+                                <?php else: ?>
+                                    <?= Html::a('Hosszabbítás', ['/extend', 'id' => $openLoan->id], ['class' => 'btn btn-sm btn-outline-primary']) ?>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -47,8 +55,9 @@ $this->title = 'Kölcsönzés hosszabbítása';
                 <div class="alert alert-light border mb-4">
                     <div class="fw-semibold"><?= Html::encode($loan->equipment->name) ?></div>
                     <div class="text-muted"><?= Html::encode($loan->borrower->full_name) ?></div>
+                    <div class="text-muted">Raktár: <?= Html::encode($loan->storage_location) ?></div>
                     <div class="mt-2">Jelenlegi határidő:
-                        <strong><?= Html::encode($loan->due_at) ?></strong>
+                        <strong><?= Yii::$app->formatter->asDate($loan->due_at, 'php:Y. m. d.') ?></strong>
                     </div>
                 </div>
 

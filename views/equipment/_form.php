@@ -10,6 +10,7 @@ $form = ActiveForm::begin();
 echo $form->field($model, 'inventory_no')->textInput(['maxlength' => true]);
 echo $form->field($model, 'name')->textInput(['maxlength' => true]);
 echo $form->field($model, 'category_id')->dropDownList(ArrayHelper::map(Category::find()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name'), ['prompt' => 'Válasszon kategóriát']);
+echo $form->field($model, 'storage_location')->dropDownList(Equipment::storageLocationOptions())->hint('Az a raktár, ahol az eszköz most van.');
 echo $form->field($model, 'status')->dropDownList(Equipment::statusLabels());
 echo $form->field($model, 'description')->textarea(['rows' => 4]);
 echo $form->field($model, 'purchased_at')->input('date');

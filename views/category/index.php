@@ -4,6 +4,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 
 $this->title = 'Kategóriák';
+$this->params['breadcrumbs'][] = 'Kategóriák';
 ?>
 <div class="category-index">
     <div class="page-header">

@@ -3,7 +3,6 @@
 namespace app\models;
 
 use DateTimeImmutable;
-use Yii;
 use yii\db\ActiveRecord;
 
 class Loan extends ActiveRecord
@@ -19,7 +18,9 @@ class Loan extends ActiveRecord
     public function rules()
     {
         return [
-            [['equipment_id', 'borrower_id', 'loaned_at', 'due_at'], 'required'],
+            ['storage_location', 'trim'],
+            [['equipment_id', 'borrower_id', 'storage_location', 'loaned_at', 'due_at'], 'required'],
+            ['storage_location', 'in', 'range' => Equipment::STORAGE_LOCATIONS],
             [['equipment_id', 'borrower_id'], 'integer'],
             [['loaned_at', 'due_at', 'returned_at'], 'date', 'format' => 'php:Y-m-d'],
             [['note'], 'string'],
@@ -34,6 +35,7 @@ class Loan extends ActiveRecord
             'id' => 'Azonosító',
             'equipment_id' => 'Eszköz',
             'borrower_id' => 'Kölcsönvevő',
+            'storage_location' => 'Raktár',
             'loaned_at' => 'Kiadás dátuma',
             'due_at' => 'Határidő',
             'returned_at' => 'Visszahozás dátuma',
@@ -41,20 +43,9 @@ class Loan extends ActiveRecord
         ];
     }
 
-    /**
-     * A listák magyar dátumformátumban mutatják a határidőt, ezért a betöltés
-     * után egyszer formázzuk, hogy a nézetekben ne kelljen mindenhol átalakítani.
-     *
-     * {@inheritdoc}
-     */
-    public function afterFind()
-    {
-        parent::afterFind();
-
-        if ($this->due_at !== null) {
-            $this->due_at = Yii::$app->formatter->asDate($this->due_at, 'php:Y. m. d.');
-        }
-    }
+    // A határidő kijelzési formázása szándékosan NEM itt történik: az afterFind()-ben
+    // átírt due_at miatt a DateTimeImmutable nem tudta értelmezni a dátumot, és a
+    // hosszabbítás oldal 500-as hibára futott (HJ-2). A formázás a nézetek dolga.
 
     public function getEquipment()
     {
@@ -106,6 +97,9 @@ class Loan extends ActiveRecord
      * Closed loans are calculated up to returned_at; open loans are calculated
      * up to today. This makes the value usable both at return time and in reports.
      */
+    /**
+     * Késedelmi díj: a letét + minden megkezdett késési nap után a napi díj.
+     */
     public function getLateFee($dailyFee = self::DAILY_LATE_FEE)
     {
         $equipment = $this->getEquipment()->one();
@@ -113,9 +107,6 @@ class Loan extends ActiveRecord
             return 0;
         }
 
-        return min(
-            $this->getOverdueDays() * (int) $dailyFee,
-            (int) $equipment->deposit
-        );
+        return (int) $equipment->deposit + $this->getOverdueDays() * (int) $dailyFee;
     }
 }

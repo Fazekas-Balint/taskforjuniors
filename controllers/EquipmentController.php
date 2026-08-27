@@ -53,6 +53,9 @@ class EquipmentController extends Controller
         if ($request->get('category_id', '') !== '') {
             $query->andWhere(['equipment.category_id' => (int) $request->get('category_id')]);
         }
+        if ($request->get('storage_location', '') !== '') {
+            $query->andWhere(['equipment.storage_location' => $request->get('storage_location')]);
+        }
         if ($request->get('q', '') !== '') {
             $query->andWhere(['or',
                 ['like', 'equipment.inventory_no', $request->get('q')],
@@ -67,6 +70,10 @@ class EquipmentController extends Controller
                 'defaultOrder' => ['inventory_no' => SORT_ASC],
                 'attributes' => [
                     'inventory_no',
+                    'storage_location' => [
+                        'asc' => ['equipment.storage_location' => SORT_ASC],
+                        'desc' => ['equipment.storage_location' => SORT_DESC],
+                    ],
                     'status',
                     'deposit',
                     'purchased_at',
@@ -133,6 +140,37 @@ class EquipmentController extends Controller
             return $this->redirect(['index']);
         }
         return $this->render('update', ['model' => $model]);
+    }
+
+    /**
+     * Eszköz átmozgatása másik raktárba (HJ-1).
+     *
+     * Csak a raktár mezőt validálja és menti, hogy a régi, még nem szabványos
+     * leltári számú eszközök is mozgathatók legyenek.
+     */
+    public function actionMove($id)
+    {
+        if (!Yii::$app->request->isPost) {
+            throw new NotFoundHttpException();
+        }
+
+        $model = $this->findModel($id);
+        $from = $model->storage_location;
+        $model->storage_location = Yii::$app->request->post('storage_location');
+
+        if ($model->save(true, ['storage_location', 'updated_at'])) {
+            Yii::$app->session->setFlash('success', sprintf(
+                '%s – %s átkerült ide: %s (innen: %s).',
+                $model->inventory_no,
+                $model->name,
+                $model->storage_location,
+                $from
+            ));
+        } else {
+            Yii::$app->session->setFlash('error', implode(' ', $model->getFirstErrors()));
+        }
+
+        return $this->redirect(Yii::$app->request->referrer ?: ['index']);
     }
 
     public function actionDelete($id)

@@ -9,6 +9,7 @@ class LoanForm extends Model
 {
     public $equipment_id;
     public $borrower_id;
+    public $storage_location;
     public $loaned_at;
     public $due_at;
     public $note;
@@ -16,7 +17,15 @@ class LoanForm extends Model
     public function rules()
     {
         return [
+            ['storage_location', 'trim'],
             [['equipment_id', 'borrower_id', 'loaned_at', 'due_at'], 'validateSz1'],
+            // A validateSz1 inline validátor üres értéknél nem fut le (skipOnEmpty),
+            // ezért a raktárnál a beépített required validátort használjuk.
+            ['storage_location', 'required', 'message' => 'A mező kitöltése kötelező.'],
+            ['storage_location', 'in',
+                'range' => Equipment::STORAGE_LOCATIONS,
+                'message' => 'Válassz a listából raktárat.',
+            ],
             ['due_at', 'validateSz2'],
             ['loaned_at', 'validateSz5'],
             [['loaned_at', 'due_at'], 'validateRealDate'],
@@ -33,6 +42,7 @@ class LoanForm extends Model
         return [
             'equipment_id' => 'Eszköz',
             'borrower_id' => 'Kölcsönvevő',
+            'storage_location' => 'Raktár',
             'loaned_at' => 'Kiadás dátuma',
             'due_at' => 'Határidő',
             'note' => 'Megjegyzés',
