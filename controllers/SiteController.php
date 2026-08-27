@@ -67,8 +67,14 @@ class SiteController extends Controller
         $statusFilter = Yii::$app->request->get('status', '');
         $lenderFilter = Yii::$app->request->get('lender_id', '');
         $categoryFilter = Yii::$app->request->get('category_id', '');
+        $canLend = !Yii::$app->user->isGuest;
+        $canEdit = $canLend && Yii::$app->user->identity->canEdit();
         if (Yii::$app->request->isPost) {
-            if (Yii::$app->user->isGuest || !Yii::$app->user->identity->canEdit()) {
+            if (!$canLend) {
+                throw new \yii\web\ForbiddenHttpException('Ehhez be kell jelentkezni.');
+            }
+            // Kölcsönzés/visszavétel bárkinek, törzsadat és karbantartás csak adminnak.
+            if (!$canEdit && !in_array(Yii::$app->request->post('action', ''), ['lend', 'return'], true)) {
                 throw new \yii\web\ForbiddenHttpException('Ehhez admin jogosultság szükséges.');
             }
             $result = $service->handleAction(Yii::$app->request->post());
@@ -83,7 +89,8 @@ class SiteController extends Controller
             'lenders' => $service->lenders(),
             'categories' => $service->categories(),
             'categoryStats' => $service->categoriesWithUsage(),
-            'canEdit' => !Yii::$app->user->isGuest && Yii::$app->user->identity->canEdit(),
+            'canEdit' => $canEdit,
+            'canLend' => $canLend,
             'statusFilter' => $statusFilter,
             'lenderFilter' => $lenderFilter,
             'categoryFilter' => $categoryFilter,

@@ -14,7 +14,18 @@ class EquipmentController extends Controller
 {
     public function behaviors()
     {
-        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
+        // Forrás: milan-deletion branch - controllers/EquipmentController.php behaviors().
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    // A publikus katalógus mindenkinek nyitva, vendégnek is.
+                    ['allow' => true, 'actions' => ['catalog'], 'roles' => ['?', '@']],
+                    // Minden más (felvétel, módosítás, törlés) csak szerkesztő jogú felhasználónak.
+                    ['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }],
+                ],
+            ],
+        ];
     }
 
     public function actionIndex()
@@ -36,6 +47,29 @@ class EquipmentController extends Controller
         return $this->render('index', ['dataProvider' => new ActiveDataProvider([
             'query' => $query->orderBy(['name' => SORT_ASC]),
         ]), 'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all()]);
+    }
+
+    // Forrás: milan-deletion branch - EquipmentController::actionCatalog().
+    public function actionCatalog()
+    {
+        $categoryId = Yii::$app->request->get('category');
+
+        $query = Equipment::find()
+            ->with('category')
+            ->where(['status' => Equipment::STATUS_AVAILABLE])
+            ->andFilterWhere(['category_id' => $categoryId])
+            ->orderBy(['name' => SORT_ASC]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 12],
+        ]);
+
+        return $this->render('catalog', [
+            'dataProvider' => $dataProvider,
+            'categories' => Category::find()->orderBy(['name' => SORT_ASC])->all(),
+            'selectedCategory' => $categoryId,
+        ]);
     }
 
     public function actionCreate()

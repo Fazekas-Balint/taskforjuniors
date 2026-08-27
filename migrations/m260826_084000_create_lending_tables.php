@@ -57,8 +57,11 @@ class m260826_084000_create_lending_tables extends Migration
 
     public function safeDown()
     {
-        $this->dropTable('{{%loan}}');
-        $this->dropTable('{{%equipment}}');
-        $this->dropTable('{{%category}}');
+        // A category és az equipment táblát a korábbi (milan-deletion-ből átvett) migrációk
+        // hozzák létre, így azokat az ő safeDown()-juk bontja - itt csak a loan a miénk.
+        // A loan tábla eldobása viszi vele a rá mutató idegen kulcsokat is.
+        if ($this->db->schema->getTableSchema('{{%loan}}', true) !== null) {
+            $this->dropTable('{{%loan}}');
+        }
     }
 }

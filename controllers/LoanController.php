@@ -19,9 +19,9 @@ class LoanController extends Controller
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'roles' => ['@'], 'matchCallback' => function () {
-                        return Yii::$app->user->identity->canEdit();
-                    }],
+                    // Kölcsönzést minden belépett felhasználó rögzíthet és zárhat (a kollega is),
+                    // a törzsadat szerkesztése marad admin jog.
+                    ['allow' => true, 'roles' => ['@']],
                 ],
             ],
         ];

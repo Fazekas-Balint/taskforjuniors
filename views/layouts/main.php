@@ -38,13 +38,22 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
-        'items' => [
+        'items' => array_merge([
             ['label' => 'Áttekintés', 'url' => ['/site/index']],
+            ['label' => 'Katalógus', 'url' => ['/equipment/catalog']],
+        ],
+        // Kölcsönzés és riport minden belépett felhasználónak, a kollegának is.
+        Yii::$app->user->isGuest ? [] : [
             ['label' => 'Új kölcsönzés', 'url' => ['/loan/create']],
             ['label' => 'Késés-riport', 'url' => ['/report/overdue']],
+        ],
+        // Szerkesztő menüpontok csak adminnak - a kollega nem lát szerkesztő gombot.
+        !Yii::$app->user->isGuest && Yii::$app->user->identity->canEdit() ? [
             ['label' => 'Új eszköz', 'url' => ['/equipment/create']],
             ['label' => 'Eszközök', 'url' => ['/equipment/index']],
             ['label' => 'Kategóriák', 'url' => ['/category/index']],
+        ] : [],
+        [
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
@@ -55,7 +64,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                     )
                     . Html::endForm()
                     . '</li>'
-        ]
+        ])
     ]);
     NavBar::end();
     ?>
