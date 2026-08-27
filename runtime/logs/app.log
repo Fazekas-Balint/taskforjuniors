@@ -2439,3 +2439,811 @@ $_SERVER = [
     'REQUEST_TIME_FLOAT' => 1787821037.8721
     'REQUEST_TIME' => 1787821037
 ]
+2026-08-27 11:05:08 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][error][yii\web\HttpException:404] yii\base\InvalidRouteException: Unable to resolve the request: equipment/catalog in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php:168
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Module.php(554): yii\base\Controller->runAction('catalog', Array)
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php(112): yii\base\Module->runAction('equipment/catal...', Array)
+#2 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#4 {main}
+
+Next yii\web\NotFoundHttpException: Az oldal nem található. in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php:124
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2026-08-27 11:05:08 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => 'cl2vfj970s8p2ubih6tnmsuru4'
+    '_identity' => '825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"100\",\"test100key\",2592000]\";}'
+    '_csrf' => 'b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '100'
+    '__authKey' => 'test100key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64108'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/catalog'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/catalog'
+    'PHP_SELF' => '/index.php/equipment/catalog'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=cl2vfj970s8p2ubih6tnmsuru4; _identity=825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22100%22%2C%22test100key%22%2C2592000%5D%22%3B%7D; _csrf=b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821508.5924
+    'REQUEST_TIME' => 1787821508
+]
+2026-08-27 11:05:17 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][error][yii\web\HttpException:404] yii\base\InvalidRouteException: Unable to resolve the request: equipment/catalog in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php:168
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Module.php(554): yii\base\Controller->runAction('catalog', Array)
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php(112): yii\base\Module->runAction('equipment/catal...', Array)
+#2 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#4 {main}
+
+Next yii\web\NotFoundHttpException: Az oldal nem található. in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php:124
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2026-08-27 11:05:17 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => 'cl2vfj970s8p2ubih6tnmsuru4'
+    '_identity' => '825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"100\",\"test100key\",2592000]\";}'
+    '_csrf' => 'b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '100'
+    '__authKey' => 'test100key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64156'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/catalog'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/catalog'
+    'PHP_SELF' => '/index.php/equipment/catalog'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/category/index'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=cl2vfj970s8p2ubih6tnmsuru4; _identity=825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22100%22%2C%22test100key%22%2C2592000%5D%22%3B%7D; _csrf=b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821517.0089
+    'REQUEST_TIME' => 1787821517
+]
+2026-08-27 11:05:26 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][error][yii\web\HttpException:404] yii\base\InvalidRouteException: Unable to resolve the request: equipment/catalog in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php:168
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Module.php(554): yii\base\Controller->runAction('catalog', Array)
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php(112): yii\base\Module->runAction('equipment/catal...', Array)
+#2 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#4 {main}
+
+Next yii\web\NotFoundHttpException: Az oldal nem található. in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php:124
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2026-08-27 11:05:26 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => 'cl2vfj970s8p2ubih6tnmsuru4'
+    '_identity' => '825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"100\",\"test100key\",2592000]\";}'
+    '_csrf' => 'b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '100'
+    '__authKey' => 'test100key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64178'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/catalog'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/catalog'
+    'PHP_SELF' => '/index.php/equipment/catalog'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/equipment/index'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=cl2vfj970s8p2ubih6tnmsuru4; _identity=825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22100%22%2C%22test100key%22%2C2592000%5D%22%3B%7D; _csrf=b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821526.0632
+    'REQUEST_TIME' => 1787821526
+]
+2026-08-27 11:05:30 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][error][yii\web\HttpException:404] yii\base\InvalidRouteException: Unable to resolve the request: equipment/catalog in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php:168
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Module.php(554): yii\base\Controller->runAction('catalog', Array)
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php(112): yii\base\Module->runAction('equipment/catal...', Array)
+#2 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#4 {main}
+
+Next yii\web\NotFoundHttpException: Az oldal nem található. in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php:124
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2026-08-27 11:05:30 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => 'cl2vfj970s8p2ubih6tnmsuru4'
+    '_identity' => '825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"100\",\"test100key\",2592000]\";}'
+    '_csrf' => 'b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '100'
+    '__authKey' => 'test100key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64204'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/catalog'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/catalog'
+    'PHP_SELF' => '/index.php/equipment/catalog'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/loan'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=cl2vfj970s8p2ubih6tnmsuru4; _identity=825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22100%22%2C%22test100key%22%2C2592000%5D%22%3B%7D; _csrf=b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821530.449
+    'REQUEST_TIME' => 1787821530
+]
+2026-08-27 11:06:57 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][error][yii\web\HttpException:404] yii\base\InvalidRouteException: Unable to resolve the request: equipment/catalog in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php:168
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Module.php(554): yii\base\Controller->runAction('catalog', Array)
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php(112): yii\base\Module->runAction('equipment/catal...', Array)
+#2 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#3 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#4 {main}
+
+Next yii\web\NotFoundHttpException: Az oldal nem található. in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php:124
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#2 {main}
+2026-08-27 11:06:57 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => 'cl2vfj970s8p2ubih6tnmsuru4'
+    '_identity' => '825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"100\",\"test100key\",2592000]\";}'
+    '_csrf' => 'b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '100'
+    '__authKey' => 'test100key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64283'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/catalog'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/catalog'
+    'PHP_SELF' => '/index.php/equipment/catalog'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/home'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=cl2vfj970s8p2ubih6tnmsuru4; _identity=825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22100%22%2C%22test100key%22%2C2592000%5D%22%3B%7D; _csrf=b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821617.3609
+    'REQUEST_TIME' => 1787821617
+]
+2026-08-27 11:09:09 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][error][yii\base\ErrorException:64] yii\base\ErrorException: Cannot redeclare app\controllers\EquipmentController::actionIndex() in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\controllers\EquipmentController.php:118
+Stack trace:
+#0 {main}
+2026-08-27 11:09:09 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => 'cl2vfj970s8p2ubih6tnmsuru4'
+    '_identity' => '825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"100\",\"test100key\",2592000]\";}'
+    '_csrf' => 'b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '100'
+    '__authKey' => 'test100key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64329'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/catalog'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/catalog'
+    'PHP_SELF' => '/index.php/equipment/catalog'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_CACHE_CONTROL' => 'max-age=0'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/home'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=cl2vfj970s8p2ubih6tnmsuru4; _identity=825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22100%22%2C%22test100key%22%2C2592000%5D%22%3B%7D; _csrf=b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821749.6648
+    'REQUEST_TIME' => 1787821749
+]
+2026-08-27 11:09:43 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][error][yii\base\ErrorException:64] yii\base\ErrorException: Cannot redeclare app\controllers\EquipmentController::actionIndex() in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\controllers\EquipmentController.php:118
+Stack trace:
+#0 {main}
+2026-08-27 11:09:43 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => 'cl2vfj970s8p2ubih6tnmsuru4'
+    '_identity' => '825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"100\",\"test100key\",2592000]\";}'
+    '_csrf' => 'b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '100'
+    '__authKey' => 'test100key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64340'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/index'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/index'
+    'PHP_SELF' => '/index.php/equipment/index'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'none'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=cl2vfj970s8p2ubih6tnmsuru4; _identity=825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22100%22%2C%22test100key%22%2C2592000%5D%22%3B%7D; _csrf=b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821783.0187
+    'REQUEST_TIME' => 1787821783
+]
+2026-08-27 11:09:46 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][error][yii\base\ErrorException:64] yii\base\ErrorException: Cannot redeclare app\controllers\EquipmentController::actionIndex() in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\controllers\EquipmentController.php:118
+Stack trace:
+#0 {main}
+2026-08-27 11:09:46 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => 'cl2vfj970s8p2ubih6tnmsuru4'
+    '_identity' => '825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"100\",\"test100key\",2592000]\";}'
+    '_csrf' => 'b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '100'
+    '__authKey' => 'test100key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64341'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/'
+    'PHP_SELF' => '/index.php/equipment/'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'none'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=cl2vfj970s8p2ubih6tnmsuru4; _identity=825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22100%22%2C%22test100key%22%2C2592000%5D%22%3B%7D; _csrf=b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821786.8021
+    'REQUEST_TIME' => 1787821786
+]
+2026-08-27 11:09:51 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][error][yii\base\ErrorException:64] yii\base\ErrorException: Cannot redeclare app\controllers\EquipmentController::actionIndex() in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\controllers\EquipmentController.php:118
+Stack trace:
+#0 {main}
+2026-08-27 11:09:51 [::1][100][cl2vfj970s8p2ubih6tnmsuru4][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => 'cl2vfj970s8p2ubih6tnmsuru4'
+    '_identity' => '825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"100\",\"test100key\",2592000]\";}'
+    '_csrf' => 'b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '100'
+    '__authKey' => 'test100key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64352'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/catalog'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/catalog'
+    'PHP_SELF' => '/index.php/equipment/catalog'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=cl2vfj970s8p2ubih6tnmsuru4; _identity=825c10f2436e3302e27195108e42c894b4811784c2b20ad3e35789833e0a52ffa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22100%22%2C%22test100key%22%2C2592000%5D%22%3B%7D; _csrf=b56529eef533ccfd174446bede884cfea8bcb47688d157e802ee1e1b8d57d8c3a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22_VpejTSL6VNU15DflQFZAdJ8zkNPu8T5%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821791.8207
+    'REQUEST_TIME' => 1787821791
+]
+2026-08-27 11:12:46 [::1][102][3tcpa1avvom9h7htlnd57bv36v][error][yii\web\HttpException:403] yii\web\ForbiddenHttpException: Nincs jogosultsága a művelet végrehajtásához. in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\filters\AccessControl.php:165
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\filters\AccessControl.php(144): yii\filters\AccessControl->denyAccess(Object(yii\web\User))
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\ActionFilter.php(83): yii\filters\AccessControl->beforeAction(Object(yii\base\InlineAction))
+#2 [internal function]: yii\base\ActionFilter->beforeFilter(Object(yii\base\ActionEvent))
+#3 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Component.php(653): call_user_func(Array, Object(yii\base\ActionEvent))
+#4 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php(334): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#5 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Controller.php(344): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#6 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php(195): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#7 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Module.php(554): yii\base\Controller->runAction('index', Array)
+#8 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php(112): yii\base\Module->runAction('equipment/index', Array)
+#9 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#10 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#11 {main}
+2026-08-27 11:12:46 [::1][102][3tcpa1avvom9h7htlnd57bv36v][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => '3tcpa1avvom9h7htlnd57bv36v'
+    '_identity' => '7513c305cda95418bba29eb65720c97c5313f39d201979d51d4a93462115076aa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"102\",\"test102key\",2592000]\";}'
+    '_csrf' => '83c6a9f42a27d851a687976a4149724a2424bc69a72fec6996e062316445eae5a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"hhHv75ray-7NTgsWc0fGBICqkmSeR3N-\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '102'
+    '__authKey' => 'test102key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64495'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/equipment/index'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/equipment/index'
+    'PHP_SELF' => '/index.php/equipment/index'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/equipment/catalog'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=3tcpa1avvom9h7htlnd57bv36v; _identity=7513c305cda95418bba29eb65720c97c5313f39d201979d51d4a93462115076aa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22102%22%2C%22test102key%22%2C2592000%5D%22%3B%7D; _csrf=83c6a9f42a27d851a687976a4149724a2424bc69a72fec6996e062316445eae5a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22hhHv75ray-7NTgsWc0fGBICqkmSeR3N-%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821966.6218
+    'REQUEST_TIME' => 1787821966
+]
+2026-08-27 11:12:48 [::1][102][3tcpa1avvom9h7htlnd57bv36v][error][yii\web\HttpException:403] yii\web\ForbiddenHttpException: Nincs jogosultsága a művelet végrehajtásához. in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\filters\AccessControl.php:165
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\filters\AccessControl.php(144): yii\filters\AccessControl->denyAccess(Object(yii\web\User))
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\ActionFilter.php(83): yii\filters\AccessControl->beforeAction(Object(yii\base\InlineAction))
+#2 [internal function]: yii\base\ActionFilter->beforeFilter(Object(yii\base\ActionEvent))
+#3 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Component.php(653): call_user_func(Array, Object(yii\base\ActionEvent))
+#4 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php(334): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#5 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Controller.php(344): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#6 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php(195): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#7 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Module.php(554): yii\base\Controller->runAction('index', Array)
+#8 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php(112): yii\base\Module->runAction('category/index', Array)
+#9 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#10 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#11 {main}
+2026-08-27 11:12:48 [::1][102][3tcpa1avvom9h7htlnd57bv36v][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => '3tcpa1avvom9h7htlnd57bv36v'
+    '_identity' => '7513c305cda95418bba29eb65720c97c5313f39d201979d51d4a93462115076aa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"102\",\"test102key\",2592000]\";}'
+    '_csrf' => '83c6a9f42a27d851a687976a4149724a2424bc69a72fec6996e062316445eae5a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"hhHv75ray-7NTgsWc0fGBICqkmSeR3N-\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '102'
+    '__authKey' => 'test102key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64503'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/category/index'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/category/index'
+    'PHP_SELF' => '/index.php/category/index'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/equipment/index'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=3tcpa1avvom9h7htlnd57bv36v; _identity=7513c305cda95418bba29eb65720c97c5313f39d201979d51d4a93462115076aa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22102%22%2C%22test102key%22%2C2592000%5D%22%3B%7D; _csrf=83c6a9f42a27d851a687976a4149724a2424bc69a72fec6996e062316445eae5a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22hhHv75ray-7NTgsWc0fGBICqkmSeR3N-%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821968.9732
+    'REQUEST_TIME' => 1787821968
+]
+2026-08-27 11:12:51 [::1][102][3tcpa1avvom9h7htlnd57bv36v][error][yii\web\HttpException:403] yii\web\ForbiddenHttpException: Nincs jogosultsága a művelet végrehajtásához. in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\filters\AccessControl.php:165
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\filters\AccessControl.php(144): yii\filters\AccessControl->denyAccess(Object(yii\web\User))
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\ActionFilter.php(83): yii\filters\AccessControl->beforeAction(Object(yii\base\InlineAction))
+#2 [internal function]: yii\base\ActionFilter->beforeFilter(Object(yii\base\ActionEvent))
+#3 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Component.php(653): call_user_func(Array, Object(yii\base\ActionEvent))
+#4 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php(334): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#5 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Controller.php(344): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#6 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php(195): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#7 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Module.php(554): yii\base\Controller->runAction('create', Array)
+#8 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php(112): yii\base\Module->runAction('loan/create', Array)
+#9 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#10 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#11 {main}
+2026-08-27 11:12:51 [::1][102][3tcpa1avvom9h7htlnd57bv36v][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => '3tcpa1avvom9h7htlnd57bv36v'
+    '_identity' => '7513c305cda95418bba29eb65720c97c5313f39d201979d51d4a93462115076aa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"102\",\"test102key\",2592000]\";}'
+    '_csrf' => '83c6a9f42a27d851a687976a4149724a2424bc69a72fec6996e062316445eae5a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"hhHv75ray-7NTgsWc0fGBICqkmSeR3N-\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '102'
+    '__authKey' => 'test102key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64511'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/loan'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/loan'
+    'PHP_SELF' => '/index.php/loan'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/category/index'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=3tcpa1avvom9h7htlnd57bv36v; _identity=7513c305cda95418bba29eb65720c97c5313f39d201979d51d4a93462115076aa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22102%22%2C%22test102key%22%2C2592000%5D%22%3B%7D; _csrf=83c6a9f42a27d851a687976a4149724a2424bc69a72fec6996e062316445eae5a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22hhHv75ray-7NTgsWc0fGBICqkmSeR3N-%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787821971.0289
+    'REQUEST_TIME' => 1787821971
+]
+2026-08-27 11:13:32 [::1][102][3tcpa1avvom9h7htlnd57bv36v][error][yii\web\HttpException:403] yii\web\ForbiddenHttpException: Nincs jogosultsága a művelet végrehajtásához. in C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\filters\AccessControl.php:165
+Stack trace:
+#0 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\filters\AccessControl.php(144): yii\filters\AccessControl->denyAccess(Object(yii\web\User))
+#1 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\ActionFilter.php(83): yii\filters\AccessControl->beforeAction(Object(yii\base\InlineAction))
+#2 [internal function]: yii\base\ActionFilter->beforeFilter(Object(yii\base\ActionEvent))
+#3 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Component.php(653): call_user_func(Array, Object(yii\base\ActionEvent))
+#4 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php(334): yii\base\Component->trigger('beforeAction', Object(yii\base\ActionEvent))
+#5 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Controller.php(344): yii\base\Controller->beforeAction(Object(yii\base\InlineAction))
+#6 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Controller.php(195): yii\web\Controller->beforeAction(Object(yii\base\InlineAction))
+#7 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Module.php(554): yii\base\Controller->runAction('create', Array)
+#8 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\web\Application.php(112): yii\base\Module->runAction('loan/create', Array)
+#9 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\vendor\yiisoft\yii2\base\Application.php(391): yii\web\Application->handleRequest(Object(yii\web\Request))
+#10 C:\Users\Gyakornok02\PhpstormProjects\taskforjuniors\web\index.php(12): yii\base\Application->run()
+#11 {main}
+2026-08-27 11:13:32 [::1][102][3tcpa1avvom9h7htlnd57bv36v][info][application] $_GET = []
+
+$_POST = []
+
+$_FILES = []
+
+$_COOKIE = [
+    'language' => '854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a:2:{i:0;s:8:\"language\";i:1;s:2:\"hu\";}'
+    'PHPSESSID' => '3tcpa1avvom9h7htlnd57bv36v'
+    '_identity' => '7513c305cda95418bba29eb65720c97c5313f39d201979d51d4a93462115076aa:2:{i:0;s:9:\"_identity\";i:1;s:28:\"[\"102\",\"test102key\",2592000]\";}'
+    '_csrf' => '83c6a9f42a27d851a687976a4149724a2424bc69a72fec6996e062316445eae5a:2:{i:0;s:5:\"_csrf\";i:1;s:32:\"hhHv75ray-7NTgsWc0fGBICqkmSeR3N-\";}'
+]
+
+$_SESSION = [
+    '__flash' => []
+    '__id' => '102'
+    '__authKey' => 'test102key'
+]
+
+$_SERVER = [
+    'DOCUMENT_ROOT' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web'
+    'REMOTE_ADDR' => '::1'
+    'REMOTE_PORT' => '64538'
+    'SERVER_SOFTWARE' => 'PHP 8.2.26 Development Server'
+    'SERVER_PROTOCOL' => 'HTTP/1.1'
+    'SERVER_NAME' => 'localhost'
+    'SERVER_PORT' => '8080'
+    'REQUEST_URI' => '/loan'
+    'REQUEST_METHOD' => 'GET'
+    'SCRIPT_NAME' => '/index.php'
+    'SCRIPT_FILENAME' => 'C:\\Users\\Gyakornok02\\PhpstormProjects\\taskforjuniors\\web\\index.php'
+    'PATH_INFO' => '/loan'
+    'PHP_SELF' => '/index.php/loan'
+    'HTTP_HOST' => 'localhost:8080'
+    'HTTP_CONNECTION' => 'keep-alive'
+    'HTTP_SEC_CH_UA' => '\"Not=A?Brand\";v=\"99\", \"Microsoft Edge\";v=\"151\", \"Chromium\";v=\"151\"'
+    'HTTP_SEC_CH_UA_MOBILE' => '?0'
+    'HTTP_SEC_CH_UA_PLATFORM' => '\"Windows\"'
+    'HTTP_UPGRADE_INSECURE_REQUESTS' => '1'
+    'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36 Edg/151.0.0.0'
+    'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
+    'HTTP_SEC_FETCH_SITE' => 'same-origin'
+    'HTTP_SEC_FETCH_MODE' => 'navigate'
+    'HTTP_SEC_FETCH_USER' => '?1'
+    'HTTP_SEC_FETCH_DEST' => 'document'
+    'HTTP_REFERER' => 'http://localhost:8080/home'
+    'HTTP_ACCEPT_ENCODING' => 'gzip, deflate, br, zstd'
+    'HTTP_ACCEPT_LANGUAGE' => 'hu,en;q=0.9,en-GB;q=0.8,en-US;q=0.7'
+    'HTTP_COOKIE' => 'language=854469913c319f201a14a5109be01bec822fd366ad1aedabb23743092e51e3d0a%3A2%3A%7Bi%3A0%3Bs%3A8%3A%22language%22%3Bi%3A1%3Bs%3A2%3A%22hu%22%3B%7D; PHPSESSID=3tcpa1avvom9h7htlnd57bv36v; _identity=7513c305cda95418bba29eb65720c97c5313f39d201979d51d4a93462115076aa%3A2%3A%7Bi%3A0%3Bs%3A9%3A%22_identity%22%3Bi%3A1%3Bs%3A28%3A%22%5B%22102%22%2C%22test102key%22%2C2592000%5D%22%3B%7D; _csrf=83c6a9f42a27d851a687976a4149724a2424bc69a72fec6996e062316445eae5a%3A2%3A%7Bi%3A0%3Bs%3A5%3A%22_csrf%22%3Bi%3A1%3Bs%3A32%3A%22hhHv75ray-7NTgsWc0fGBICqkmSeR3N-%22%3B%7D'
+    'REQUEST_TIME_FLOAT' => 1787822012.7777
+    'REQUEST_TIME' => 1787822012
+]
