@@ -34,7 +34,11 @@ class LoanController extends Controller
 
     public function actionCreate()
     {
-        $model = new LoanForm(['equipment_id' => Yii::$app->request->get('equipment_id'), 'loaned_at' => date('Y-m-d'), 'due_at' => date('Y-m-d', strtotime('+7 days'))]);
+        $model = new LoanForm([
+            'equipment_id' => Yii::$app->request->get('equipment_id'),
+            'loaned_at' => date('Y-m-d'),
+            'due_at' => date('Y-m-d', strtotime('+7 days')),
+        ]);
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
@@ -44,15 +48,21 @@ class LoanController extends Controller
                 $borrower = Borrower::find()
                     ->where(['id' => $model->borrower_id])
                     ->one();
-                if (!$equipment || $equipment->status !== Equipment::STATUS_AVAILABLE ||
-                    !$borrower || !$borrower->is_active ||
-                    Loan::find()
+                if (
+                    !$equipment
+                    || $equipment->status !== Equipment::STATUS_AVAILABLE
+                    || !$borrower
+                    || !$borrower->is_active
+                    || Loan::find()
                         ->where(['borrower_id' => $model->borrower_id, 'returned_at' => null])
-                        ->count() >= Loan::MAX_OPEN_LOANS_PER_BORROWER ||
-                    Loan::find()
+                        ->count() >= Loan::MAX_OPEN_LOANS_PER_BORROWER
+                    || Loan::find()
                         ->where(['equipment_id' => $model->equipment_id, 'returned_at' => null])
-                        ->exists()) {
-                    throw new \DomainException('Az eszköz vagy a kölcsönvevő állapota közben megváltozott.');
+                        ->exists()
+                ) {
+                    throw new \DomainException(
+                        'Az eszköz vagy a kölcsönvevő állapota közben megváltozott.'
+                    );
                 }
 
                 $loan = new Loan();
@@ -76,8 +86,14 @@ class LoanController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'equipmentOptions' => Equipment::find()->where(['status' => Equipment::STATUS_AVAILABLE])->orderBy(['name' => SORT_ASC])->all(),
-            'borrowerOptions' => Borrower::find()->where(['is_active' => true])->orderBy(['full_name' => SORT_ASC])->all(),
+            'equipmentOptions' => Equipment::find()
+                ->where(['status' => Equipment::STATUS_AVAILABLE])
+                ->orderBy(['name' => SORT_ASC])
+                ->all(),
+            'borrowerOptions' => Borrower::find()
+                ->where(['is_active' => true])
+                ->orderBy(['full_name' => SORT_ASC])
+                ->all(),
         ]);
     }
 

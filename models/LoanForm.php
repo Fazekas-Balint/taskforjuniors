@@ -54,7 +54,11 @@ class LoanForm extends Model
 
         $date = DateTimeImmutable::createFromFormat('!Y-m-d', $this->$attribute);
         $errors = DateTimeImmutable::getLastErrors();
-        if (!$date || ($errors !== false && ($errors['warning_count'] || $errors['error_count'])) || $date->format('Y-m-d') !== $this->$attribute) {
+        if (
+            !$date
+            || ($errors !== false && ($errors['warning_count'] || $errors['error_count']))
+            || $date->format('Y-m-d') !== $this->$attribute
+        ) {
             $this->addError($attribute, 'Adj meg érvényes dátumot.');
         }
     }
@@ -99,8 +103,13 @@ class LoanForm extends Model
         if (!$equipment) {
             $this->addError($attribute, 'A kiválasztott eszköz nem található.');
         } elseif ($equipment->status !== Equipment::STATUS_AVAILABLE) {
-            $this->addError($attribute, 'Az eszköz nem elérhető (kiadva, karbantartásban vagy selejtezve).');
-        } elseif (Loan::find()->where(['equipment_id' => $equipment->id, 'returned_at' => null])->exists()) {
+            $this->addError(
+                $attribute,
+                'Az eszköz nem elérhető (kiadva, karbantartásban vagy selejtezve).'
+            );
+        } elseif (
+            Loan::find()->where(['equipment_id' => $equipment->id, 'returned_at' => null])->exists()
+        ) {
             $this->addError($attribute, 'Az eszköznek már van nyitott kölcsönzése.');
         }
     }

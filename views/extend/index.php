@@ -26,10 +26,20 @@ $this->title = 'Kölcsönzés hosszabbítása';
                     <tbody>
                     <?php foreach ($loans as $openLoan): ?>
                         <tr>
-                            <td><?= Html::encode($openLoan->equipment->inventory_no . ' - ' . $openLoan->equipment->name) ?></td>
+                            <td>
+                                <?= Html::encode(
+                                    $openLoan->equipment->inventory_no . ' - ' . $openLoan->equipment->name
+                                ) ?>
+                            </td>
                             <td><?= Html::encode($openLoan->borrower->full_name) ?></td>
                             <td><?= Html::encode($openLoan->due_at) ?></td>
-                            <td><?= Html::a('Hosszabbítás', ['/extend', 'id' => $openLoan->id], ['class' => 'btn btn-sm btn-outline-primary']) ?></td>
+                            <td>
+                                <?= Html::a(
+                                    'Hosszabbítás',
+                                    ['/extend', 'id' => $openLoan->id],
+                                    ['class' => 'btn btn-sm btn-outline-primary']
+                                ) ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>

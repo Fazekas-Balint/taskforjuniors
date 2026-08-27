@@ -22,7 +22,13 @@ class EquipmentController extends Controller
                     // A publikus katalógus mindenkinek nyitva, vendégnek is.
                     ['allow' => true, 'actions' => ['catalog'], 'roles' => ['?', '@']],
                     // Minden más (felvétel, módosítás, törlés) csak szerkesztő jogú felhasználónak.
-                    ['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            return Yii::$app->user->identity->canEdit();
+                        },
+                    ],
                 ],
             ],
         ];
@@ -39,7 +45,8 @@ class EquipmentController extends Controller
             $query->andWhere(['category_id' => (int) $request->get('category_id')]);
         }
         if ($request->get('q', '') !== '') {
-            $query->andWhere(['or',
+            $query->andWhere([
+                'or',
                 ['like', 'inventory_no', $request->get('q')],
                 ['like', 'name', $request->get('q')],
             ]);

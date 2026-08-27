@@ -20,7 +20,12 @@ class Equipment extends ActiveRecord
     public function behaviors()
     {
         return [
-            ['class' => TimestampBehavior::class, 'value' => function () { return date('Y-m-d H:i:s'); }],
+            [
+                'class' => TimestampBehavior::class,
+                'value' => function () {
+                    return date('Y-m-d H:i:s');
+                },
+            ],
         ];
     }
 

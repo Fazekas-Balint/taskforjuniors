@@ -45,7 +45,9 @@ class ExtendController extends Controller
             throw new NotFoundHttpException('A kölcsönzés nem található.');
         }
         if (!$loan->isOpen() || $loan->isOverdue()) {
-            throw new NotFoundHttpException('A lezárt vagy késésben lévő kölcsönzés nem hosszabbítható.');
+            throw new NotFoundHttpException(
+                'A lezárt vagy késésben lévő kölcsönzés nem hosszabbítható.'
+            );
         }
 
         $model = new LoanExtendForm([
@@ -70,7 +72,9 @@ class ExtendController extends Controller
                     ->modify('+30 days')
                     ->format('Y-m-d');
                 if ($model->due_at !== $expectedDueAt || $expectedDueAt > $maximumDueAt) {
-                    throw new \DomainException('A kölcsönzés legfeljebb 7 nappal hosszabbítható, összesen 30 napig.');
+                    throw new \DomainException(
+                        'A kölcsönzés legfeljebb 7 nappal hosszabbítható, összesen 30 napig.'
+                    );
                 }
                 $lockedLoan->due_at = $model->due_at;
                 if (!$lockedLoan->save(false, ['due_at'])) {

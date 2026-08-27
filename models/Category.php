@@ -15,7 +15,13 @@ class Category extends ActiveRecord
     public function behaviors()
     {
         return [
-            ['class' => TimestampBehavior::class, 'updatedAtAttribute' => false, 'value' => function () { return date('Y-m-d H:i:s'); }],
+            [
+                'class' => TimestampBehavior::class,
+                'updatedAtAttribute' => false,
+                'value' => function () {
+                    return date('Y-m-d H:i:s');
+                },
+            ],
         ];
     }
 
@@ -24,7 +30,12 @@ class Category extends ActiveRecord
         return [
             [['name', 'slug'], 'required'],
             [['name', 'slug'], 'string', 'max' => 255],
-            ['slug', 'match', 'pattern' => '/^[a-z0-9]+(?:-[a-z0-9]+)*$/', 'message' => 'A slug csak kisbetűket, számokat és kötőjeleket tartalmazhat.'],
+            [
+                'slug',
+                'match',
+                'pattern' => '/^[a-z0-9]+(?:-[a-z0-9]+)*$/',
+                'message' => 'A slug csak kisbetűket, számokat és kötőjeleket tartalmazhat.',
+            ],
             ['slug', 'unique'],
         ];
     }

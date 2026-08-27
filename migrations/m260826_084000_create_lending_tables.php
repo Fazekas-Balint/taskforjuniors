@@ -35,7 +35,15 @@ class m260826_084000_create_lending_tables extends Migration
             ], $tableOptions);
             $this->createIndex('uq-equipment-inventory-no', '{{%equipment}}', 'inventory_no', true);
             $this->createIndex('idx-equipment-category-status', '{{%equipment}}', ['category_id', 'status']);
-            $this->addForeignKey('fk-equipment-category', '{{%equipment}}', 'category_id', '{{%category}}', 'id', 'RESTRICT', 'CASCADE');
+            $this->addForeignKey(
+                'fk-equipment-category',
+                '{{%equipment}}',
+                'category_id',
+                '{{%category}}',
+                'id',
+                'RESTRICT',
+                'CASCADE'
+            );
         }
 
         if ($this->db->schema->getTableSchema('{{%loan}}', true) === null) {
@@ -50,8 +58,24 @@ class m260826_084000_create_lending_tables extends Migration
                 'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             ], $tableOptions);
             $this->createIndex('idx-loan-equipment-returned', '{{%loan}}', ['equipment_id', 'returned_at']);
-            $this->addForeignKey('fk-loan-equipment', '{{%loan}}', 'equipment_id', '{{%equipment}}', 'id', 'RESTRICT', 'CASCADE');
-            $this->addForeignKey('fk-loan-borrower', '{{%loan}}', 'borrower_id', '{{%borrower}}', 'id', 'RESTRICT', 'CASCADE');
+            $this->addForeignKey(
+                'fk-loan-equipment',
+                '{{%loan}}',
+                'equipment_id',
+                '{{%equipment}}',
+                'id',
+                'RESTRICT',
+                'CASCADE'
+            );
+            $this->addForeignKey(
+                'fk-loan-borrower',
+                '{{%loan}}',
+                'borrower_id',
+                '{{%borrower}}',
+                'id',
+                'RESTRICT',
+                'CASCADE'
+            );
         }
     }
 
