@@ -9,8 +9,10 @@ return [
     'password' => '',
     'charset' => 'utf8mb4',
 
-    // Schema cache options (for production environment)
-    //'enableSchemaCache' => true,
-    //'schemaCacheDuration' => 60,
-    //'schemaCache' => 'cache',
+    // Séma-gyorsítótár: enélkül minden kérés újra lekérdezi a táblák leírását
+    // (SHOW CREATE TABLE / SHOW FULL COLUMNS), ami feleslegesen viszi a lekérdezésszámot.
+    // Migráció után: php yii cache/flush-schema
+    'enableSchemaCache' => true,
+    'schemaCacheDuration' => 3600,
+    'schemaCache' => 'cache',
 ];
