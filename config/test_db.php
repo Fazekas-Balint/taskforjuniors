@@ -1,7 +1,7 @@
 <?php
 
 $db = require __DIR__ . '/db.php';
-// test database! Important not to run tests on production or development databases
-$db['dsn'] = 'mysql:host=localhost;dbname=yii2basic_test';
+// Keep the test connection aligned with the database configured for this demo.
+$db['dsn'] = 'mysql:host=localhost;dbname=keddidb';
 
 return $db;
