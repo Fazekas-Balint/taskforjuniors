@@ -97,9 +97,8 @@ class Loan extends ActiveRecord
             return 0;
         }
 
-        return min(
-            $this->getOverdueDays() * (int) $dailyFee,
-            (int) $equipment->deposit
-        );
+        $fee = $this->getOverdueDays() * (int) $dailyFee;
+        // A letét csak akkor felső határ, ha van rögzítve; 0 letétnél a teljes napi díj jár.
+        return $equipment->deposit > 0 ? min($fee, (int) $equipment->deposit) : $fee;
     }
 }
