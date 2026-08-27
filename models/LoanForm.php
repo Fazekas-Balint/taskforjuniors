@@ -19,6 +19,7 @@ class LoanForm extends Model
             [['equipment_id', 'borrower_id', 'loaned_at', 'due_at'], 'validateSz1'],
             ['due_at', 'validateSz2'],
             ['loaned_at', 'validateSz5'],
+            [['loaned_at', 'due_at'], 'validateRealDate'],
             ['equipment_id', 'validateSz3'],
             ['borrower_id', 'validateSz4'],
             [['equipment_id', 'borrower_id'], 'integer'],
@@ -42,6 +43,19 @@ class LoanForm extends Model
     {
         if ($this->$attribute === null || $this->$attribute === '') {
             $this->addError($attribute, 'A mező kitöltése kötelező.');
+        }
+    }
+
+    public function validateRealDate($attribute, $params)
+    {
+        if ($this->$attribute === null || $this->$attribute === '') {
+            return;
+        }
+
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $this->$attribute);
+        $errors = DateTimeImmutable::getLastErrors();
+        if (!$date || ($errors !== false && ($errors['warning_count'] || $errors['error_count'])) || $date->format('Y-m-d') !== $this->$attribute) {
+            $this->addError($attribute, 'Adj meg érvényes dátumot.');
         }
     }
 

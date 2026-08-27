@@ -6,11 +6,17 @@ use DateTimeImmutable;
 use app\models\Loan;
 use app\models\LoanExtendForm;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class ExtendController extends Controller
 {
+    public function behaviors()
+    {
+        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
+    }
+
     public function actionIndex($id = null)
     {
         if ($id === null) {
@@ -44,7 +50,6 @@ class ExtendController extends Controller
             try {
                 $lockedLoan = Loan::find()
                     ->where(['id' => $id])
-                    ->forUpdate()
                     ->one();
                 if (!$lockedLoan || !$lockedLoan->isOpen() || $lockedLoan->isOverdue()) {
                     throw new \DomainException('A kölcsönzés időközben lezárult vagy késésbe került.');

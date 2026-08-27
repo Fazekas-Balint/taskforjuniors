@@ -5,12 +5,18 @@ namespace app\controllers;
 use app\models\Category;
 use app\models\Equipment;
 use Yii;
+use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class EquipmentController extends Controller
 {
+    public function behaviors()
+    {
+        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
+    }
+
     public function actionIndex()
     {
         $request = Yii::$app->request;

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
 class Equipment extends ActiveRecord
@@ -14,6 +15,13 @@ class Equipment extends ActiveRecord
     public static function tableName()
     {
         return '{{%equipment}}';
+    }
+
+    public function behaviors()
+    {
+        return [
+            ['class' => TimestampBehavior::class, 'value' => function () { return date('Y-m-d H:i:s'); }],
+        ];
     }
 
     public function rules()
@@ -60,6 +68,11 @@ class Equipment extends ActiveRecord
     {
         $labels = self::statusLabels();
         return isset($labels[$this->status]) ? $labels[$this->status] : 'Ismeretlen';
+    }
+
+    public function isAvailable()
+    {
+        return (int) $this->status === self::STATUS_AVAILABLE;
     }
 
     public function getCategory()

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
 class Category extends ActiveRecord
@@ -9,6 +10,13 @@ class Category extends ActiveRecord
     public static function tableName()
     {
         return '{{%category}}';
+    }
+
+    public function behaviors()
+    {
+        return [
+            ['class' => TimestampBehavior::class, 'updatedAtAttribute' => false, 'value' => function () { return date('Y-m-d H:i:s'); }],
+        ];
     }
 
     public function rules()
