@@ -36,18 +36,28 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
+    // A menü csak azt kínálja fel, amit az adott felhasználó használni is tud:
+    // a szerkesztő pontokra a kollega és a vendég eddig 403-at kapott.
+    $belepett = !Yii::$app->user->isGuest;
+    $szerkeszthet = $belepett && Yii::$app->user->identity->canEdit();
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            // Az "Áttekintés" menüpont helyett a bal oldali "Eszköztár" márkanév visz a főoldalra.
+            ['label' => 'Katalógus', 'url' => ['/equipment/catalog']],
+            ['label' => 'Eszközök', 'url' => ['/equipment/index'], 'visible' => $szerkeszthet],
+            ['label' => 'Kategóriák', 'url' => ['/category/index'], 'visible' => $szerkeszthet],
+            ['label' => 'Kölcsönvevők', 'url' => ['/borrower/index'], 'visible' => $szerkeszthet],
+            ['label' => 'Új kölcsönzés', 'url' => ['/loan/create'], 'visible' => $szerkeszthet],
+            ['label' => 'Hosszabbítás', 'url' => ['/extend'], 'visible' => $szerkeszthet],
+            ['label' => 'Késés-riport', 'url' => ['/report/overdue'], 'visible' => $belepett],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->username . ')',
+                        'Kilépés (' . Yii::$app->user->identity->username . ')',
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()
@@ -60,9 +70,18 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <main id="main" class="flex-shrink-0" role="main">
     <div class="container">
-        <?php if (!empty($this->params['breadcrumbs'])): ?>
-            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-        <?php endif ?>
+        <?php
+        // A morzsamenü mindig a "Főoldal" hivatkozással kezdődik, az aloldalak ehhez
+        // teszik hozzá a saját nevüket. Az üres címkéjű elemeket kiszűrjük, hogy a
+        // főoldalon ne maradjon üres, "active" morzsa a sor végén.
+        $breadcrumbLinks = array_merge(
+            [['label' => 'Főoldal', 'url' => Yii::$app->homeUrl]],
+            array_filter($this->params['breadcrumbs'] ?? [], function ($link) {
+                return is_array($link) ? ($link['label'] ?? '') !== '' : (string) $link !== '';
+            })
+        );
+        ?>
+        <?= Breadcrumbs::widget(['homeLink' => false, 'links' => $breadcrumbLinks]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>

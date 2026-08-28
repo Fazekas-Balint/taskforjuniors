@@ -5,13 +5,24 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Eszköztár',
+    'language' => 'hu-HU',
+    'timeZone' => 'Europe/Budapest',
     'basePath' => dirname(__DIR__),
+    'defaultRoute' => 'site/index',
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'formatter' => [
+            'class' => 'yii\i18n\Formatter',
+            'locale' => 'hu-HU',
+            'defaultTimeZone' => 'Europe/Budapest',
+            'dateFormat' => 'php:Y. m. d.',
+            'datetimeFormat' => 'php:Y. m. d. H:i',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'mKEiftTUijaBwmfIcczQOyBMfDAG9-K-',
@@ -42,14 +53,17 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'home' => 'site/index',
+                // A /loan a nyitott kölcsönzések listája, az űrlap a /loan/create.
+                'loan' => 'loan/index',
+                'extend' => 'extend/index',
+
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

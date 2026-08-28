@@ -1,6 +1,8 @@
 # phpstorm project files
 .idea
 
+/runtime
+
 # visual studio code project files
 .vscode
 

@@ -1,0 +1,24 @@
+<?php
+
+use app\models\Equipment;
+use yii\bootstrap5\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+
+$this->title = 'Új kölcsönzés';
+$this->params['breadcrumbs'][] = 'Új kölcsönzés';
+// Rögzített azonosító, hogy az űrlap a tesztekből egyértelműen címezhető legyen.
+$form = ActiveForm::begin(['id' => 'loan-form']);
+?>
+<div class="page-header">
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?= Html::a('Nyitott kölcsönzések', ['/loan'], ['class' => 'btn btn-outline-secondary']) ?>
+</div>
+<?= $form->field($model, 'equipment_id')->dropDownList(ArrayHelper::map($equipmentOptions, 'id', function (Equipment $item) { return $item->inventory_no . ' - ' . $item->name; }), ['prompt' => 'Válasszon eszközt']) ?>
+<?= $form->field($model, 'borrower_id')->dropDownList(ArrayHelper::map($borrowerOptions, 'id', 'full_name'), ['prompt' => 'Válasszon kölcsönvevőt']) ?>
+<?= $form->field($model, 'storage_location')->dropDownList(Equipment::storageLocationOptions(), ['prompt' => 'Válasszon raktárat'])->hint('Melyik raktárból viszik el az eszközt - visszavételkor is ide kerül vissza.') ?>
+<?= $form->field($model, 'loaned_at')->input('date') ?>
+<?= $form->field($model, 'due_at')->input('date') ?>
+<?= $form->field($model, 'note')->textarea(['rows' => 4]) ?>
+<?= Html::submitButton('Kölcsönzés mentése', ['class' => 'btn btn-primary']) ?>
+<?php ActiveForm::end(); ?>

@@ -1,0 +1,23 @@
+<?php
+
+use app\models\Loan;
+use yii\bootstrap5\Html;
+
+$this->title = 'Késés-riport';
+$fmt = Yii::$app->formatter;
+
+/**
+ * A késedelmi díj bontása: ha van letét, azt a napi díjas rész mellett külön is
+ * kiírjuk, hogy az összeg magától értetődő legyen.
+ */
+$dijBontas = static function (array $row): string {
+    $napiResz = $row['days_late'] . ' × ' . number_format(Loan::DAILY_LATE_FEE, 0, ',', ' ');
+
+    return (int) $row['deposit'] > 0
+        ? number_format($row['deposit'], 0, ',', ' ') . ' letét + ' . $napiResz
+        : $napiResz;
+};
+?>
+<div class="report-page"><div class="section-heading"><div><p class="eyebrow">JELENTÉSEK</p><h1>Késés-riport</h1><p class="hero-copy">Nyitott kölcsönzések, amelyek határideje lejárt.</p></div><a class="action-button" href="<?= Html::encode(Yii::$app->urlManager->createUrl(array_merge(['/report/export'], $filters))) ?>">CSV export</a></div>
+<form class="report-filters" method="get" action="<?= Html::encode(Yii::$app->urlManager->createUrl(['/report/overdue'])) ?>"><?= Html::hiddenInput('r', 'report/overdue') ?><label>Kölcsönvevő<select name="lender_id"><option value="">Mindegyik</option><?php foreach ($lenders as $lender): ?><option value="<?= $lender['id'] ?>" <?= (($filters['lender_id'] ?? '') == $lender['id']) ? 'selected' : '' ?>><?= Html::encode($lender['full_name']) ?></option><?php endforeach; ?></select></label><label>Kategória<select name="category_id"><option value="">Mindegyik</option><?php foreach ($categories as $category): ?><option value="<?= $category['id'] ?>" <?= (($filters['category_id'] ?? '') == $category['id']) ? 'selected' : '' ?>><?= Html::encode($category['name']) ?></option><?php endforeach; ?></select></label><label>Határidő ettől<input type="date" name="from" value="<?= Html::encode($filters['from'] ?? '') ?>"></label><label>Határidő eddig<input type="date" name="to" value="<?= Html::encode($filters['to'] ?? '') ?>"></label><button class="action-button">Szűrés</button></form>
+<div class="report-summary"><strong><?= count($rows) ?> lejárt tétel</strong><span>Összesített késedelmi díj: <b><?= number_format($totalFee, 0, ',', ' ') ?> Ft</b></span><span class="muted">Számítás: letét + <?= number_format(Loan::DAILY_LATE_FEE, 0, ',', ' ') ?> Ft / késési nap</span></div><div class="table-wrap"><table><thead><tr><th>Leltári szám</th><th>Eszköz</th><th>Kategória</th><th>Név</th><th>Raktár</th><th>Email</th><th>Határidő</th><th>Késés</th><th>Díj</th></tr></thead><tbody><?php foreach ($rows as $row): ?><tr><td><?= Html::encode($row['inventory_no']) ?></td><td><?= Html::encode($row['equipment_name']) ?></td><td><?= Html::encode($row['category_name']) ?></td><td><?= Html::encode($row['full_name']) ?></td><td><?= Html::encode($row['storage_location']) ?></td><td><?= Html::encode($row['email']) ?></td><td class="overdue"><?= $fmt->asDate($row['due_at'], 'php:Y. m. d.') ?></td><td><?= $row['days_late'] ?> nap</td><td class="fee"><strong><?= number_format($row['late_fee'], 0, ',', ' ') ?> Ft</strong><span class="fee-breakdown"><?= $dijBontas($row) ?></span></td></tr><?php endforeach; ?><?php if (!$rows): ?><tr><td colspan="9" class="muted">A szűrésnek megfelelő késés nincs.</td></tr><?php endif; ?></tbody></table></div></div>

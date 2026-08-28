@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\services\EquipmentService;
 
 class SiteController extends Controller
 {
@@ -61,7 +62,32 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        // A főoldalon a morzsamenü csak a "Főoldal" hivatkozásból áll (lásd a layoutot).
+        $service = new EquipmentService();
+        $statusFilter = Yii::$app->request->get('status', '');
+        $lenderFilter = Yii::$app->request->get('lender_id', '');
+        $categoryFilter = Yii::$app->request->get('category_id', '');
+        if (Yii::$app->request->isPost) {
+            if (Yii::$app->user->isGuest || !Yii::$app->user->identity->canEdit()) {
+                throw new \yii\web\ForbiddenHttpException('Ehhez admin jogosultság szükséges.');
+            }
+            $result = $service->handleAction(Yii::$app->request->post());
+            Yii::$app->session->setFlash($result['success'] ? 'success' : 'error', $result['message']);
+            return $this->refresh();
+        }
+        return $this->render('home', [
+            'equipment' => $service->equipment($statusFilter, $lenderFilter, $categoryFilter),
+            'loans' => $service->activeLoans(),
+            'report' => $service->report(),
+            'movements' => $service->recentMovements(),
+            'lenders' => $service->lenders(),
+            'categories' => $service->categories(),
+            'categoryStats' => $service->categoriesWithUsage(),
+            'canEdit' => !Yii::$app->user->isGuest && Yii::$app->user->identity->canEdit(),
+            'statusFilter' => $statusFilter,
+            'lenderFilter' => $lenderFilter,
+            'categoryFilter' => $categoryFilter,
+        ]);
     }
 
     /**
