@@ -16,6 +16,31 @@ Nem TODO-lista — valódi állapotgép, valódi ütközések, valódi riport.
 
 ---
 
+## 0. Fejlesztői indítás
+
+```bash
+composer install
+
+# séma + demó adatok a fejlesztői adatbázisba (config/db.php)
+php yii migrate
+
+# séma a teszt-adatbázisba (config/test_db.php -> kolcsonpont_test)
+php yii migrate --db=dbTest
+
+# alkalmazás: http://localhost:8000
+php -S localhost:8000 -t web
+
+# tesztek; a végén JSON összefoglaló: tests/_output/test-results.json
+php test.php              # minden
+php test.php unit
+php test.php functional
+```
+
+VS Code-ból a tesztek `Ctrl+Shift+B`-vel is indíthatók (lásd `.vscode/tasks.json`).
+
+Belépés: `admin / admin` teljes hozzáféréssel; a `kollega` és a `demo` felhasználó a
+katalógust és a késés-riportot látja.
+
 ## 1. Mit tud a kész alkalmazás
 
 - Az irodavezető felveszi az eszközöket leltári számmal, kategóriával, státusszal.

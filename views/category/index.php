@@ -15,8 +15,25 @@ $this->params['breadcrumbs'][] = 'Kategóriák';
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            'name',
+            // A kategória nevére kattintva megnyílik az oda tartozó eszközök listája.
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a(Html::encode($model->name), ['/equipment/index', 'category_id' => $model->id]);
+                },
+            ],
             'slug',
+            [
+                'label' => 'Eszközök',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a(
+                        $model->getEquipments()->count() . ' db',
+                        ['/equipment/index', 'category_id' => $model->id]
+                    );
+                },
+            ],
             'created_at',
             ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
         ],

@@ -21,6 +21,8 @@ $this->params['breadcrumbs'][] = 'Katalógus';
         karbantartás alatt áll, nem jelenik meg a listában.
     </p>
 
+
+
     <div class="mb-4">
         <?= Html::a('Összes', ['catalog'], [
             'class' => $selectedCategory

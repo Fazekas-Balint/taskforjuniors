@@ -27,7 +27,16 @@ $this->params['breadcrumbs'][] = 'Eszközök';
         'columns' => [
             'inventory_no',
             'name',
-            ['attribute' => 'category_id', 'value' => function ($model) { return $model->category ? $model->category->name : ''; }],
+            // A kategória névre kattintva a lista arra a kategóriára szűr.
+            [
+                'attribute' => 'category_id',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model->category
+                        ? Html::a(Html::encode($model->category->name), ['index', 'category_id' => $model->category_id])
+                        : '';
+                },
+            ],
             // A fejlécre kattintva raktár szerint rendez (a sort attribútum a controllerben van bekötve).
             'storage_location',
             ['attribute' => 'status', 'value' => function ($model) { return $model->statusLabel; }],
@@ -42,7 +51,7 @@ $this->params['breadcrumbs'][] = 'Eszközök';
                         . Html::endForm();
                 },
             ],
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update} {delete}'],
         ],
     ]) ?>
     </div>

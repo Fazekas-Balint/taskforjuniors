@@ -36,16 +36,22 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
+    // A menü csak azt kínálja fel, amit az adott felhasználó használni is tud:
+    // a szerkesztő pontokra a kollega és a vendég eddig 403-at kapott.
+    $belepett = !Yii::$app->user->isGuest;
+    $szerkeszthet = $belepett && Yii::$app->user->identity->canEdit();
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             // Az "Áttekintés" menüpont helyett a bal oldali "Eszköztár" márkanév visz a főoldalra.
             ['label' => 'Katalógus', 'url' => ['/equipment/catalog']],
-            ['label' => 'Eszközök', 'url' => ['/equipment/index'], 'visible' => !Yii::$app->user->isGuest],
-            ['label' => 'Kategóriák', 'url' => ['/category/index'], 'visible' => !Yii::$app->user->isGuest],
-            ['label' => 'Új kölcsönzés', 'url' => ['/loan/create']],
-            ['label' => 'Hosszabbítás', 'url' => ['/extend'], 'visible' => !Yii::$app->user->isGuest],
-            ['label' => 'Késés-riport', 'url' => ['/report/overdue']],
+            ['label' => 'Eszközök', 'url' => ['/equipment/index'], 'visible' => $szerkeszthet],
+            ['label' => 'Kategóriák', 'url' => ['/category/index'], 'visible' => $szerkeszthet],
+            ['label' => 'Kölcsönvevők', 'url' => ['/borrower/index'], 'visible' => $szerkeszthet],
+            ['label' => 'Új kölcsönzés', 'url' => ['/loan/create'], 'visible' => $szerkeszthet],
+            ['label' => 'Hosszabbítás', 'url' => ['/extend'], 'visible' => $szerkeszthet],
+            ['label' => 'Késés-riport', 'url' => ['/report/overdue'], 'visible' => $belepett],
             Yii::$app->user->isGuest
                 ? ['label' => 'Login', 'url' => ['/site/login']]
                 : '<li class="nav-item">'

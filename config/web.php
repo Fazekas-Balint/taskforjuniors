@@ -58,9 +58,10 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'home' => 'site/index',
-                'loan' => 'loan/create',
+                // A /loan a nyitott kölcsönzések listája, az űrlap a /loan/create.
+                'loan' => 'loan/index',
                 'extend' => 'extend/index',
-                'pending' => 'pending/index',
+
             ],
         ],
     ],

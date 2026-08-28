@@ -122,6 +122,23 @@ class EquipmentController extends Controller
         ]);
     }
 
+    /**
+     * Egy eszköz adatai és a teljes kölcsönzési előzménye - eddig sehol nem
+     * lehetett megnézni, hogy egy eszköz mikor kinél volt és melyik raktárból ment ki.
+     */
+    public function actionView($id)
+    {
+        $model = $this->findModel($id);
+
+        return $this->render('view', [
+            'model' => $model,
+            'loans' => $model->getLoans()
+                ->with('borrower')
+                ->orderBy(['loaned_at' => SORT_DESC, 'id' => SORT_DESC])
+                ->all(),
+        ]);
+    }
+
     public function actionCreate()
     {
         $model = new Equipment(['status' => Equipment::STATUS_AVAILABLE]);

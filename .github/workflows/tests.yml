@@ -1,0 +1,55 @@
+name: tesztek
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  codeception:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+          MYSQL_DATABASE: kolcsonpont_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_NAME: kolcsonpont_test
+      DB_USERNAME: root
+      DB_PASSWORD: ''
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, intl, pdo_mysql
+          tools: composer
+
+      - name: Függőségek
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Séma a teszt-adatbázisba
+        run: php yii migrate --db=dbTest --interactive=0
+
+      - name: Tesztek
+        run: php test.php
+
+      - name: Eredmény feltöltése
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: teszt-eredmenyek
+          path: tests/_output/test-results.json

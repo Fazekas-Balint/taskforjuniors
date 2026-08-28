@@ -26,6 +26,8 @@ $config = [
             ],
         ],
         'db' => $db,
+        // Külön kapcsolat a teszt-adatbázishoz: php yii migrate --db=dbTest
+        'dbTest' => require __DIR__ . '/test_db.php',
     ],
     'params' => $params,
     /*

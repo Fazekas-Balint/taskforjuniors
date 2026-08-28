@@ -37,31 +37,9 @@ class EquipmentService
         $this->db = Yii::$app->db;
     }
 
-    /**
-     * Creates the schema on first run if it is missing.
-     *
-     * TODO: running migrations from a web request is unsafe - it writes no
-     * migration history and cannot be rolled back. This belongs to
-     * `php yii migrate` and should be removed once the team agrees.
-     */
-    public function initialize(): void
-    {
-        if ($this->db->getSchema()->getTableSchema('category', true) !== null) {
-            return;
-        }
-
-        $migrations = [
-            'm250101_000001_create_category_table',
-            'm250101_000002_create_equipment_table',
-            'm250101_000003_create_borrower_table',
-            'm250101_000004_create_loan_table',
-            'm250101_000005_seed_demo_data',
-        ];
-
-        foreach ($migrations as $migration) {
-            (new $migration())->up();
-        }
-    }
+    // A séma létrehozása webes kérésből (initialize()) megszűnt: a hivatkozott
+    // m250101_* migrációk az sqlite -> MySQL váltáskor törlődtek, így a metódus
+    // meghívása végzetes hibát okozott volna. A séma innentől: php yii migrate
 
     /**
      * Equipment rows with their category and, when out on loan, the open loan
@@ -305,9 +283,12 @@ class EquipmentService
 
             $rows[$index]['days_late'] = $daysLate;
 
-            // Késedelmi díj: letét + napi díj minden késési napra.
-            $rows[$index]['late_fee'] = (
-                (int) $row['deposit'] + $daysLate * self::LATE_FEE_PER_DAY
+            // A képlet a Loan modellben él, hogy a riport és a kölcsönzés oldala
+            // ne tudjon szétcsúszni.
+            $rows[$index]['late_fee'] = Loan::calculateLateFee(
+                (int) $row['deposit'],
+                $daysLate,
+                self::LATE_FEE_PER_DAY
             );
         }
 

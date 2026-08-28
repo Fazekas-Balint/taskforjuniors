@@ -18,7 +18,9 @@ class LoanForm extends Model
     {
         return [
             ['storage_location', 'trim'],
-            [['equipment_id', 'borrower_id', 'loaned_at', 'due_at'], 'validateSz1'],
+            // skipOnEmpty => false: az inline validátor alapból kihagyja az üres értéket,
+            // így a kötelezőség ellenőrzése éppen üres űrlapon nem futott le.
+            [['equipment_id', 'borrower_id', 'loaned_at', 'due_at'], 'validateSz1', 'skipOnEmpty' => false],
             // A validateSz1 inline validátor üres értéknél nem fut le (skipOnEmpty),
             // ezért a raktárnál a beépített required validátort használjuk.
             ['storage_location', 'required', 'message' => 'A mező kitöltése kötelező.'],

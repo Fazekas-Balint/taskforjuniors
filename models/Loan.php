@@ -98,8 +98,21 @@ class Loan extends ActiveRecord
      * up to today. This makes the value usable both at return time and in reports.
      */
     /**
-     * Késedelmi díj: a letét + minden megkezdett késési nap után a napi díj.
+     * A késedelmi díj képlete: letét + minden megkezdett késési nap után a napi díj.
+     * Késés nélkül nincs díj - a letét önmagában nem büntetés.
+     *
+     * Statikus, mert a késés-riport nyers sorokon dolgozik: így a kimutatás és a
+     * kölcsönzés oldala ugyanazt a képletet használja, és nem tud szétcsúszni.
      */
+    public static function calculateLateFee($deposit, $overdueDays, $dailyFee = self::DAILY_LATE_FEE)
+    {
+        if ((int) $overdueDays <= 0) {
+            return 0;
+        }
+
+        return (int) $deposit + (int) $overdueDays * (int) $dailyFee;
+    }
+
     public function getLateFee($dailyFee = self::DAILY_LATE_FEE)
     {
         $equipment = $this->getEquipment()->one();
@@ -107,6 +120,6 @@ class Loan extends ActiveRecord
             return 0;
         }
 
-        return (int) $equipment->deposit + $this->getOverdueDays() * (int) $dailyFee;
+        return self::calculateLateFee($equipment->deposit, $this->getOverdueDays(), $dailyFee);
     }
 }

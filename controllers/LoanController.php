@@ -7,6 +7,7 @@ use app\models\Equipment;
 use app\models\Loan;
 use app\models\LoanForm;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -27,9 +28,22 @@ class LoanController extends Controller
         ];
     }
 
+    /**
+     * Nyitott kölcsönzések listája. Korábban ez az űrlapot rendelte meg, ezért a
+     * views/loan/index.php nézet sosem jelent meg, pedig a visszavétel és a
+     * hosszabbítás gombja is ott van.
+     */
     public function actionIndex()
     {
-        return $this->actionCreate();
+        return $this->render('index', [
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Loan::find()
+                    ->with(['equipment', 'borrower'])
+                    ->where(['returned_at' => null])
+                    ->orderBy(['due_at' => SORT_ASC]),
+                'pagination' => ['pageSize' => 20],
+            ]),
+        ]);
     }
 
     public function actionCreate()
