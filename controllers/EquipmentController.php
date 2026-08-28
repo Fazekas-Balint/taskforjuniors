@@ -18,11 +18,12 @@ class EquipmentController extends Controller
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
-                    // The public catalogue is open to everyone, guests included.
+                    // A katalógust minden belépett felhasználó megnézheti, a
+                    // szerkesztő jog nélküli kollega is - vendég viszont nem.
                     [
                         'allow' => true,
                         'actions' => ['catalog'],
-                        'roles' => ['?', '@'],
+                        'roles' => ['@'],
                     ],
                     // Everything else requires a logged-in user who may edit.
                     [

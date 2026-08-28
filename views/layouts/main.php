@@ -41,15 +41,18 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     $belepett = !Yii::$app->user->isGuest;
     $szerkeszthet = $belepett && Yii::$app->user->identity->canEdit();
 
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             // Az "Áttekintés" menüpont helyett a bal oldali "Eszköztár" márkanév visz a főoldalra.
-            ['label' => 'Katalógus', 'url' => ['/equipment/catalog']],
+            // Vendégként a katalógus sem nyílik meg, ezért fel sem kínáljuk.
+            ['label' => 'Katalógus', 'url' => ['/equipment/catalog'], 'visible' => $belepett],
             ['label' => 'Eszközök', 'url' => ['/equipment/index'], 'visible' => $szerkeszthet],
             ['label' => 'Kategóriák', 'url' => ['/category/index'], 'visible' => $szerkeszthet],
             ['label' => 'Kölcsönvevők', 'url' => ['/borrower/index'], 'visible' => $szerkeszthet],
             ['label' => 'Új kölcsönzés', 'url' => ['/loan/create'], 'visible' => $szerkeszthet],
+            ['label' => 'Kölcsönzések', 'url' => ['/loan'], 'visible' => $szerkeszthet],
             ['label' => 'Hosszabbítás', 'url' => ['/extend'], 'visible' => $szerkeszthet],
             ['label' => 'Késés-riport', 'url' => ['/report/overdue'], 'visible' => $belepett],
             Yii::$app->user->isGuest

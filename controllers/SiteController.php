@@ -21,10 +21,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout'],
                 'rules' => [
+                    // Bejelentkezés nélkül csak a bemutatkozó oldal, a belépés és a
+                    // hibaoldal érhető el; minden más a belépésre irányít.
                     [
-                        'actions' => ['logout'],
+                        'allow' => true,
+                        'actions' => ['index', 'login', 'error', 'captcha'],
+                        'roles' => ['?'],
+                    ],
+                    [
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -75,6 +80,12 @@ class SiteController extends Controller
             Yii::$app->session->setFlash($result['success'] ? 'success' : 'error', $result['message']);
             return $this->refresh();
         }
+        // Kijelentkezve bemutatkozó oldal fogad: a műszerfal kölcsönvevő-adatokat
+        // is mutat, azt csak belépés után adjuk ki.
+        if (Yii::$app->user->isGuest) {
+            return $this->render('landing');
+        }
+
         return $this->render('home', [
             'equipment' => $service->equipment($statusFilter, $lenderFilter, $categoryFilter),
             'loans' => $service->activeLoans(),

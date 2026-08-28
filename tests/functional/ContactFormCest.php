@@ -4,6 +4,8 @@ class ContactFormCest
 {
     public function _before(\FunctionalTester $I)
     {
+        // A kapcsolat oldal is belépéshez kötött: vendégként a belépésre irányít.
+        $I->amLoggedInAs(\app\models\User::findByUsername('admin'));
         $I->amOnRoute('site/contact');
     }
 
