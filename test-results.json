@@ -1,0 +1,1267 @@
+{
+    "projekt": "Eszköztár (taskforjuniors)",
+    "keszult": "2026-08-28T11:00:57+00:00",
+    "parancs": "php vendor/bin/codecept run --xml && php tests/results-to-json.php",
+    "osszesites": {
+        "tesztek": 143,
+        "allitasok": 438,
+        "hibas": 0,
+        "hibara_futott": 0,
+        "kihagyott": 0,
+        "ido_mp": 4.468,
+        "eredmeny": "SIKERES"
+    },
+    "suitek": [
+        {
+            "suite": "functional",
+            "tesztek": 54,
+            "allitasok": 140,
+            "hibas": 0,
+            "hibara_futott": 0,
+            "kihagyott": 0,
+            "ido_mp": 2.498,
+            "osztalyok": [
+                {
+                    "osztaly": "ContactFormCest",
+                    "fajl": "tests/functional/ContactFormCest.php",
+                    "tesztek": 4,
+                    "allitasok": 15,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.147,
+                    "esetek": [
+                        {
+                            "nev": "openContactPage",
+                            "leiras": "open contact page",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.059
+                        },
+                        {
+                            "nev": "submitEmptyForm",
+                            "leiras": "submit empty form",
+                            "statusz": "sikeres",
+                            "allitasok": 6,
+                            "ido_mp": 0.03
+                        },
+                        {
+                            "nev": "submitFormWithIncorrectEmail",
+                            "leiras": "submit form with incorrect email",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.026
+                        },
+                        {
+                            "nev": "submitFormSuccessfully",
+                            "leiras": "submit form successfully",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.032
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "EquipmentCest",
+                    "fajl": "tests/functional/EquipmentCest.php",
+                    "tesztek": 11,
+                    "allitasok": 25,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.686,
+                    "esetek": [
+                        {
+                            "nev": "aRaktarOszloponkentLatszikAListaban",
+                            "leiras": "a raktar oszloponkent latszik a listaban",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.074
+                        },
+                        {
+                            "nev": "aListaSzurhetoRaktarra",
+                            "leiras": "a lista szurheto raktarra",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.06
+                        },
+                        {
+                            "nev": "aListaRendezhetoRaktarSzerint",
+                            "leiras": "a lista rendezheto raktar szerint",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.102
+                        },
+                        {
+                            "nev": "aKategoriaNevereKattintvaAListaArraSzur",
+                            "leiras": "a kategoria nevere kattintva a lista arra szur",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.059
+                        },
+                        {
+                            "nev": "aKategoriakOldalrolElerhetoekAKategoriaEszkozei",
+                            "leiras": "a kategoriak oldalrol elerhetoek a kategoria eszkozei",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.05
+                        },
+                        {
+                            "nev": "azAthelyezesAtirjaARaktart",
+                            "leiras": "az athelyezes atirja a raktart",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.056
+                        },
+                        {
+                            "nev": "azAthelyezesMindenSorbolElerheto",
+                            "leiras": "az athelyezes minden sorbol elerheto",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.034
+                        },
+                        {
+                            "nev": "azAdatlapMutatjaARaktartEsAKolcsonzesiElozmenyt",
+                            "leiras": "az adatlap mutatja a raktart es a kolcsonzesi elozmenyt",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.04
+                        },
+                        {
+                            "nev": "azElozmenyNelkuliEszkozAdatlapjaIsMegnyilik",
+                            "leiras": "az elozmeny nelkuli eszkoz adatlapja is megnyilik",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.053
+                        },
+                        {
+                            "nev": "aLeltariSzamTetszolegesFormatumraAtirhato",
+                            "leiras": "a leltari szam tetszoleges formatumra atirhato",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.076
+                        },
+                        {
+                            "nev": "azUresLeltariSzamotElutasitja",
+                            "leiras": "az ures leltari szamot elutasitja",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.082
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "ExtendCest",
+                    "fajl": "tests/functional/ExtendCest.php",
+                    "tesztek": 7,
+                    "allitasok": 15,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.351,
+                    "esetek": [
+                        {
+                            "nev": "hosszabbitasiListaMegnyilik",
+                            "leiras": "hosszabbitasi lista megnyilik",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.035
+                        },
+                        {
+                            "nev": "hataridonBeluliKolcsonzesUrlapjaMegnyilik",
+                            "leiras": "hataridon beluli kolcsonzes urlapja megnyilik",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.041
+                        },
+                        {
+                            "nev": "lejartKolcsonzesUzenettelTerVissza",
+                            "leiras": "lejart kolcsonzes uzenettel ter vissza",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.039
+                        },
+                        {
+                            "nev": "lezartKolcsonzesNemHosszabbithato",
+                            "leiras": "lezart kolcsonzes nem hosszabbithato",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.053
+                        },
+                        {
+                            "nev": "sikeresHosszabbitasHetNappal",
+                            "leiras": "sikeres hosszabbitas het nappal",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.075
+                        },
+                        {
+                            "nev": "hetNaptolElteroHosszabbitastElutasit",
+                            "leiras": "het naptol eltero hosszabbitast elutasit",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.052
+                        },
+                        {
+                            "nev": "aRaktarLatszikAHosszabbitasOldalon",
+                            "leiras": "a raktar latszik a hosszabbitas oldalon",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.056
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "LoanCest",
+                    "fajl": "tests/functional/LoanCest.php",
+                    "tesztek": 9,
+                    "allitasok": 26,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.505,
+                    "esetek": [
+                        {
+                            "nev": "aNyitottKolcsonzesekListajaMegnyilik",
+                            "leiras": "a nyitott kolcsonzesek listaja megnyilik",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.044
+                        },
+                        {
+                            "nev": "aListarolElerhetoAzUjKolcsonzesUrlapja",
+                            "leiras": "a listarol elerheto az uj kolcsonzes urlapja",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.06
+                        },
+                        {
+                            "nev": "aVisszavetelLezarjaAKolcsonzestEsVisszateszARaktarba",
+                            "leiras": "a visszavetel lezarja a kolcsonzest es visszatesz a raktarba",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.028
+                        },
+                        {
+                            "nev": "azUrlapKeriARaktart",
+                            "leiras": "az urlap keri a raktart",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.044
+                        },
+                        {
+                            "nev": "azUrlapAzEszkozSajatRaktaratKinaljaFel",
+                            "leiras": "az urlap az eszkoz sajat raktarat kinalja fel",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.054
+                        },
+                        {
+                            "nev": "azUresUrlapKotelezoMezoketJelez",
+                            "leiras": "az ures urlap kotelezo mezoket jelez",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.064
+                        },
+                        {
+                            "nev": "sikeresKolcsonzesRogzitiARaktart",
+                            "leiras": "sikeres kolcsonzes rogziti a raktart",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.076
+                        },
+                        {
+                            "nev": "marKiadottEszkozNemValaszthatoAzUrlapon",
+                            "leiras": "mar kiadott eszkoz nem valaszthato az urlapon",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.061
+                        },
+                        {
+                            "nev": "raktaronKivuliErteketNemFogadEl",
+                            "leiras": "raktaron kivuli erteket nem fogad el",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.074
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "LoginFormCest",
+                    "fajl": "tests/functional/LoginFormCest.php",
+                    "tesztek": 6,
+                    "allitasok": 8,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.232,
+                    "esetek": [
+                        {
+                            "nev": "openLoginPage",
+                            "leiras": "open login page",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.011
+                        },
+                        {
+                            "nev": "internalLoginById",
+                            "leiras": "internal login by id",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.067
+                        },
+                        {
+                            "nev": "internalLoginByInstance",
+                            "leiras": "internal login by instance",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.054
+                        },
+                        {
+                            "nev": "loginWithEmptyCredentials",
+                            "leiras": "login with empty credentials",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.018
+                        },
+                        {
+                            "nev": "loginWithWrongCredentials",
+                            "leiras": "login with wrong credentials",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.016
+                        },
+                        {
+                            "nev": "loginSuccessfully",
+                            "leiras": "login successfully",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.066
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "ReportCest",
+                    "fajl": "tests/functional/ReportCest.php",
+                    "tesztek": 6,
+                    "allitasok": 14,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.271,
+                    "esetek": [
+                        {
+                            "nev": "aRiportMegnyilikEsMutatjaARaktart",
+                            "leiras": "a riport megnyilik es mutatja a raktart",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.046
+                        },
+                        {
+                            "nev": "aKesedelmiDijLetetPluszNapiDij",
+                            "leiras": "a kesedelmi dij letet plusz napi dij",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.057
+                        },
+                        {
+                            "nev": "aSzamitasSzabalyaKiVanIrva",
+                            "leiras": "a szamitas szabalya ki van irva",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.025
+                        },
+                        {
+                            "nev": "hataridonBeluliTetelNemJelenikMeg",
+                            "leiras": "hataridon beluli tetel nem jelenik meg",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.032
+                        },
+                        {
+                            "nev": "aRiportSzurhetoKolcsonvevore",
+                            "leiras": "a riport szurheto kolcsonvevore",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.06
+                        },
+                        {
+                            "nev": "aCsvExportTartalmazzaARaktarOszlopot",
+                            "leiras": "a csv export tartalmazza a raktar oszlopot",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.051
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "SiteCest",
+                    "fajl": "tests/functional/SiteCest.php",
+                    "tesztek": 11,
+                    "allitasok": 37,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.307,
+                    "esetek": [
+                        {
+                            "nev": "vendegkentABemutatkozoOldalFogad",
+                            "leiras": "vendegkent a bemutatkozo oldal fogad",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.014
+                        },
+                        {
+                            "nev": "aBemutatkozoOldalonOttAGaleria",
+                            "leiras": "a bemutatkozo oldalon ott a galeria",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.014
+                        },
+                        {
+                            "nev": "aGaleriaKepeiNovekvoSorrendbenVannak",
+                            "leiras": "a galeria kepei novekvo sorrendben vannak",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.011
+                        },
+                        {
+                            "nev": "vendegNemLatjaAMuszerfalAdatait",
+                            "leiras": "vendeg nem latja a muszerfal adatait",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.047
+                        },
+                        {
+                            "nev": "aBemutatkozoOldalFejleceCsakABelepestKinalja",
+                            "leiras": "a bemutatkozo oldal fejlece csak a belepest kinalja",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.011
+                        },
+                        {
+                            "nev": "aKatalogusCsakBelepesUtanErhetoEl",
+                            "leiras": "a katalogus csak belepes utan erheto el",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.051
+                        },
+                        {
+                            "nev": "vendegkentMindenBelsoOldalABelepesreIranyit",
+                            "leiras": "vendegkent minden belso oldal a belepesre iranyit",
+                            "statusz": "sikeres",
+                            "allitasok": 8,
+                            "ido_mp": 0.076
+                        },
+                        {
+                            "nev": "aBelepesiOldalVendegkentIsNyitva",
+                            "leiras": "a belepesi oldal vendegkent is nyitva",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.009
+                        },
+                        {
+                            "nev": "aGaleriaKepeiNagyithatoak",
+                            "leiras": "a galeria kepei nagyithatoak",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.012
+                        },
+                        {
+                            "nev": "belepesUtanAMuszerfalJelenikMeg",
+                            "leiras": "belepes utan a muszerfal jelenik meg",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.034
+                        },
+                        {
+                            "nev": "aKollegaIsAMuszerfaltLatjaSzerkesztesNelkul",
+                            "leiras": "a kollega is a muszerfalt latja szerkesztes nelkul",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.028
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "suite": "unit",
+            "tesztek": 89,
+            "allitasok": 298,
+            "hibas": 0,
+            "hibara_futott": 0,
+            "kihagyott": 0,
+            "ido_mp": 1.97,
+            "osztalyok": [
+                {
+                    "osztaly": "tests\\unit\\models\\BorrowerTest",
+                    "fajl": "tests/unit/models/BorrowerTest.php",
+                    "tesztek": 6,
+                    "allitasok": 18,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.178,
+                    "esetek": [
+                        {
+                            "nev": "testNevEsEmailKotelezo",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.043
+                        },
+                        {
+                            "nev": "testErvenytelenEmailtElutasit",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 8,
+                            "ido_mp": 0.008
+                        },
+                        {
+                            "nev": "testEmailCimEgyedi",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.03
+                        },
+                        {
+                            "nev": "testErvenyesKolcsonvevoMenthetoTelefonNelkul",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.024
+                        },
+                        {
+                            "nev": "testTulHosszuNevetElutasit",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.028
+                        },
+                        {
+                            "nev": "testKolcsonzeseiLekerdezhetok",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.045
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\models\\CategoryTest",
+                    "fajl": "tests/unit/models/CategoryTest.php",
+                    "tesztek": 7,
+                    "allitasok": 21,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.167,
+                    "esetek": [
+                        {
+                            "nev": "testNevEsUrlAzonositoKotelezo",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.035
+                        },
+                        {
+                            "nev": "testSlugCsakKisbetutSzamotEsKotojeletTartalmazhat",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 10,
+                            "ido_mp": 0.031
+                        },
+                        {
+                            "nev": "testErvenyesSlugotElfogad",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.009
+                        },
+                        {
+                            "nev": "testAzonosNevuKategoriaNemVeheteFel",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.029
+                        },
+                        {
+                            "nev": "testAzonosSlugNemVeheteFel",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.022
+                        },
+                        {
+                            "nev": "testLetrehozasIdopontjaAutomatikusanKitoltodik",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.026
+                        },
+                        {
+                            "nev": "testKategoriaEszkozeiLekerdezhetok",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.015
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\models\\ContactFormTest",
+                    "fajl": "tests/unit/models/ContactFormTest.php",
+                    "tesztek": 1,
+                    "allitasok": 9,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.009,
+                    "esetek": [
+                        {
+                            "nev": "testEmailIsSentOnContact",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 9,
+                            "ido_mp": 0.009
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\models\\EquipmentTest",
+                    "fajl": "tests/unit/models/EquipmentTest.php",
+                    "tesztek": 8,
+                    "allitasok": 29,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.213,
+                    "esetek": [
+                        {
+                            "nev": "testLeltariSzamKitolteseKotelezo",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.028
+                        },
+                        {
+                            "nev": "testLeltariSzamBarmilyenFormatumuLehet",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 8,
+                            "ido_mp": 0.048
+                        },
+                        {
+                            "nev": "testLeltariSzamEgyediMarad",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.017
+                        },
+                        {
+                            "nev": "testRaktarCsakAListabolValaszthato",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.026
+                        },
+                        {
+                            "nev": "testUjEszkozAlapertelmezettRaktaratKap",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.012
+                        },
+                        {
+                            "nev": "testStatuszCimkek",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.036
+                        },
+                        {
+                            "nev": "testCsakAzElerhetoEszkozKolcsonozheto",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.045
+                        },
+                        {
+                            "nev": "testRaktarLegorduloErtekkeszlete",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.001
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\models\\LoanExtendFormTest",
+                    "fajl": "tests/unit/models/LoanExtendFormTest.php",
+                    "tesztek": 6,
+                    "allitasok": 11,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.009,
+                    "esetek": [
+                        {
+                            "nev": "testUjHataridoKotelezo",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.004
+                        },
+                        {
+                            "nev": "testPontosanHetNapposHosszabbitasElfogadhato",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.001
+                        },
+                        {
+                            "nev": "testHetNaptolElteroHosszabbitastElutasit",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.001
+                        },
+                        {
+                            "nev": "testHarmincNaposTeljesHosszonTulNemHosszabbithato",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.001
+                        },
+                        {
+                            "nev": "testErvenytelenDatumformatumotElutasit",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.001
+                        },
+                        {
+                            "nev": "testHianyzoKiindulasiAdatoknalNemDobKivetelt",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.001
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\models\\LoanFormTest",
+                    "fajl": "tests/unit/models/LoanFormTest.php",
+                    "tesztek": 11,
+                    "allitasok": 26,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.355,
+                    "esetek": [
+                        {
+                            "nev": "testErvenyesUrlapAtmegyAValidacion",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.045
+                        },
+                        {
+                            "nev": "testUresUrlaponMindenKotelezoMezotJelez",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 6,
+                            "ido_mp": 0.002
+                        },
+                        {
+                            "nev": "testRaktarCsakAListabolValaszthato",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.018
+                        },
+                        {
+                            "nev": "testHataridonekAKiadasUtanKellLennie",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.018
+                        },
+                        {
+                            "nev": "testAKolcsonzesLegfeljebbHarmincNaposLehet",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.04
+                        },
+                        {
+                            "nev": "testKiadasDatumaNemLehetMultbeli",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.029
+                        },
+                        {
+                            "nev": "testNemElerhetoEszkozNemAdhatoKi",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.044
+                        },
+                        {
+                            "nev": "testNyitottKolcsonzesuEszkozNemAdhatoKiUjra",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.042
+                        },
+                        {
+                            "nev": "testHaromNyitottKolcsonzesFelettAKolcsonvevoElutasitva",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.035
+                        },
+                        {
+                            "nev": "testInaktivKolcsonvevoNemKolcsonozhet",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.038
+                        },
+                        {
+                            "nev": "testErvenytelenDatumotElutasit",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.044
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\models\\LoanTest",
+                    "fajl": "tests/unit/models/LoanTest.php",
+                    "tesztek": 9,
+                    "allitasok": 21,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.311,
+                    "esetek": [
+                        {
+                            "nev": "testHataridoBetolteskorIsSzamolhatoDatumMarad",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.026
+                        },
+                        {
+                            "nev": "testLejartKolcsonzestFelismeri",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.022
+                        },
+                        {
+                            "nev": "testHataridonBeluliKolcsonzesNemLejart",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.035
+                        },
+                        {
+                            "nev": "testLezartKolcsonzesMarNemLejart",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.041
+                        },
+                        {
+                            "nev": "testKesedelmiDijLetetPluszNapiDij",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.039
+                        },
+                        {
+                            "nev": "testKesedelmiDijLetetNelkuliEszkoznel",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.044
+                        },
+                        {
+                            "nev": "testHataridonBeluliKolcsonzesnelNincsDij",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.036
+                        },
+                        {
+                            "nev": "testRaktarKotelezoEsCsakAListabolValaszthato",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.045
+                        },
+                        {
+                            "nev": "testEszkozEsKolcsonvevoKapcsolat",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.023
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\models\\LoginFormTest",
+                    "fajl": "tests/unit/models/LoginFormTest.php",
+                    "tesztek": 3,
+                    "allitasok": 8,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.009,
+                    "esetek": [
+                        {
+                            "nev": "testLoginNoUser",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.005
+                        },
+                        {
+                            "nev": "testLoginWrongPassword",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.001
+                        },
+                        {
+                            "nev": "testLoginCorrect",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.003
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\models\\UserTest",
+                    "fajl": "tests/unit/models/UserTest.php",
+                    "tesztek": 4,
+                    "allitasok": 12,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.01,
+                    "esetek": [
+                        {
+                            "nev": "testFindUserById",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.005
+                        },
+                        {
+                            "nev": "testFindUserByAccessToken",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.001
+                        },
+                        {
+                            "nev": "testFindUserByUsername",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.001
+                        },
+                        {
+                            "nev": "testValidateUser",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.003
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\services\\EquipmentDeletionTest",
+                    "fajl": "tests/unit/services/EquipmentDeletionTest.php",
+                    "tesztek": 10,
+                    "allitasok": 27,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.313,
+                    "esetek": [
+                        {
+                            "nev": "testElozmenyNelkuliEszkozTenylegesenTorlodik",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.04
+                        },
+                        {
+                            "nev": "testKolcsonzottEszkozTorlesHelyettSelejtLesz",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.023
+                        },
+                        {
+                            "nev": "testKolcsonzesAlattAlloEszkozNemTorolheto",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.035
+                        },
+                        {
+                            "nev": "testMarSelejtEszkozNemSelejtezhetoUjra",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.039
+                        },
+                        {
+                            "nev": "testNemLetezoEszkozTorleseUzenettelTerVissza",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.021
+                        },
+                        {
+                            "nev": "testUresKategoriaTorolheto",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.034
+                        },
+                        {
+                            "nev": "testEszkozzelRendelkezoKategoriaNemTorolheto",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.026
+                        },
+                        {
+                            "nev": "testNemLetezoKategoriaTorleseUzenettelTerVissza",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.016
+                        },
+                        {
+                            "nev": "testAModellSzintenIsSelejtLeszTorlesHelyett",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 3,
+                            "ido_mp": 0.048
+                        },
+                        {
+                            "nev": "testElozmenyNelkuliEszkozAModellenKeresztulIsTorolheto",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.031
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\services\\EquipmentServiceTest",
+                    "fajl": "tests/unit/services/EquipmentServiceTest.php",
+                    "tesztek": 11,
+                    "allitasok": 36,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.354,
+                    "esetek": [
+                        {
+                            "nev": "testHianyosAdatokkalNemVeszFelEszkozt",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.013
+                        },
+                        {
+                            "nev": "testAFelvetelAModellValidaciojanMegyAt",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.035
+                        },
+                        {
+                            "nev": "testFelvettEszkozARaktarbaKerul",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.028
+                        },
+                        {
+                            "nev": "testKiadasRaktarMegadasaNelkulElutasitva",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.025
+                        },
+                        {
+                            "nev": "testKiadasRogzitiARaktartEsKiadottaTesziAzEszkozt",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.049
+                        },
+                        {
+                            "nev": "testVisszavetelAKiadoRaktarbaTesziVisszaAzEszkozt",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.04
+                        },
+                        {
+                            "nev": "testLejartRiportKesesiNapokEsDij",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.038
+                        },
+                        {
+                            "nev": "testHataridonBeluliKolcsonzesNincsALejartRiportban",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.036
+                        },
+                        {
+                            "nev": "testOsszesitettKesedelmiDijNovekszikAzUjLejartTetellel",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 1,
+                            "ido_mp": 0.026
+                        },
+                        {
+                            "nev": "testEszkozListaTartalmazzaARaktartEsSzurhetoKategoriara",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 4,
+                            "ido_mp": 0.032
+                        },
+                        {
+                            "nev": "testKolcsonzesAlattAlloEszkozNemKuldhetoSzervizbe",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.032
+                        }
+                    ]
+                },
+                {
+                    "osztaly": "tests\\unit\\widgets\\AlertTest",
+                    "fajl": "tests/unit/widgets/AlertTest.php",
+                    "tesztek": 13,
+                    "allitasok": 80,
+                    "hibas": 0,
+                    "hibara_futott": 0,
+                    "kihagyott": 0,
+                    "ido_mp": 0.042,
+                    "esetek": [
+                        {
+                            "nev": "testSingleErrorMessage",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.007
+                        },
+                        {
+                            "nev": "testMultipleErrorMessages",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 6,
+                            "ido_mp": 0.004
+                        },
+                        {
+                            "nev": "testSingleDangerMessage",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.004
+                        },
+                        {
+                            "nev": "testMultipleDangerMessages",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 6,
+                            "ido_mp": 0.003
+                        },
+                        {
+                            "nev": "testSingleSuccessMessage",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.002
+                        },
+                        {
+                            "nev": "testMultipleSuccessMessages",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 6,
+                            "ido_mp": 0.003
+                        },
+                        {
+                            "nev": "testSingleInfoMessage",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.002
+                        },
+                        {
+                            "nev": "testMultipleInfoMessages",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 6,
+                            "ido_mp": 0.002
+                        },
+                        {
+                            "nev": "testSingleWarningMessage",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 5,
+                            "ido_mp": 0.003
+                        },
+                        {
+                            "nev": "testMultipleWarningMessages",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 6,
+                            "ido_mp": 0.002
+                        },
+                        {
+                            "nev": "testSingleMixedMessages",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 9,
+                            "ido_mp": 0.003
+                        },
+                        {
+                            "nev": "testMultipleMixedMessages",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 14,
+                            "ido_mp": 0.004
+                        },
+                        {
+                            "nev": "testFlashIntegrity",
+                            "leiras": "",
+                            "statusz": "sikeres",
+                            "allitasok": 2,
+                            "ido_mp": 0.003
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
