@@ -12,7 +12,20 @@ class CategoryController extends Controller
 {
     public function behaviors()
     {
-        return ['access' => ['class' => AccessControl::class, 'rules' => [['allow' => true, 'roles' => ['@'], 'matchCallback' => function () { return Yii::$app->user->identity->canEdit(); }]]]];
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            return Yii::$app->user->identity->canEdit();
+                        },
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function actionIndex()
