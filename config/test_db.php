@@ -1,10 +1,10 @@
 <?php
 
-// The unit tests only need the table schema - they create and read no rows.
-// Reusing the development connection keeps the setup at zero, and the Yii2
-// Codeception module wraps every test in a transaction that is rolled back
-// afterwards, so the development data is not touched.
-//
-// Once the duplicate migrations are sorted out, this should point at a
-// dedicated `kolcsonpont_test` database instead.
-return require __DIR__ . '/db.php';
+// Dedicated test database. It has to stay separate from the development one:
+// the fixtures delete every row of the tables they touch before loading their
+// own, so pointing this at the working database would wipe it.
+$db = require __DIR__ . '/db.php';
+
+$db['dsn'] = 'mysql:host=localhost;dbname=kolcsonpont_test';
+
+return $db;
